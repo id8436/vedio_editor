@@ -1,0 +1,51 @@
+package com.adobe.creativesdk.foundation.adobeinternal.storage.dcx;
+
+/* JADX INFO: loaded from: classes.dex */
+public class AdobeDCXConstantsPrivate {
+    static final String AdobeDCXArchivalStateManifestKey = "archivalState";
+    static final String AdobeDCXChildrenManifestKey = "children";
+    static final String AdobeDCXCollaborationManifestKey = "collaboration";
+    static final String AdobeDCXCollaborationRoleManifestKey = "collaboration_role";
+    static final String AdobeDCXCollaborationRoleTypeEditor = "editor";
+    static final String AdobeDCXCollaborationRoleTypeOwner = "owner";
+    static final String AdobeDCXCollaborationRoleTypeViewer = "viewer";
+    static final String AdobeDCXCollaborationTypePrivate = "private";
+    static final String AdobeDCXCollaborationTypeSharedByUser = "sharedByUser";
+    static final String AdobeDCXCollaborationTypeSharedWithUser = "sharedWithUser";
+    public static final String AdobeDCXComponentLink = "http://ns.adobe.com/ccapi/component";
+    static final String AdobeDCXComponentsManifestKey = "components";
+    public static final String AdobeDCXComponentsPendingServerCopyManifestKey = "componentS2SCopy#srcHref";
+    static final String AdobeDCXCompositeHrefManifestKey = "compositeHref";
+    static final String AdobeDCXCreatedManifestKey = "created";
+    static final String AdobeDCXEtagManifestKey = "etag";
+    static final String AdobeDCXHeightManifestKey = "height";
+    static final String AdobeDCXHrefManifestKey = "getHref";
+    static final String AdobeDCXIdManifestKey = "id";
+    static final String AdobeDCXLengthManifestKey = "length";
+    public static final String AdobeDCXLinkComponentId = "{component_id}";
+    public static final String AdobeDCXLinkHref = "href";
+    static final String AdobeDCXLinksManifestKey = "_links";
+    static final String AdobeDCXLocalDataManifestKey = "local";
+    static final String AdobeDCXLocalStorageAssetIdMapManifestKey = "copyOnWrite#storageIds";
+    static final String AdobeDCXLocalStorageUnmanagedComponentsManifestKey = "unmanagedComponents";
+    static final String AdobeDCXLocalVersionManifestKey = "version";
+    static final String AdobeDCXMD5ManifestKey = "md5";
+    static final String AdobeDCXManifestEtagManifestKey = "manifestEtag";
+    static final String AdobeDCXManifestFormatVersionManifestKey = "manifest-format-version";
+    public static final String AdobeDCXManifestLink = "http://ns.adobe.com/ccapi/manifest";
+    public static final String AdobeDCXManifestName = "manifest";
+    public static final String AdobeDCXManifestSaveIdManifestKey = "manifestSaveId";
+    public static final String AdobeDCXManifestType = "application/vnd.adobe.dcx-manifest+json";
+    static final String AdobeDCXManifestVersionManifestKey = "manifestVersion";
+    static final String AdobeDCXModifiedManifestKey = "modified";
+    static final String AdobeDCXNameManifestKey = "name";
+    public static final String AdobeDCXPathLink = "http://ns.adobe.com/ccapi/path";
+    static final String AdobeDCXPathManifestKey = "path";
+    static final String AdobeDCXReadOnlyManifestKey = "readOnly";
+    static final String AdobeDCXRelationshipManifestKey = "rel";
+    static final String AdobeDCXStateManifestKey = "state";
+    static final String AdobeDCXTag = "CSDK::Release::DCX";
+    static final String AdobeDCXTypeManifestKey = "type";
+    static final String AdobeDCXVersionManifestKey = "version";
+    static final String AdobeDCXWidthManifestKey = "width";
+}

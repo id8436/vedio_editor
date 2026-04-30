@@ -1,0 +1,12 @@
+package com.adobe.creativesdk.foundation.storage;
+
+/* JADX INFO: loaded from: classes2.dex */
+public enum AdobeAssetLibraryColorThemeRule {
+    AdobeAssetLibraryColorThemeRuleUnknown,
+    AdobeAssetLibraryColorThemeRuleNotSet,
+    AdobeAssetLibraryColorThemeRuleAnalogous,
+    AdobeAssetLibraryColorThemeRuleComplimentary,
+    AdobeAssetLibraryColorThemeRuleMonochromatic,
+    AdobeAssetLibraryColorThemeRuleTriad,
+    AdobeAssetLibraryColorThemeRuleCustom
+}

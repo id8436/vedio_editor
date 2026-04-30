@@ -1,0 +1,47 @@
+package org.apache.http.client.utils;
+
+import java.io.Closeable;
+import java.io.IOException;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtilsHC4;
+
+/* JADX INFO: loaded from: classes3.dex */
+public class HttpClientUtils {
+    private HttpClientUtils() {
+    }
+
+    public static void closeQuietly(HttpResponse httpResponse) {
+        HttpEntity entity;
+        if (httpResponse != null && (entity = httpResponse.getEntity()) != null) {
+            try {
+                EntityUtilsHC4.consume(entity);
+            } catch (IOException e2) {
+            }
+        }
+    }
+
+    public static void closeQuietly(CloseableHttpResponse closeableHttpResponse) {
+        try {
+            if (closeableHttpResponse != null) {
+                try {
+                    EntityUtilsHC4.consume(closeableHttpResponse.getEntity());
+                } finally {
+                    closeableHttpResponse.close();
+                }
+            }
+        } catch (IOException e2) {
+        }
+    }
+
+    public static void closeQuietly(HttpClient httpClient) {
+        if (httpClient != null && (httpClient instanceof Closeable)) {
+            try {
+                ((Closeable) httpClient).close();
+            } catch (IOException e2) {
+            }
+        }
+    }
+}

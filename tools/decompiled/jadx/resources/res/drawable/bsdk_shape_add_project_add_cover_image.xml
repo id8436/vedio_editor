@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bsdk_add_project_cover_image_fragment_add_button_border_color"/>
+            <padding
+                android:left="@dimen/bsdk_add_project_cover_selection_fragment_add_button_border_size"
+                android:top="@dimen/bsdk_add_project_cover_selection_fragment_add_button_border_size"
+                android:right="@dimen/bsdk_add_project_cover_selection_fragment_add_button_border_size"
+                android:bottom="@dimen/bsdk_add_project_cover_selection_fragment_add_button_border_size"/>
+            <corners android:radius="0dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bsdk_add_project_cover_image_fragment_filmstrip_backgound_color"/>
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/parentPanel" android:paddingTop="6.0dp" android:paddingBottom="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingStart="3.0dp" android:paddingEnd="1.0dp"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.adobe.premiereclip.util.AutoResizeTextView android:ellipsize="none" android:gravity="start|center" android:id="@id/title" android:padding="15.0dp" android:layout_width="match_parent" android:layout_height="56.0dp" android:text="@string/dcx_no_internet_title" android:maxLines="1" style="?android:attr/textAppearanceLarge" />
+    <ScrollView android:id="@id/scrollView" android:paddingBottom="10.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:overScrollMode="ifContentScrolls" android:paddingStart="14.0dp" android:paddingEnd="14.0dp">
+        <TextView android:id="@id/message" android:padding="2.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" style="?android:attr/textAppearanceMedium" />
+    </ScrollView>
+    <RelativeLayout android:paddingRight="2.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:textColor="@color/primary" android:id="@id/accept" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" style="?android:attr/buttonBarButtonStyle" />
+        <Button android:textColor="@color/primary" android:id="@id/reject" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_toLeftOf="@id/accept" style="?android:attr/buttonBarButtonStyle" />
+    </RelativeLayout>
+</LinearLayout>

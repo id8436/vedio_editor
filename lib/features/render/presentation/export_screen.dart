@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../core/models/editor_session_input.dart';
 import '../../../native/video_bridge_factory.dart';
 import '../data/ffmpeg_command_builder.dart';
+import '../../../app/widgets/app_scaffold.dart';
 
 enum _Preset { hd720, fhd1080 }
 
@@ -44,14 +45,38 @@ class _ExportScreenState extends State<ExportScreen> {
     ),
   };
 
-  ExportPreset get _currentPreset => _presets[_selectedPreset]!;
+  ExportPreset get _currentPreset {
+    final ExportPreset base = _presets[_selectedPreset]!;
+    final CanvasAspectPreset aspect =
+        widget.input?.canvasAspectPreset ?? CanvasAspectPreset.ratio9x16;
+    switch (aspect) {
+      case CanvasAspectPreset.ratio9x16:
+        return ExportPreset(
+          width: _selectedPreset == _Preset.hd720 ? 720 : 1080,
+          height: _selectedPreset == _Preset.hd720 ? 1280 : 1920,
+          videoBitrate: base.videoBitrate,
+          audioBitrate: base.audioBitrate,
+          fps: base.fps,
+        );
+      case CanvasAspectPreset.ratio1x1:
+        return ExportPreset(
+          width: _selectedPreset == _Preset.hd720 ? 720 : 1080,
+          height: _selectedPreset == _Preset.hd720 ? 720 : 1080,
+          videoBitrate: base.videoBitrate,
+          audioBitrate: base.audioBitrate,
+          fps: base.fps,
+        );
+      case CanvasAspectPreset.ratio16x9:
+        return base;
+    }
+  }
 
   String get _outputFileName =>
       _selectedPreset == _Preset.hd720 ? 'beatclip_720p.mp4' : 'beatclip_1080p.mp4';
 
   String get _resolvedOutputPath {
-    final String? videoPath = widget.input?.videoPath;
-    if (videoPath == null) return '/output/$_outputFileName';
+    final String? videoPath = widget.input?.primaryVideoPath;
+    if (videoPath == null || videoPath.isEmpty) return '/output/$_outputFileName';
     // Place output next to source, unless it is a web:// path.
     if (videoPath.startsWith('web://')) return '/output/$_outputFileName';
     final int lastSlash = videoPath.lastIndexOf(RegExp(r'[/\\]'));
@@ -60,9 +85,22 @@ class _ExportScreenState extends State<ExportScreen> {
   }
 
   void _rebuildPreview() {
-    final String cmd = const FfmpegCommandBuilder().buildSimple(
-      inputPath: widget.input?.videoPath ?? '/input/source.mp4',
-      bgmPath: widget.input?.bgmPath ?? '/input/bgm.mp3',
+    final List<String> inputPaths = widget.input?.mediaItems
+            .map((m) => m.path)
+            .toList() ??
+        <String>['/input/source.mp4'];
+    final List<String> bgmPaths = widget.input?.bgmItems
+            .map((b) => b.path)
+            .toList() ??
+        <String>[];
+    final bool bgmLoop = widget.input?.bgmLoop ?? true;
+    final String audioMixPreset =
+        (widget.input?.audioMixPreset ?? ImportAudioMixPreset.balanced).name;
+    final String cmd = const FfmpegCommandBuilder().build(
+      inputPaths: inputPaths,
+      bgmPaths: bgmPaths,
+      bgmLoop: bgmLoop,
+      audioMixPreset: audioMixPreset,
       outputPath: _resolvedOutputPath,
       preset: _currentPreset,
     );
@@ -123,8 +161,9 @@ class _ExportScreenState extends State<ExportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('BeatClip - Export')),
+    return AppScaffold(
+      activeRoute: '/export',
+      title: 'BeatClip - Export',
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -149,13 +188,19 @@ class _ExportScreenState extends State<ExportScreen> {
             // ── Source info ──────────────────────────────────────────────
             if (widget.input != null) ...<Widget>[
               Text(
-                'Video: ${widget.input!.videoPath}',
+                'Source: ${widget.input!.mediaItems.length} item(s)',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 12),
               ),
               Text(
-                'BGM: ${widget.input!.bgmPath ?? 'None'}',
+                'BGM: ${widget.input!.bgmItems.isEmpty ? 'None' : widget.input!.bgmItems.length.toString()}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 12),
+              ),
+              Text(
+                'Canvas: ${widget.input!.canvasAspectPreset.name} · Mix: ${widget.input!.audioMixPreset.name}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 12),

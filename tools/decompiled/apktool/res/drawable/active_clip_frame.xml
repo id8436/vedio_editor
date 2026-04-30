@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#00ffffff" />
+            <stroke android:width="@dimen/clip_thumb_frame_size" android:color="@color/active_clip_border_color" />
+        </shape>
+    </item>
+</layer-list>

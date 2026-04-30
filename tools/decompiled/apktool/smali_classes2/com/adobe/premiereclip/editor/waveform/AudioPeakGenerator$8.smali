@@ -1,0 +1,88 @@
+.class Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;
+.super Ljava/lang/Object;
+.source "AudioPeakGenerator.java"
+
+# interfaces
+.implements Ljava/lang/Runnable;
+
+
+# instance fields
+.field final synthetic this$0:Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;
+
+.field final synthetic val$bitmaps:Ljava/util/ArrayList;
+
+.field final synthetic val$clip:Lcom/adobe/premiereclip/project/sequence/Clip;
+
+
+# direct methods
+.method constructor <init>(Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;Ljava/util/ArrayList;Lcom/adobe/premiereclip/project/sequence/Clip;)V
+    .locals 0
+
+    .prologue
+    .line 813
+    iput-object p1, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->this$0:Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;
+
+    iput-object p2, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->val$bitmaps:Ljava/util/ArrayList;
+
+    iput-object p3, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->val$clip:Lcom/adobe/premiereclip/project/sequence/Clip;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public run()V
+    .locals 4
+
+    .prologue
+    .line 816
+    iget-object v0, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->this$0:Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;
+
+    invoke-static {v0}, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;->access$400(Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    monitor-enter v1
+
+    .line 817
+    :try_start_0
+    iget-object v0, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->this$0:Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;
+
+    invoke-static {v0}, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;->access$500(Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;)Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$Listener;
+
+    move-result-object v0
+
+    if-eqz v0, :cond_0
+
+    .line 818
+    iget-object v0, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->this$0:Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;
+
+    invoke-static {v0}, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;->access$500(Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator;)Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$Listener;
+
+    move-result-object v0
+
+    iget-object v2, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->val$bitmaps:Ljava/util/ArrayList;
+
+    iget-object v3, p0, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$8;->val$clip:Lcom/adobe/premiereclip/project/sequence/Clip;
+
+    invoke-interface {v0, v2, v3}, Lcom/adobe/premiereclip/editor/waveform/AudioPeakGenerator$Listener;->onWaveformDraw(Ljava/util/ArrayList;Lcom/adobe/premiereclip/project/sequence/Clip;)V
+
+    .line 820
+    :cond_0
+    monitor-exit v1
+
+    .line 821
+    return-void
+
+    .line 820
+    :catchall_0
+    move-exception v0
+
+    monitor-exit v1
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    throw v0
+.end method

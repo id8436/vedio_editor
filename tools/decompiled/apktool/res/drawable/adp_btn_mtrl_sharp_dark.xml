@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset android:insetLeft="@dimen/adp_mtrl_button_inset_horizontal" android:insetRight="@dimen/adp_mtrl_button_inset_horizontal" android:insetTop="@dimen/adp_mtrl_button_inset_vertical" android:insetBottom="@dimen/adp_mtrl_button_inset_vertical"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <shape android:shape="rectangle">
+        <corners android:radius="@dimen/adp_mtrl_control_corner" />
+        <solid android:color="@color/adp_mtrl_ripple_dark" />
+        <padding android:left="@dimen/adp_mtrl_button_padding_horizontal" android:top="@dimen/adp_mtrl_button_padding_vertical" android:right="@dimen/adp_mtrl_button_padding_horizontal" android:bottom="@dimen/adp_mtrl_button_padding_vertical" />
+    </shape>
+</inset>

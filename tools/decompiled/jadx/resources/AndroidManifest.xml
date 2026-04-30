@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1316"
+    android:versionName="1.1.6.1316"
+    package="com.adobe.premiereclip"
+    platformBuildVersionCode="26"
+    platformBuildVersionName="8.0.0">
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="26"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA"/>
+    <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-feature
+        android:glEsVersion="0x20000"
+        android:required="true"/>
+    <compatible-screens>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="ldpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="mdpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="hdpi"/>
+        <screen
+            android:screenSize="small"
+            android:screenDensity="xhdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="ldpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="mdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="hdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xhdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xxhdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xxxhdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="420"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xxhdpi"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="560"/>
+        <screen
+            android:screenSize="normal"
+            android:screenDensity="xxxhdpi"/>
+    </compatible-screens>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE"/>
+    <application
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:name="com.adobe.premiereclip.PremiereClipApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:largeHeap="true"
+        android:supportsRtl="false">
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name="com.adobe.premiereclip.SplashScreenActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.dropbox.core.android.AuthActivity"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboard">
+            <intent-filter>
+                <data android:scheme="db-nd82cy66iibva6b"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name="com.adobe.premiereclip.TourViewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter android:label="@string/external_intent_label">
+                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/jpg"/>
+                <data android:mimeType="image/jpeg"/>
+                <data android:mimeType="image/png"/>
+                <data android:mimeType="image/bmp"/>
+                <data android:mimeType="image/gif"/>
+                <data android:mimeType="image/tiff"/>
+                <data android:mimeType="video/mp4"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.adobe.premiereclip.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:hardwareAccelerated="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/title_activity_editor"
+            android:name="com.adobe.premiereclip.editor.EditorActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <activity
+            android:name="com.adobe.premiereclip.editor.VideoSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.library.LooksListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.music.TrackCategoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.music.TrackCollectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.music.TrackActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.sharing.PublishInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.sharing.SharingPublishActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.sharing.YouTubeSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.sharing.TwitterSettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.mediabrowser.GalleryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.adobe.premiereclip.editor.ColorPickerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:label="@string/project_type_activity"
+            android:name="com.adobe.premiereclip.mediabrowser.ProjectTypeActivity"
+            android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="16654087c48f39197a1838eba1cce566e7afb13b"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <activity
+            android:label="@string/title_activity_dcxsync_status"
+            android:name="com.adobe.premiereclip.dcx.DCXSyncStatusActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:name="com.adobe.mobile.MessageFullScreenActivity"/>
+        <receiver android:name="com.adobe.mobile.MessageNotificationHandler"/>
+        <activity
+            android:label="AutomaticActivity"
+            android:name="com.adobe.premiereclip.editor.automatic.AutomaticActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation|keyboardHidden"/>
+        <service android:name="com.adobe.creativesdk.foundation.internal.auth.authenticator.AdobeCSDKAdobeIDAuthenticatorServiceCC">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/adobe_csdk_adobeid_authenticator_cc_description"/>
+        </service>
+        <activity
+            android:name="com.adobe.premiereclip.clipPlayer.ClipPlayerActivity"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name="com.adobe.premiereclip.clipPlayer.VideoPlaybackActivity"
+            android:configChanges="screenSize|orientation"/>
+        <service
+            android:name="com.adobe.premiereclip.LightroomProject"
+            android:exported="true"/>
+        <service
+            android:name="com.adobe.premiereclip.notification.ClipNotificationService"
+            android:exported="true"/>
+        <service
+            android:name="com.adobe.premiereclip.notification.ClipNotificationJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+        <receiver android:name="com.adobe.premiereclip.notification.DeviceBootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.adobe.premiereclip.notification.DismissNotificationBroadcastReceiver"
+            android:exported="false"/>
+        <receiver
+            android:name="com.adobe.premiereclip.analytics.GPBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
+        </receiver>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:authorities="com.adobe.premiereclip.provider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <meta-data
+            android:name="android.support.VERSION"
+            android:value="26.0.1"/>
+        <activity
+            android:theme="@style/AdobeCSDKThemeActivity"
+            android:label="@string/adobe_csdk_creative_cloud"
+            android:name="com.adobe.creativesdk.foundation.internal.auth.AdobeAuthSignInActivity"
+            android:exported="false"
+            android:multiprocess="true"
+            android:windowSoftInputMode="adjustNothing|stateUnchanged"/>
+        <activity
+            android:theme="@style/AdobeCSDKThemeActivity"
+            android:label="@string/adobe_csdk_creative_cloud"
+            android:name="com.adobe.creativesdk.foundation.internal.auth.AdobeAuthContinuableEventActivity"
+            android:exported="false"
+            android:multiprocess="true"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustNothing|stateUnchanged"/>
+        <activity android:name="com.adobe.creativesdk.foundation.internal.base.AdobeTOUHandlerActivity"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXAssetOneUpViewerActivity"
+            android:exported="false"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXPhotoAssetOneUpViewerActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeCSDKThemeActivity"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUxAssetBrowserV2Activity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXAssetVideoActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXLibraryItemCollectionOneUpViewerActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXMobilePackageItemOneUpViewerActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeUXCompositionOneUpViewerActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeEditThemeActivity"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.edit.AdobeAssetEditActivity"
+            android:exported="false"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"/>
+        <activity
+            android:theme="@style/AdobeEditThemeActivity"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.libraryedit.AdobeDesignLibraryMoveActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeCSDKThemeActivity.NoActionBar"
+            android:name="com.adobe.creativesdk.foundation.internal.settings.CloudPickerActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:theme="@style/AdobeAssetViewerLightTheme"
+            android:name="com.adobe.creativesdk.foundation.internal.storage.controllers.AdobeShowUploadTasksActivity"
+            android:exported="false"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation"
+            android:resizeableActivity="true"/>
+        <activity
+            android:name="com.learnncode.mediachooser.activity.HomeFragmentActivity"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name="com.learnncode.mediachooser.activity.BucketHomeFragmentActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name="com.learnncode.mediachooser.fragment.ImageFragment"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.learnncode.mediachooser.fragment.VideoFragment"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.learnncode.mediachooser.activity.ClipViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name="com.adobe.creativeapps.settings.activity.CloudPickerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:theme="@style/BsdkMaterialBaseTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKProjectEditorActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkMaterialBaseTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKCropperActivity"/>
+        <activity
+            android:theme="@style/BsdkAddProjectActivityTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKPublishProjectActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkAddProjectActivityTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKCreateProjectWFActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkPublishResultsActivityTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKPublishResultsActivity"/>
+        <activity
+            android:theme="@style/BsdkMaterialBaseTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKEditProfileActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkFacebookLoginActivityTheme"
+            android:name="com.facebook.LoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.behance.sdk.ui.activities.BehanceSDKLoginToTwitterActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkUnlinkSocialAccountActivityTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKUnlinkSocialAccountActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/BsdkAdobeCloudSelectionViewTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKAdobeCloudSelectionActivity"/>
+        <activity
+            android:theme="@style/BsdkBaseThemeTransparentSystemUI.Dark"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKProjectDetailActivity"/>
+        <activity
+            android:theme="@style/BsdkAdobeCCLauncherActivityTheme"
+            android:name="com.behance.sdk.ui.activities.BehanceSDKCCLauncherActivity"/>
+        <service android:name="com.behance.sdk.services.BehanceSDKPublishProjectService"/>
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true"/>
+        <service android:name="com.behance.sdk.services.BehanceSDKProjectEditorService"/>
+        <activity
+            android:name="com.twitter.sdk.android.core.identity.OAuthActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name="com.twitter.sdk.android.tweetcomposer.ComposerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateVisible"/>
+        <service
+            android:name="com.twitter.sdk.android.tweetcomposer.TweetUploadService"
+            android:enabled="true"
+            android:exported="false"/>
+    </application>
+</manifest>

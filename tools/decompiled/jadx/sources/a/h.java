@@ -1,0 +1,32 @@
+package a;
+
+import java.io.Closeable;
+
+/* JADX INFO: compiled from: CancellationTokenRegistration.java */
+/* JADX INFO: loaded from: classes.dex */
+public class h implements Closeable {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    private final Object f11a;
+
+    /* JADX INFO: renamed from: b, reason: collision with root package name */
+    private i f12b;
+
+    /* JADX INFO: renamed from: c, reason: collision with root package name */
+    private Runnable f13c;
+
+    /* JADX INFO: renamed from: d, reason: collision with root package name */
+    private boolean f14d;
+
+    @Override // java.io.Closeable, java.lang.AutoCloseable
+    public void close() {
+        synchronized (this.f11a) {
+            if (!this.f14d) {
+                this.f14d = true;
+                this.f12b.a(this);
+                this.f12b = null;
+                this.f13c = null;
+            }
+        }
+    }
+}

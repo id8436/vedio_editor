@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/top_bar" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="8.0dp" android:layout_alignParentBottom="false">
+        <ImageView android:id="@id/notification_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/sourcepicker_cc" />
+        <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="15.0sp" android:textColor="@color/black" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dp" android:text="@string/splash_display_name" android:layout_marginStart="8.0dp" android:layout_marginEnd="8.0dp" />
+            <TextView android:textSize="12.0sp" android:textColor="@color/black" android:id="@id/description" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dp" android:text="@string/notification_text" />
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView android:id="@id/preview_thumb" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="8.0dp" android:src="@drawable/share_ppro_lg2" android:layout_below="@id/top_bar" />
+</RelativeLayout>

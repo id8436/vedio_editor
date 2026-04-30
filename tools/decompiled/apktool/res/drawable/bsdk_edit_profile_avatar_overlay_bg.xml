@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/bsdk_edit_profile_avatar_overlay_bg" />
+    <corners android:radius="2.0dp" />
+    <padding android:left="0.0dp" android:top="0.0dp" android:right="0.0dp" android:bottom="0.0dp" />
+</shape>

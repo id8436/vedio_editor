@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:id="@id/profileSettingsView" android:background="#f6f9fa" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true">
+        <View android:background="@color/settings_primary" android:layout_width="match_parent" android:layout_height="120.0dp" />
+    </FrameLayout>
+    <include android:id="@id/profile_account_view" android:layout_width="match_parent" android:layout_height="175.0dp" android:layout_marginLeft="8.0dp" android:layout_marginTop="5.0dp" android:layout_marginRight="8.0dp" layout="@layout/profile_account_view" />
+    <View android:id="@id/profile_card_divider_1" android:layout_width="match_parent" android:layout_height="10.0dp" android:layout_below="@id/profile_account_view" />
+    <include android:id="@id/profile_creativecloud_view" android:layout_width="match_parent" android:layout_height="185.0dp" android:layout_marginLeft="8.0dp" android:layout_marginRight="8.0dp" android:layout_below="@id/profile_card_divider_1" layout="@layout/profile_creativecloud_view" />
+</RelativeLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/background_light"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/bsdk_adapter_publish_project_copyright_settings_item_header"/>
+    <RelativeLayout
+        android:paddingLeft="@dimen/bsdk_search_filter_creative_field_left_padding"
+        android:paddingRight="@dimen/bsdk_search_filter_creative_field_right_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/bsdkCopyrightSettingsGroupItemDivider"
+            android:background="@color/bsdk_location_filter_dialog_divider_color"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"/>
+        <ImageView
+            android:id="@+id/bsdkCopyrightSettingsDialogItemSelectedIdicatorImageView"
+            android:paddingLeft="@dimen/bsdk_copyright_settings_dialog_selector_imageView_left_padding"
+            android:paddingRight="@dimen/bsdk_search_filter_dialog_adapter_item_image_padding"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bsdk_icon_adapter_list_item_selected_indicator"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/bsdk_msg_image_missing"/>
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView
+            android:textSize="@dimen/bsdk_search_filter_creative_field_dialog_item_txt_size"
+            android:textColor="@color/bsdk_search_filter_creative_fields_dialog_text_color"
+            android:id="@+id/bsdkCopyrightSettingsDialogItemTxtView"
+            android:paddingTop="@dimen/bsdk_search_filter_dialog_adapter_item_txt_padding"
+            android:paddingBottom="@dimen/bsdk_search_filter_dialog_adapter_item_txt_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/bsdkCopyrightSettingsDialogItemSelectedIdicatorImageView"
+            android:layout_alignParentLeft="true"
+            app:fontSyle="light"/>
+    </RelativeLayout>
+</LinearLayout>

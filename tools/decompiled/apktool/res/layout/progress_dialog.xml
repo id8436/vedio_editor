@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:background="@drawable/progress_dialog_bg" android:layout_width="250.0dp" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/progress_dialog_image" android:layout_width="match_parent" android:layout_height="120.0dp" android:layout_marginTop="20.0dp" android:scaleType="center" />
+    <TextView android:textSize="15.0sp" android:textColor="@android:color/black" android:gravity="center" android:layout_gravity="center" android:id="@id/progress_dialog_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="15.0dp" android:layout_marginRight="10.0dp" android:layout_marginBottom="20.0dp" android:text="@string/progress_dialog_progress_text" />
+    <FrameLayout android:id="@id/progress_dialog_progressbar_layout" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <View android:layout_gravity="bottom" android:background="@color/progress_dialog_divider" android:layout_width="match_parent" android:layout_height="1.5dp" />
+        <ProgressBar android:id="@id/progress_dialog_progressbar" android:layout_width="match_parent" android:layout_height="2.5dp" android:progress="0" android:progressDrawable="@drawable/progressdialog_progressbar" style="@android:style/Widget.ProgressBar.Horizontal" />
+    </FrameLayout>
+    <Button android:textSize="15.0sp" android:textColor="@android:color/black" android:id="@id/progress_dialog_button" android:background="@drawable/progress_dialog_button" android:paddingTop="12.0dp" android:paddingBottom="12.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/progress_dialog_button_text" />
+</LinearLayout>

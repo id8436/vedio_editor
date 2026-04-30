@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bsdk_add_project_preview_project_fragment_list_item_top_padding">36dp</dimen>
+    <dimen name="bsdk_add_project_preview_project_fragment_listview_top_bottom_padding">53dp</dimen>
+    <dimen name="bsdk_dialog_project_more_info_width">575dp</dimen>
+</resources>

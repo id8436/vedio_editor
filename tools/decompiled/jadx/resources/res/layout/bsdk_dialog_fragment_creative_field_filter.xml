@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/bsdk_creative_fields_root"
+    android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="@string/bsdk_addproject_creative_field_filter_dialog_title_label"
+        style="@style/BsdkDialogTitleText"/>
+    <RelativeLayout
+        android:background="@android:color/background_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.behance.sdk.google.listview.SectionalListView
+            android:scrollbarStyle="outsideOverlay"
+            android:id="@+id/bsdk_creative_fields_sectional_list_view"
+            android:paddingBottom="15.33dp"
+            android:clipToPadding="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="?android:attr/selectableItemBackground"
+            android:drawSelectorOnTop="true"
+            android:divider="@null"
+            android:fastScrollEnabled="false"
+            android:fastScrollAlwaysVisible="false"/>
+        <ProgressBar
+            android:id="@+id/bsdk_creative_fields_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+</LinearLayout>

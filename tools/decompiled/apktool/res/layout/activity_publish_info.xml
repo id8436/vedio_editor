@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@color/white" android:layout_width="match_parent" android:layout_height="@dimen/editor_topbar_height">
+        <ImageView android:id="@id/backButton" android:background="@drawable/ripple_effect_purple" android:tint="#000000" android:onClick="closeAndGoBack" style="@style/backIconStyle" />
+        <TextView android:textSize="16.0sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sharing_info_btn" android:layout_toRightOf="@id/backButton" android:layout_centerVertical="true" />
+        <Button android:textColor="@color/white" android:id="@id/publish_button" android:background="@drawable/ripple_purple_button" android:paddingLeft="10.0dp" android:paddingRight="10.0dp" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/sharing_publish_btn" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" />
+    <LinearLayout android:orientation="horizontal" android:background="#fefefe" android:padding="20.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/publish_project_thumb" android:layout_width="100.0dp" android:layout_height="60.0dp" android:src="@drawable/gra_projectthumb_placeholder" />
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dp" android:layout_marginTop="15.0dp">
+            <EditText android:layout_gravity="center_horizontal" android:id="@id/publish_info_project_name" android:background="#00ffffff" android:paddingLeft="5.0dp" android:paddingTop="5.0dp" android:paddingRight="30.0dp" android:paddingBottom="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="text" android:imeOptions="actionDone" />
+            <ImageView android:layout_gravity="right|center" android:id="@id/clear_new_project_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10.0dp" android:src="@drawable/btn_circle_x" android:onClick="clearText" />
+        </FrameLayout>
+    </LinearLayout>
+    <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/publish_layout" android:background="#fefefe" android:padding="20.0dp" android:layout_width="match_parent" android:layout_height="100.0dp">
+        <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="300.0dp" android:layout_height="match_parent" android:layout_marginLeft="0.0dp" android:layout_marginRight="0.0dp">
+            <TextView android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/share_public_text" />
+            <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:text="@string/sharing_publish_public_text" />
+        </LinearLayout>
+        <LinearLayout android:gravity="end|center" android:orientation="vertical" android:layout_width="20.0dp" android:layout_height="wrap_content">
+            <ImageView android:gravity="end" android:id="@id/publish_arrow" android:layout_width="20.0dp" android:layout_height="20.0dp" android:src="@drawable/menu_check" />
+        </LinearLayout>
+    </LinearLayout>
+    <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/unlisted_layout" android:background="#fefefe" android:padding="20.0dp" android:layout_width="match_parent" android:layout_height="100.0dp">
+        <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="300.0dp" android:layout_height="match_parent" android:layout_marginLeft="0.0dp" android:layout_marginRight="0.0dp">
+            <TextView android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/share_unlisted_text" />
+            <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:text="@string/sharing_publish_unlisted_text" />
+        </LinearLayout>
+        <LinearLayout android:gravity="end|center" android:orientation="vertical" android:layout_width="20.0dp" android:layout_height="wrap_content">
+            <ImageView android:gravity="end" android:id="@id/unlisted_arrow" android:visibility="invisible" android:layout_width="20.0dp" android:layout_height="20.0dp" android:src="@drawable/menu_check" />
+        </LinearLayout>
+    </LinearLayout>
+    <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" />
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/bsdk_image_display_fragment_bg_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:animateLayoutChanges="true">
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/bsdk_imageDisplayActivityImageView"
+        android:background="@color/bsdk_image_display_fragment_bg_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+    <ProgressBar
+        android:id="@+id/bsdk_imageDisplayActivityProgressSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="?android:attr/progressBarStyle"/>
+</RelativeLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@drawable/bsdk_shape_album_image_grid_item_adapter_bg" android:padding="@dimen/bsdk_image_selector_view_adapter_bg_stroke_width" android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:id="@id/bsdkAlbumImageAdapterThumbnailImageView" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:contentDescription="@string/bsdk_msg_image_missing" />
+    </RelativeLayout>
+    <LinearLayout android:gravity="right|bottom" android:id="@id/bsdkAlbumImageAdapterSelectionIndicator" android:background="@drawable/bsdk_shape_album_image_selection_indicator_bg" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+        <ImageView android:padding="10.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bsdk_icon_adapter_album_image_selected" android:scaleType="center" android:contentDescription="@string/bsdk_generic_image_content_desc" />
+    </LinearLayout>
+</RelativeLayout>

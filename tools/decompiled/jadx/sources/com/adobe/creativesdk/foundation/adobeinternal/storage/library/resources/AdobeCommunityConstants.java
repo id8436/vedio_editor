@@ -1,0 +1,51 @@
+package com.adobe.creativesdk.foundation.adobeinternal.storage.library.resources;
+
+/* JADX INFO: loaded from: classes.dex */
+public class AdobeCommunityConstants {
+    public static final String AdobeCommunityCacheLinksDataKey = "links_data";
+    public static final String AdobeCommunityCopyHref = ":copy";
+    public static final String AdobeCommunityCopyJSONKeyContentType = "content_type";
+    public static final String AdobeCommunityCopyJSONKeyCopy = "copy";
+    public static final String AdobeCommunityCopyJSONKeyDestination = "destination";
+    public static final String AdobeCommunityCopyJSONKeyFile = "files";
+    public static final String AdobeCommunityCopyJSONKeySource = "source";
+    public static final String AdobeCommunityJSONArtworkKey = "artwork";
+    public static final String AdobeCommunityRequestApplicationJSONType = "application/json";
+    public static final String AdobeCommunityRequestContentLength = "content_length";
+    public static final String AdobeCommunityRequestContentType = "Content-Type";
+    public static final String AdobeCommunityRequestCreateCompositeHref = "/:dir?tags=collection_class:dcx_composite";
+    public static final String AdobeCommunityRequestDCXManifestType = "application/vnd.adobe.dcx-manifest+json";
+    public static final String AdobeCommunityRequestGetPublishHref = "/api/v2/resources/";
+    public static final String AdobeCommunityRequestIfMatch = "If-Match";
+    public static final String AdobeCommunityRequestJSONKeyMainResource = "main_resource";
+    public static final String AdobeCommunityRequestJSONKeyMetadata = "metadata";
+    public static final String AdobeCommunityRequestJSONKeyNoSooner = "NoSoonerThan";
+    public static final String AdobeCommunityRequestJSONKeyResourcePath = "resource_path";
+    public static final String AdobeCommunityRequestJSONKeyResourceType = "resource_type";
+    public static final String AdobeCommunityRequestJSONKeyResourceVersion = "resource_version";
+    public static final String AdobeCommunityRequestJSONKeyReuseRequest = "ReuseRequest";
+    public static final String AdobeCommunityRequestLimitsHref = "/api/v2/limits";
+    public static final String AdobeCommunityRequestV2Href = "/api/v2/";
+    public static final String AdobeCommunityRequestXContentLength = "X-Content-Length";
+    public static final String AdobeCommunityResourceCommunityIDkey = "communityId";
+    public static final String AdobeCommunityResourceComponentLinkKey = "dcx_component";
+    public static final String AdobeCommunityResourceHrefKey = "href";
+    public static final String AdobeCommunityResourceLinkKey = "_links";
+    public static final String AdobeCommunityResourceMD5Key = "md5";
+    public static final String AdobeCommunityResourceManifest = "manifest";
+    public static final String AdobeCommunityResourceManifestLinkKey = "dcx_manifest";
+    public static final String AdobeCommunityResourceOriginal = "original";
+    public static final String AdobeCommunityResourcePathKey = "path";
+    public static final String AdobeCommunityResourceSizeKey = "size";
+    public static final String AdobeCommunityResourceTypeKey = "type";
+    public static final String AdobeCommunityResourceVersionKey = "version";
+    public static final String AdobeCommunityResponseFileType = "application/vnd.adobe.file+json";
+    public static final String AdobeCommunityResponseHeadersKeyContentMD5 = "content-md5";
+    public static final String AdobeCommunityResponseHeadersKeyLocation = "location";
+    public static final String AdobeCommunityResponseHeadersKeyRetryAfter = "retry-after";
+    public static final String AdobeCommunityResponseKey = "Response";
+    public static final String AdobeCommunityResponseKeyContentType = "content-type";
+    public static final String AdobeCommunityResponseKeyEtag = "etag";
+    public static final String AdobeCommunityResponseKeyLatestVersion = "x-latest-version";
+    public static final String AdobeCommunityResponseKeySmallFileUploadLimit = "small_file_upload_limit";
+}

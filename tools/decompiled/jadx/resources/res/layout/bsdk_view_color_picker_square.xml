@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/bsdk_color_picker_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_alignParentBottom="true">
+        <com.behance.sdk.ui.customviews.BehanceSDKColorSquareLayer
+            android:id="@+id/bsdk_color_picker_square"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+        <com.behance.sdk.ui.customviews.BehanceSDKColorSquarePickerLayer
+            android:id="@+id/bsdk_color_picker_picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <com.behance.sdk.ui.components.BehanceSDKGradientSeekBar
+        android:id="@+id/bsdk_color_picker_color_seek"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        app:orientation_horizontal="true"
+        app:gradient_padding="@dimen/bsdk_color_picker_padding"
+        app:indicator_type="arrows"/>
+</RelativeLayout>

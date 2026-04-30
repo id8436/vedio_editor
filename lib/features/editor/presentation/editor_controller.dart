@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/models/editor_session_input.dart';
+import '../../../core/models/import_media_item.dart';
 import '../../../core/models/timeline_models.dart';
+import '../../../core/providers/settings_provider.dart';
 import '../../../native/video_bridge_factory.dart';
 import '../../../native/video_bridge_interface.dart';
 import '../../analyze/data/native_analysis_mapper.dart';
@@ -217,15 +219,39 @@ class EditorController extends Notifier<EditorState> {
     return value.substring(dot + 1).toLowerCase();
   }
 
+  ({int minClipMs, int maxClipMs}) _paceToCutRange(int paceLevel) {
+    switch (paceLevel.clamp(1, 5)) {
+      case 1:
+        return (minClipMs: 2200, maxClipMs: 6200);
+      case 2:
+        return (minClipMs: 1700, maxClipMs: 5400);
+      case 3:
+        return (minClipMs: 1200, maxClipMs: 4800);
+      case 4:
+        return (minClipMs: 900, maxClipMs: 3600);
+      case 5:
+        return (minClipMs: 700, maxClipMs: 2600);
+      default:
+        return (minClipMs: 1200, maxClipMs: 4800);
+    }
+  }
+
   String _buildAnalysisDebugInfo({
     required EditorSessionInput input,
     String? analysisMode,
     String? source,
     String? fallbackReason,
   }) {
-    final String mediaLabel = input.videoName?.trim().isNotEmpty == true
-        ? input.videoName!
-        : input.videoPath;
+    final MediaItem? firstVideo = input.mediaItems.isNotEmpty
+        ? input.mediaItems.firstWhere(
+            (MediaItem m) => !m.isPhoto,
+            orElse: () => input.mediaItems.first,
+          )
+        : null;
+    final String mediaLabel =
+        firstVideo?.name?.trim().isNotEmpty == true
+            ? firstVideo!.name!
+            : (firstVideo?.path ?? '');
     final String mediaExt = _extractExtension(mediaLabel);
 
     return <String>[
@@ -233,13 +259,19 @@ class EditorController extends Notifier<EditorState> {
       if (analysisMode != null) 'analysis_mode=$analysisMode',
       if (source != null) 'source=$source',
       if (fallbackReason != null) 'fallback_reason=$fallbackReason',
-      'video_path=${input.videoPath}',
-      if (input.videoName != null) 'video_name=${input.videoName}',
-      'video_ext=$mediaExt',
-      'video_bytes=${input.videoBytes?.length ?? 0}',
-      if (input.bgmPath != null) 'bgm_path=${input.bgmPath}',
-      if (input.bgmName != null) 'bgm_name=${input.bgmName}',
-      'bgm_bytes=${input.bgmBytes?.length ?? 0}',
+      'media_count=${input.mediaItems.length}',
+      'bgm_count=${input.bgmItems.length}',
+      'bgm_loop=${input.bgmLoop}',
+      'edit_pace_level=${input.editPaceLevel}',
+      'apply_ducking_all=${input.applyDuckingToAllClips}',
+      'clip_range_ms=${input.minClipMs}-${input.maxClipMs}',
+      'canvas_aspect=${input.canvasAspectPreset.name}',
+      'transition_preset=${input.transitionPreset.name}',
+      'audio_mix=${input.audioMixPreset.name}',
+      'default_filter=${input.defaultFilterEffect.name}',
+      if (firstVideo != null) 'primary_video_path=${firstVideo.path}',
+      if (firstVideo?.name != null) 'primary_video_name=${firstVideo!.name}',
+      'primary_video_ext=$mediaExt',
     ].join('\n');
   }
 
@@ -256,45 +288,119 @@ class EditorController extends Notifier<EditorState> {
       analysisNotice: null,
       analysisDebugInfo: null,
     );
-    try {
-      final Map<String, dynamic> raw = await _bridge.analyzeMedia(
-        input.videoPath,
-        mediaBytes: input.videoBytes,
-        mediaName: input.videoName,
-      );
-      final String? fallbackReason = raw['fallback_reason'] as String?;
-      final String? analysisMode = raw['analysis_mode'] as String?;
-      final String? source = raw['source'] as String?;
-      final NativeAnalysisData analysis = _mapper.fromMap(raw);
-      final List<CutPoint> cuts = const AutoCutPlanner().generateCutPoints(
-        highlights: analysis.highlights,
-        beats: analysis.beats,
-        minClipMs: 1200,
-        maxClipMs: 4800,
-        mediaDurationMs: analysis.durationMs,
-      );
 
-      final List<TimelineClip> clips = <TimelineClip>[];
-      for (int i = 0; i < cuts.length - 1; i++) {
-        final int inMs = cuts[i].tsMs;
-        final int outMs = cuts[i + 1].tsMs;
-        if (outMs <= inMs) {
-          continue;
+    // Accumulated timeline data across all media items.
+    final List<TimelineClip> allClips = <TimelineClip>[];
+    final List<BeatMarker> allBeats = <BeatMarker>[];
+    final List<HighlightSegment> allHighlights = <HighlightSegment>[];
+    int timelineOffset = 0;
+
+    // Tracks analysis metadata from the first video processed.
+    String? analysisMode;
+    String? fallbackReason;
+    String? source;
+    bool anyDemoMode = false;
+
+    // Duration for still-image clips (milliseconds per photo).
+    final int photoDurationMs =
+      ref.read(settingsProvider).photoDurationSec * 1000;
+    final ({int minClipMs, int maxClipMs}) paceRange =
+      _paceToCutRange(input.editPaceLevel);
+    final int requestedMin = input.minClipMs.clamp(400, 15000);
+    final int requestedMax = input.maxClipMs.clamp(800, 30000);
+    final int finalMin = requestedMin <= requestedMax
+      ? requestedMin
+      : paceRange.minClipMs;
+    final int finalMax = requestedMin <= requestedMax
+      ? requestedMax
+      : paceRange.maxClipMs;
+
+    try {
+      for (final MediaItem item in input.mediaItems) {
+        if (item.isPhoto) {
+          // Photos become fixed-duration still clips; no beat analysis needed.
+          allClips.add(
+            TimelineClip(
+              assetId: item.path,
+              srcInMs: 0,
+              srcOutMs: photoDurationMs,
+              timelineInMs: timelineOffset,
+              timelineOutMs: timelineOffset + photoDurationMs,
+              audioDucking: input.applyDuckingToAllClips,
+              filterEffect: input.defaultFilterEffect,
+              textPreset: ClipTextPreset.none,
+            ),
+          );
+          timelineOffset += photoDurationMs;
+        } else {
+          // Videos: run beat/highlight analysis then auto-cut.
+          final Map<String, dynamic> raw = await _bridge.analyzeMedia(
+            item.path,
+            mediaBytes: item.bytes,
+            mediaName: item.name,
+          );
+
+          // Capture first-video metadata for notice / debug report.
+          if (analysisMode == null) {
+            analysisMode = raw['analysis_mode'] as String?;
+            fallbackReason = raw['fallback_reason'] as String?;
+            source = raw['source'] as String?;
+          }
+          if (raw['analysis_mode'] == 'demo') anyDemoMode = true;
+
+          final NativeAnalysisData analysis = _mapper.fromMap(raw);
+
+          // Offset beats and highlights to the current timeline position.
+          for (final BeatMarker b in analysis.beats) {
+            allBeats.add(BeatMarker(
+              tsMs: b.tsMs + timelineOffset,
+              strength: b.strength,
+              confidence: b.confidence,
+            ));
+          }
+          for (final HighlightSegment h in analysis.highlights) {
+            allHighlights.add(HighlightSegment(
+              startMs: h.startMs + timelineOffset,
+              endMs: h.endMs + timelineOffset,
+              score: h.score,
+              reasons: h.reasons,
+            ));
+          }
+
+          final List<CutPoint> cuts = const AutoCutPlanner().generateCutPoints(
+            highlights: analysis.highlights,
+            beats: analysis.beats,
+            minClipMs: finalMin,
+            maxClipMs: finalMax,
+            mediaDurationMs: analysis.durationMs,
+          );
+
+          for (int i = 0; i < cuts.length - 1; i++) {
+            final int inMs = cuts[i].tsMs;
+            final int outMs = cuts[i + 1].tsMs;
+            if (outMs <= inMs) continue;
+            allClips.add(
+              TimelineClip(
+                assetId: item.path,
+                srcInMs: inMs,
+                srcOutMs: outMs,
+                timelineInMs: timelineOffset + inMs,
+                timelineOutMs: timelineOffset + outMs,
+                audioDucking: input.applyDuckingToAllClips,
+                filterEffect: input.defaultFilterEffect,
+                textPreset: ClipTextPreset.none,
+              ),
+            );
+          }
+
+          // Advance timeline cursor past this video's content.
+          timelineOffset += analysis.durationMs;
         }
-        clips.add(
-          TimelineClip(
-            assetId: input.videoPath,
-            srcInMs: inMs,
-            srcOutMs: outMs,
-            timelineInMs: inMs,
-            timelineOutMs: outMs,
-          ),
-        );
       }
 
       state = state.copyWith(
         loading: false,
-        analysisNotice: analysisMode == 'demo'
+        analysisNotice: anyDemoMode
             ? (fallbackReason ??
                 'Using demo analysis. Full media analysis is unavailable for this file in browser.')
             : null,
@@ -306,23 +412,29 @@ class EditorController extends Notifier<EditorState> {
         ),
         project: TimelineProject(
           id: state.project.id,
-          clips: clips,
-          beats: analysis.beats,
-          highlights: analysis.highlights,
+          clips: allClips,
+          beats: allBeats,
+          highlights: allHighlights,
           targetDurationMs: state.project.targetDurationMs,
+          bgmPaths: input.bgmItems.map((BgmItem b) => b.path).toList(),
+          bgmLoop: input.bgmLoop,
         ),
       );
     } catch (_) {
       final EditorState seeded = _createDemoState(state);
+      final String fallbackAssetId = input.primaryVideoPath;
       final List<TimelineClip> clips = seeded.project.clips
           .map(
             (TimelineClip clip) => TimelineClip(
-              assetId: input.videoPath,
+              assetId: fallbackAssetId,
               srcInMs: clip.srcInMs,
               srcOutMs: clip.srcOutMs,
               timelineInMs: clip.timelineInMs,
               timelineOutMs: clip.timelineOutMs,
               speed: clip.speed,
+              audioDucking: clip.audioDucking,
+              filterEffect: clip.filterEffect,
+              textPreset: clip.textPreset,
             ),
           )
           .toList();
@@ -343,6 +455,8 @@ class EditorController extends Notifier<EditorState> {
           beats: seeded.project.beats,
           highlights: seeded.project.highlights,
           targetDurationMs: seeded.project.targetDurationMs,
+          bgmPaths: input.bgmItems.map((BgmItem b) => b.path).toList(),
+          bgmLoop: input.bgmLoop,
         ),
       );
     }
@@ -414,22 +528,14 @@ class EditorController extends Notifier<EditorState> {
       newBoundary = newBoundary.clamp(minBoundary, maxBoundary);
     }
 
-    clips[clipIndex] = TimelineClip(
-      assetId: left.assetId,
-      srcInMs: left.srcInMs,
+    clips[clipIndex] = left.copyWith(
       srcOutMs: newBoundary,
-      timelineInMs: left.timelineInMs,
       timelineOutMs: newBoundary,
-      speed: left.speed,
     );
 
-    clips[clipIndex + 1] = TimelineClip(
-      assetId: right.assetId,
+    clips[clipIndex + 1] = right.copyWith(
       srcInMs: newBoundary,
-      srcOutMs: right.srcOutMs,
       timelineInMs: newBoundary,
-      timelineOutMs: right.timelineOutMs,
-      speed: right.speed,
     );
 
     state = state.copyWith(
@@ -442,6 +548,245 @@ class EditorController extends Notifier<EditorState> {
       ),
       canUndo: true,
       canRedo: false,
+    );
+  }
+
+  void updateClipOptions({
+    required int clipIndex,
+    bool? audioDucking,
+    ClipFilterEffect? filterEffect,
+    ClipTextPreset? textPreset,
+  }) {
+    if (clipIndex < 0 || clipIndex >= state.project.clips.length) {
+      return;
+    }
+
+    final ({bool canUndo, bool canRedo}) ur = _pushUndo(state.project);
+    final List<TimelineClip> clips = state.project.clips.toList();
+    clips[clipIndex] = clips[clipIndex].copyWith(
+      audioDucking: audioDucking,
+      filterEffect: filterEffect,
+      textPreset: textPreset,
+    );
+
+    state = state.copyWith(
+      project: TimelineProject(
+        id: state.project.id,
+        clips: clips,
+        beats: state.project.beats,
+        highlights: state.project.highlights,
+        targetDurationMs: state.project.targetDurationMs,
+        bgmPaths: state.project.bgmPaths,
+        bgmLoop: state.project.bgmLoop,
+      ),
+      canUndo: ur.canUndo,
+      canRedo: ur.canRedo,
+    );
+  }
+
+  void removeClip(int clipIndex) {
+    if (clipIndex < 0 || clipIndex >= state.project.clips.length) {
+      return;
+    }
+
+    final ({bool canUndo, bool canRedo}) ur = _pushUndo(state.project);
+    final List<TimelineClip> sourceClips = state.project.clips.toList();
+    final TimelineClip removedClip = sourceClips.removeAt(clipIndex);
+    final int removedDuration = removedClip.durationMs;
+
+    int timelineCursor = 0;
+    final List<TimelineClip> clips = sourceClips
+        .map((TimelineClip clip) {
+          final int duration = clip.durationMs;
+          final TimelineClip shifted = clip.copyWith(
+            timelineInMs: timelineCursor,
+            timelineOutMs: timelineCursor + duration,
+          );
+          timelineCursor += duration;
+          return shifted;
+        })
+        .toList();
+
+    final List<BeatMarker> beats = state.project.beats
+        .where((BeatMarker beat) =>
+            beat.tsMs < removedClip.timelineInMs || beat.tsMs >= removedClip.timelineOutMs)
+        .map((BeatMarker beat) {
+          if (beat.tsMs > removedClip.timelineOutMs) {
+            return BeatMarker(
+              tsMs: beat.tsMs - removedDuration,
+              strength: beat.strength,
+              confidence: beat.confidence,
+            );
+          }
+          return beat;
+        })
+        .toList();
+
+    final List<HighlightSegment> highlights = state.project.highlights
+        .where((HighlightSegment segment) =>
+            segment.endMs <= removedClip.timelineInMs ||
+            segment.startMs >= removedClip.timelineOutMs)
+        .map((HighlightSegment segment) {
+          if (segment.startMs >= removedClip.timelineOutMs) {
+            return HighlightSegment(
+              startMs: segment.startMs - removedDuration,
+              endMs: segment.endMs - removedDuration,
+              score: segment.score,
+              reasons: segment.reasons,
+            );
+          }
+          return segment;
+        })
+        .toList();
+
+    state = state.copyWith(
+      project: TimelineProject(
+        id: state.project.id,
+        clips: clips,
+        beats: beats,
+        highlights: highlights,
+        targetDurationMs: state.project.targetDurationMs,
+        bgmPaths: state.project.bgmPaths,
+        bgmLoop: state.project.bgmLoop,
+      ),
+      selectedCutIndex: clips.isEmpty ? -1 : clipIndex.clamp(0, clips.length - 1),
+      canUndo: ur.canUndo,
+      canRedo: ur.canRedo,
+    );
+  }
+
+  void duplicateClip(int clipIndex) {
+    if (clipIndex < 0 || clipIndex >= state.project.clips.length) {
+      return;
+    }
+
+    final ({bool canUndo, bool canRedo}) ur = _pushUndo(state.project);
+    final List<TimelineClip> sourceClips = state.project.clips.toList();
+    final TimelineClip source = sourceClips[clipIndex];
+    final int duplicateDuration = source.durationMs;
+
+    // Insert duplicate right after the selected clip.
+    sourceClips.insert(
+      clipIndex + 1,
+      source.copyWith(
+        timelineInMs: source.timelineOutMs,
+        timelineOutMs: source.timelineOutMs + duplicateDuration,
+      ),
+    );
+
+    // Reflow the full timeline to keep clips contiguous.
+    int timelineCursor = 0;
+    final List<TimelineClip> clips = sourceClips.map((TimelineClip clip) {
+      final int duration = clip.durationMs;
+      final TimelineClip shifted = clip.copyWith(
+        timelineInMs: timelineCursor,
+        timelineOutMs: timelineCursor + duration,
+      );
+      timelineCursor += duration;
+      return shifted;
+    }).toList();
+
+    final int insertAtMs = source.timelineOutMs;
+
+    final List<BeatMarker> beats = <BeatMarker>[];
+    for (final BeatMarker beat in state.project.beats) {
+      if (beat.tsMs >= insertAtMs) {
+        beats.add(BeatMarker(
+          tsMs: beat.tsMs + duplicateDuration,
+          strength: beat.strength,
+          confidence: beat.confidence,
+        ));
+      } else {
+        beats.add(beat);
+      }
+
+      if (beat.tsMs >= source.timelineInMs && beat.tsMs < source.timelineOutMs) {
+        beats.add(BeatMarker(
+          tsMs: beat.tsMs + duplicateDuration,
+          strength: beat.strength,
+          confidence: beat.confidence,
+        ));
+      }
+    }
+    beats.sort((BeatMarker a, BeatMarker b) => a.tsMs.compareTo(b.tsMs));
+
+    final List<HighlightSegment> highlights = <HighlightSegment>[];
+    for (final HighlightSegment segment in state.project.highlights) {
+      HighlightSegment shifted = segment;
+      if (segment.startMs >= insertAtMs) {
+        shifted = HighlightSegment(
+          startMs: segment.startMs + duplicateDuration,
+          endMs: segment.endMs + duplicateDuration,
+          score: segment.score,
+          reasons: segment.reasons,
+        );
+      }
+      highlights.add(shifted);
+
+      if (segment.startMs >= source.timelineInMs && segment.endMs <= source.timelineOutMs) {
+        highlights.add(HighlightSegment(
+          startMs: shifted.startMs + duplicateDuration,
+          endMs: shifted.endMs + duplicateDuration,
+          score: shifted.score,
+          reasons: shifted.reasons,
+        ));
+      }
+    }
+    highlights.sort((HighlightSegment a, HighlightSegment b) => a.startMs.compareTo(b.startMs));
+
+    state = state.copyWith(
+      project: TimelineProject(
+        id: state.project.id,
+        clips: clips,
+        beats: beats,
+        highlights: highlights,
+        targetDurationMs: state.project.targetDurationMs,
+        bgmPaths: state.project.bgmPaths,
+        bgmLoop: state.project.bgmLoop,
+      ),
+      selectedCutIndex: (clipIndex + 1).clamp(0, clips.length - 1),
+      canUndo: ur.canUndo,
+      canRedo: ur.canRedo,
+    );
+  }
+
+  void moveClip({required int oldIndex, required int newIndex}) {
+    final int count = state.project.clips.length;
+    if (oldIndex < 0 || oldIndex >= count || newIndex < 0 || newIndex >= count) {
+      return;
+    }
+    if (oldIndex == newIndex) {
+      return;
+    }
+
+    final ({bool canUndo, bool canRedo}) ur = _pushUndo(state.project);
+    final List<TimelineClip> source = state.project.clips.toList();
+    final TimelineClip moved = source.removeAt(oldIndex);
+    source.insert(newIndex, moved);
+
+    int cursor = 0;
+    final List<TimelineClip> clips = source.map((TimelineClip clip) {
+      final int duration = clip.durationMs;
+      final TimelineClip shifted = clip.copyWith(
+        timelineInMs: cursor,
+        timelineOutMs: cursor + duration,
+      );
+      cursor += duration;
+      return shifted;
+    }).toList(growable: false);
+
+    state = state.copyWith(
+      project: TimelineProject(
+        id: state.project.id,
+        clips: clips,
+        beats: state.project.beats,
+        highlights: state.project.highlights,
+        targetDurationMs: state.project.targetDurationMs,
+        bgmPaths: state.project.bgmPaths,
+        bgmLoop: state.project.bgmLoop,
+      ),
+      canUndo: ur.canUndo,
+      canRedo: ur.canRedo,
     );
   }
 }

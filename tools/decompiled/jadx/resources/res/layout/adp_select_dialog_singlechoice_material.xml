@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.alertdialogpro.material.CheckedTextViewCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:textAppearance="?attr/adpListMultiChoiceTextAppearance"
+    android:textColor="?attr/adpListItemTextColor"
+    android:ellipsize="marquee"
+    android:gravity="start|center_vertical"
+    android:id="@android:id/text1"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:checkMark="?android:attr/listChoiceIndicatorSingle"
+    android:minHeight="?attr/adpListItemMinHeight"
+    android:textAlignment="viewStart"/>

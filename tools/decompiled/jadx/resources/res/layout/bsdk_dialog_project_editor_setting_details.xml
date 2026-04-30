@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:behanceSDK="http://schemas.android.com/apk/com.behance.sdk" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fdfdfd"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/bsdk_editor_setting_detail_toolbar"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="@dimen/bsdk_editor_setting_detail_padding_horizontal">
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView
+            android:id="@+id/bsdk_editor_setting_detail_toolbar_title"
+            behanceSDK:fontStyle="regular"
+            style="@style/BsdkToolbarTitleTextStyle"/>
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bsdk_editor_setting_detail_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

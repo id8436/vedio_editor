@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@color/white" android:layout_width="match_parent" android:layout_height="@dimen/editor_topbar_height">
+        <ImageView android:id="@id/backButton_youtube" android:background="@drawable/ripple_effect_purple" android:tint="#000000" android:onClick="closeAndGoBack" style="@style/backIconStyle" />
+        <TextView android:textSize="16.0sp" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/youtube_settings_title" android:layout_toRightOf="@id/backButton_youtube" android:layout_centerVertical="true" />
+        <Button android:textColor="@color/white" android:id="@id/publish_button" android:background="@drawable/ripple_purple_button" android:paddingLeft="10.0dp" android:paddingRight="10.0dp" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/sharing_publish_btn" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" />
+    <LinearLayout android:orientation="vertical" android:background="@android:color/transparent" android:paddingLeft="20.0dp" android:paddingTop="10.0dp" android:paddingRight="20.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dp">
+        <EditText android:textSize="14.0sp" android:textColor="@color/black" android:id="@id/text_proj_name" android:background="@android:color/white" android:padding="10.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="15.0dp" android:text="@string/youtube_project_name" />
+        <EditText android:textSize="14.0sp" android:textColor="@color/black" android:id="@id/text_desc" android:background="@android:color/white" android:padding="10.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="15.0dp" android:text="@string/youtube_settings_madewithclip_text" />
+        <EditText android:textSize="14.0sp" android:textColor="@color/adobe_csdk_grayText" android:id="@id/text_tag" android:background="@android:color/white" android:padding="10.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="15.0dp" android:hint="@string/youtube_tag" />
+        <LinearLayout android:orientation="horizontal" android:padding="0.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="3.0">
+            <Button android:textSize="14.0sp" android:textColor="@android:color/white" android:id="@id/public_btn" android:background="#ff6f36a0" android:layout_width="wrap_content" android:layout_height="40.0dp" android:text="@string/youtube_public_text" android:layout_weight="1.0" />
+            <Button android:textSize="14.0sp" android:textColor="#ff6f36a0" android:id="@id/private_btn" android:background="@android:color/white" android:layout_width="wrap_content" android:layout_height="40.0dp" android:text="@string/youtube_private_text" android:layout_weight="1.0" />
+            <Button android:textSize="14.0sp" android:textColor="#ff6f36a0" android:id="@id/unlisted_btn" android:background="@android:color/white" android:layout_width="wrap_content" android:layout_height="40.0dp" android:text="@string/youtube_unlisted_text" android:layout_weight="1.0" />
+        </LinearLayout>
+        <TextView android:textSize="13.0sp" android:textColor="@color/adobe_csdk_grayText" android:gravity="center" android:id="@id/youtube_disclaimer" android:padding="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="20.0dp" android:text="@string/youtube_disclaimer" />
+        <TextView android:textSize="16.0sp" android:textColor="#ff6f36a0" android:gravity="center" android:id="@id/sign_in_user" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dp" android:text="@string/youtube_signin_text" />
+        <TextView android:textSize="16.0sp" android:textColor="#ff6f36a0" android:gravity="center" android:id="@id/sign_out" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="30.0dp" android:text="@string/youtube_sign_out" />
+    </LinearLayout>
+</LinearLayout>

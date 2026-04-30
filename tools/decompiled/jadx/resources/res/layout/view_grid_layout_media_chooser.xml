@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:id="@+id/gridViewFromMediaChooser"
+    android:paddingBottom="90dp"
+    android:clipToPadding="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp"
+    android:cacheColorHint="#00000000"
+    android:horizontalSpacing="2dp"
+    android:verticalSpacing="2dp"
+    android:stretchMode="columnWidth"
+    android:numColumns="3"
+    android:choiceMode="multipleChoice"
+    android:layout_weight="1"/>

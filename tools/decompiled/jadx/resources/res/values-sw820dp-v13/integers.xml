@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="assetview_staggeredgrid_land_column_count">4</integer>
+    <integer name="assetview_staggeredgrid_portrait_column_count">3</integer>
+</resources>

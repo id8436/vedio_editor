@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:id="@id/project_editor_content_root" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center" android:layout_gravity="top" android:orientation="vertical" android:id="@id/project_editor_content_empty" android:layout_width="match_parent" android:layout_height="match_parent">
+        <Space android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="14.0" />
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bsdk_icon_project_editor_empty" />
+        <Space android:layout_width="match_parent" android:layout_height="3.0dp" android:layout_weight="2.0" />
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="16.0sp" android:textColor="@color/bsdk_app_primary_text_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bsdk_project_editor_get_started_primary" />
+        <Space android:layout_width="match_parent" android:layout_height="2.0dp" android:layout_weight="1.0" />
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="13.0sp" android:textColor="#9fafb3" android:gravity="center" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/bsdk_project_editor_get_started_secondary" />
+        <Space android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="12.0" />
+    </LinearLayout>
+    <com.behance.sdk.ui.components.BehanceSDKBackgroundGestureRecycler android:id="@id/project_editor_content_recycler" android:paddingTop="@dimen/bsdk_module_padding" android:paddingBottom="?actionBarSize" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <ImageView android:id="@id/project_editor_content_drop" android:background="@drawable/bsdk_background_editor_add_content_drop" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="6.0dp" android:src="@drawable/bsdk_icon_note_add" android:scaleType="centerInside" />
+    <View android:id="@id/project_editor_content_overlay" android:background="#b0000000" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <LinearLayout android:orientation="vertical" android:id="@id/project_editor_content_bottom_sheet" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent" android:elevation="12.0dp" app:layout_behavior="com.behance.sdk.ui.behaviors.BehanceSDKDrawerBehavior">
+        <RelativeLayout android:id="@id/project_editor_content_bottom_sheet_header_container" android:background="@drawable/bsdk_background_editor_bottom_sheet_toolbar" android:layout_width="match_parent" android:layout_height="?actionBarSize" android:elevation="1.0dp">
+            <LinearLayout android:orientation="horizontal" android:id="@id/project_editor_content_bottom_sheet_header_actions" android:layout_width="match_parent" android:layout_height="match_parent">
+                <ImageView android:id="@id/project_editor_content_add_cc" android:src="@drawable/bsdk_icon_project_editor_cloud" style="@style/BsdkProjectEditorAddContentButton" />
+                <ImageView android:id="@id/project_editor_content_add_camera" android:src="@drawable/bsdk_icon_project_editor_camera" style="@style/BsdkProjectEditorAddContentButton" />
+                <ImageView android:id="@id/project_editor_content_add_text" android:src="@drawable/bsdk_icon_project_editor_text" style="@style/BsdkProjectEditorAddContentButton" />
+                <ImageView android:id="@id/project_editor_content_add_embed" android:src="@drawable/bsdk_icon_project_editor_embed" style="@style/BsdkProjectEditorAddContentButton" />
+            </LinearLayout>
+            <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textColor="@color/bsdk_project_editor_primary_color" android:id="@id/project_editor_content_bottom_sheet_header_replace_image" android:paddingLeft="@dimen/bsdk_module_padding" android:paddingRight="@dimen/bsdk_module_padding" android:visibility="gone" android:layout_width="match_parent" android:text="@string/bsdk_project_editor_replace_image" style="@style/BsdkToolbarTitleTextStyle" />
+        </RelativeLayout>
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView android:id="@id/project_editor_gallery_album_recycler" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="match_parent" />
+            <android.support.v7.widget.RecyclerView android:id="@id/project_editor_gallery_item_recycler" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="match_parent" />
+        </FrameLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center" android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/project_editor_content_text_container" android:background="#ffffff" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="?actionBarSize" android:animateLayoutChanges="false" android:elevation="13.0dp">
+        <ImageView android:id="@id/project_editor_content_text_style" android:src="@drawable/bsdk_icon_project_text_editor_style" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_color" android:paddingTop="3.3299866dp" android:src="@drawable/bsdk_icon_project_text_editor_color" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/project_editor_content_text_biu_container" android:clickable="true" android:layout_width="0.0dp" android:layout_height="match_parent" android:foreground="?selectableItemBackground">
+            <ImageView android:id="@id/project_editor_content_text_bold" android:src="@drawable/bsdk_icon_project_text_editor_bold" style="@style/BsdkProjectEditorModuleTextToolButton" />
+            <ImageView android:id="@id/project_editor_content_text_italic" android:src="@drawable/bsdk_icon_project_text_editor_italic" style="@style/BsdkProjectEditorModuleTextToolButton" />
+            <ImageView android:id="@id/project_editor_content_text_underline" android:paddingTop="2.669983dp" android:src="@drawable/bsdk_icon_project_text_editor_underline" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        </LinearLayout>
+        <ImageView android:id="@id/project_editor_content_text_caps" android:src="@drawable/bsdk_icon_project_text_editor_caps" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_left" android:src="@drawable/bsdk_icon_project_text_editor_align_left" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_center" android:src="@drawable/bsdk_icon_project_text_editor_align_center" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_right" android:src="@drawable/bsdk_icon_project_text_editor_align_right" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_link" android:src="@drawable/bsdk_icon_project_text_editor_link" style="@style/BsdkProjectEditorModuleTextToolButton" />
+        <ImageView android:id="@id/project_editor_content_text_clear" android:src="@drawable/bsdk_icon_project_text_editor_clear_formatting" style="@style/BsdkProjectEditorModuleTextToolButton" />
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

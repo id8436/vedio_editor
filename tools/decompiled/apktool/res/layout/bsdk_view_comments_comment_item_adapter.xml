@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="?selectableItemBackground" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:background="@color/bsdk_comments_view_item_divider_color" android:layout_width="match_parent" android:layout_height="0.6700001dp" android:layout_marginLeft="66.32999dp" android:layout_marginRight="15.0dp" android:layout_alignParentBottom="true" />
+    <LinearLayout android:orientation="horizontal" android:paddingLeft="15.0dp" android:paddingTop="16.329987dp" android:paddingRight="15.0dp" android:paddingBottom="15.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/bsdk_commentViewUserImageView" android:layout_width="@dimen/bsdk_comments_view_commenter_image_width_height" android:layout_height="@dimen/bsdk_comments_view_commenter_image_width_height" android:layout_marginTop="2.3299866dp" android:scaleType="fitXY" android:contentDescription="@string/bsdk_msg_image_missing" />
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="11.329987dp">
+            <TextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/bsdk_comments_view_item_txt_color" android:id="@id/bsdk_commentViewUserNameTxtView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:includeFontPadding="false" />
+            <TextView android:textSize="12.0sp" android:textColor="@color/bsdk_comments_view_item_txt_color" android:textColorLink="@color/bsdk_app_default_hyper_links_txt_color" android:autoLink="all" android:id="@id/bsdk_commentViewCommentContentTxtView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="1.3299866dp" android:includeFontPadding="false" />
+            <TextView android:textSize="11.329987sp" android:textColor="@color/bsdk_comments_view_item_date_txt_color" android:id="@id/bsdk_commentViewCommentDateTxtView" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

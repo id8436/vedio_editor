@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/drawer_profile_layout" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@drawable/coachmark_reset_ripple" android:paddingLeft="20.0dp" android:paddingTop="28.0dp" android:paddingBottom="28.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@id/drawer_profile_picture" android:layout_width="52.0dp" android:layout_height="52.0dp" android:layout_alignParentTop="true" />
+        <RelativeLayout android:id="@id/profile_data_view" android:layout_width="169.0dp" android:layout_height="wrap_content" android:layout_marginLeft="24.0dp" android:layout_toRightOf="@id/drawer_profile_picture" android:layout_centerVertical="true">
+            <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true">
+                <TextView android:textSize="20.0sp" android:textColor="@color/settings_dark_text" android:ellipsize="end" android:id="@id/drawer_profile_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+                <TextView android:textSize="12.0sp" android:textColor="@color/settings_light_text" android:ellipsize="middle" android:id="@id/drawer_profile_email" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <View android:background="@color/settings_list_divider_color" android:layout_width="match_parent" android:layout_height="1.0dp" />
+</LinearLayout>

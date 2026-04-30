@@ -1,0 +1,14 @@
+package com.adobe.creativesdk.foundation.internal.auth;
+
+import com.adobe.creativesdk.foundation.auth.AdobeAuthException;
+
+/* JADX INFO: loaded from: classes.dex */
+public interface IAdobeGetProvidersCallback {
+    void onFailure(AdobeAuthException adobeAuthException);
+
+    void onInvalidClientId();
+
+    void onInvalidDeviceId();
+
+    void onSuccess();
+}

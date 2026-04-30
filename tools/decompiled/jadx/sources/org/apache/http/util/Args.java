@@ -1,0 +1,83 @@
+package org.apache.http.util;
+
+import java.util.Collection;
+
+/* JADX INFO: loaded from: classes3.dex */
+public class Args {
+    public static void check(boolean z, String str) {
+        if (!z) {
+            throw new IllegalArgumentException(str);
+        }
+    }
+
+    public static void check(boolean z, String str, Object... objArr) {
+        if (!z) {
+            throw new IllegalArgumentException(String.format(str, objArr));
+        }
+    }
+
+    public static <T> T notNull(T t, String str) {
+        if (t == null) {
+            throw new IllegalArgumentException(str + " may not be null");
+        }
+        return t;
+    }
+
+    public static <T extends CharSequence> T notEmpty(T t, String str) {
+        if (t == null) {
+            throw new IllegalArgumentException(str + " may not be null");
+        }
+        if (TextUtils.isEmpty(t)) {
+            throw new IllegalArgumentException(str + " may not be empty");
+        }
+        return t;
+    }
+
+    public static <T extends CharSequence> T notBlank(T t, String str) {
+        if (t == null) {
+            throw new IllegalArgumentException(str + " may not be null");
+        }
+        if (TextUtils.isBlank(t)) {
+            throw new IllegalArgumentException(str + " may not be blank");
+        }
+        return t;
+    }
+
+    public static <E, T extends Collection<E>> T notEmpty(T t, String str) {
+        if (t == null) {
+            throw new IllegalArgumentException(str + " may not be null");
+        }
+        if (t.isEmpty()) {
+            throw new IllegalArgumentException(str + " may not be empty");
+        }
+        return t;
+    }
+
+    public static int positive(int i, String str) {
+        if (i <= 0) {
+            throw new IllegalArgumentException(str + " may not be negative or zero");
+        }
+        return i;
+    }
+
+    public static long positive(long j, String str) {
+        if (j <= 0) {
+            throw new IllegalArgumentException(str + " may not be negative or zero");
+        }
+        return j;
+    }
+
+    public static int notNegative(int i, String str) {
+        if (i < 0) {
+            throw new IllegalArgumentException(str + " may not be negative");
+        }
+        return i;
+    }
+
+    public static long notNegative(long j, String str) {
+        if (j < 0) {
+            throw new IllegalArgumentException(str + " may not be negative");
+        }
+        return j;
+    }
+}

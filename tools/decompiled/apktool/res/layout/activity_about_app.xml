@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="#f6f9fa" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="30.0dp">
+                <TextView android:textSize="12.0sp" android:textColor="@color/settings_light_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:text="@string/title_features" android:layout_alignParentLeft="true" />
+            </RelativeLayout>
+            <android.support.v7.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_marginRight="8.0dp" android:layout_marginBottom="8.0dp" card_view:cardBackgroundColor="#ffffff" card_view:cardCornerRadius="@dimen/card_corner_radius" card_view:cardElevation="@dimen/card_elevation">
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="16.0dp" android:layout_marginRight="16.0dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_dark_text" android:id="@id/currentVersion" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16.0dp" android:layout_marginBottom="6.0dp" android:text="@string/version_number" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                    <TextView android:textSize="14.0sp" android:textColor="@color/settings_dark_text" android:id="@id/featuresView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12.0dp" android:text="@string/description_about" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <RelativeLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="30.0dp">
+                <TextView android:textSize="12.0sp" android:textColor="@color/settings_light_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:text="@string/title_usage" android:layout_alignParentLeft="true" />
+            </RelativeLayout>
+            <android.support.v7.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_marginRight="8.0dp" android:layout_marginBottom="8.0dp" card_view:cardBackgroundColor="#ffffff" card_view:cardCornerRadius="@dimen/card_corner_radius" card_view:cardElevation="@dimen/card_elevation">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <RelativeLayout android:id="@id/sendUsageReports" android:layout_width="match_parent" android:layout_height="71.0dp">
+                        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_dark_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dp" android:text="@string/settings_usage_report" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                        <android.support.v7.widget.SwitchCompat android:id="@id/sendUsageReportsSwitch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="16.0dp" android:layout_alignParentRight="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                    <View android:background="@color/settings_list_divider_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginLeft="16.0dp" android:layout_below="@id/sendUsageReports" />
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@id/sendUsageReports">
+                        <TextView android:textSize="13.0sp" android:textColor="@color/settings_light_text" android:id="@id/usageReportLearnMore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16.0dp" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <RelativeLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="30.0dp">
+                <TextView android:textSize="12.0sp" android:textColor="@color/settings_light_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:text="@string/title_legal" android:layout_alignParentLeft="true" />
+            </RelativeLayout>
+            <android.support.v7.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_marginRight="8.0dp" card_view:cardBackgroundColor="#ffffff" card_view:cardCornerRadius="@dimen/card_corner_radius" card_view:cardElevation="@dimen/card_elevation">
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <RelativeLayout android:id="@id/termsOfUse" android:background="@drawable/coachmark_reset_ripple" android:clickable="true" android:layout_width="match_parent" android:layout_height="71.0dp">
+                        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_dark_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dp" android:text="@string/terms_of_use" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                    <View android:background="@color/settings_list_divider_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginLeft="16.0dp" android:layout_below="@id/termsOfUse" />
+                    <RelativeLayout android:id="@id/privacyPolicy" android:background="@drawable/coachmark_reset_ripple" android:clickable="true" android:layout_width="match_parent" android:layout_height="71.0dp" android:layout_below="@id/termsOfUse">
+                        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_dark_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dp" android:text="@string/privacy_policy" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                    <View android:background="@color/settings_list_divider_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginLeft="16.0dp" android:layout_below="@id/privacyPolicy" />
+                    <RelativeLayout android:id="@id/thirdPartyNotices" android:background="@drawable/coachmark_reset_ripple" android:clickable="true" android:layout_width="match_parent" android:layout_height="71.0dp" android:layout_below="@id/privacyPolicy">
+                        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_dark_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="16.0dp" android:text="@string/third_party_notices" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                    <View android:background="@color/settings_list_divider_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginLeft="16.0dp" android:layout_below="@id/thirdPartyNotices" />
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_below="@id/thirdPartyNotices">
+                        <TextView android:textSize="13.0sp" android:textColor="@color/settings_light_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="16.0dp" android:text="@string/legal_info" android:singleLine="false" android:layout_alignParentLeft="true" android:layout_centerInParent="true" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <View android:layout_width="match_parent" android:layout_height="10.0dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

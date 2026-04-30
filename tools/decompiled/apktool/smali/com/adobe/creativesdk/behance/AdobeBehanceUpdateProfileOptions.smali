@@ -1,0 +1,288 @@
+.class public Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;
+.super Ljava/lang/Object;
+.source "AdobeBehanceUpdateProfileOptions.java"
+
+
+# instance fields
+.field private city:Ljava/lang/String;
+
+.field private company:Ljava/lang/String;
+
+.field private country:Ljava/lang/String;
+
+.field private firstName:Ljava/lang/String;
+
+.field private image:Ljava/io/File;
+
+.field private lastName:Ljava/lang/String;
+
+.field private occupation:Ljava/lang/String;
+
+.field private state:Ljava/lang/String;
+
+.field private website:Ljava/lang/String;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .prologue
+    .line 38
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public getCity()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 186
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->city:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getCompany()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 114
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->company:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getCountry()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 153
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->country:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getFirstName()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 63
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->firstName:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getImage()Ljava/io/File;
+    .locals 1
+
+    .prologue
+    .line 203
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->image:Ljava/io/File;
+
+    return-object v0
+.end method
+
+.method public getLastName()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 79
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->lastName:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getOccupation()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 97
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->occupation:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getState()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 169
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->state:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public getWebsite()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 136
+    iget-object v0, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->website:Ljava/lang/String;
+
+    return-object v0
+.end method
+
+.method public setCity(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 178
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->city:Ljava/lang/String;
+
+    .line 179
+    return-void
+.end method
+
+.method public setCompany(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 105
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->company:Ljava/lang/String;
+
+    .line 106
+    return-void
+.end method
+
+.method public setCountry(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 145
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->country:Ljava/lang/String;
+
+    .line 146
+    return-void
+.end method
+
+.method public setFirstName(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 55
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->firstName:Ljava/lang/String;
+
+    .line 56
+    return-void
+.end method
+
+.method public setImage(Ljava/io/File;)V
+    .locals 0
+
+    .prologue
+    .line 194
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->image:Ljava/io/File;
+
+    .line 195
+    return-void
+.end method
+
+.method public setLastName(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 71
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->lastName:Ljava/lang/String;
+
+    .line 72
+    return-void
+.end method
+
+.method public setOccupation(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 88
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->occupation:Ljava/lang/String;
+
+    .line 89
+    return-void
+.end method
+
+.method public setState(Ljava/lang/String;)V
+    .locals 0
+
+    .prologue
+    .line 161
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->state:Ljava/lang/String;
+
+    .line 162
+    return-void
+.end method
+
+.method public setWebsite(Ljava/lang/String;)V
+    .locals 2
+
+    .prologue
+    .line 123
+    invoke-virtual {p1}, Ljava/lang/String;->length()I
+
+    move-result v0
+
+    const/4 v1, 0x3
+
+    if-le v0, v1, :cond_0
+
+    .line 124
+    const-string/jumbo v0, "http://"
+
+    invoke-virtual {p1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    const-string/jumbo v0, "https://"
+
+    invoke-virtual {p1, v0}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    const/4 v0, 0x0
+
+    const/4 v1, 0x2
+
+    invoke-virtual {p1, v0, v1}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+
+    move-result-object v0
+
+    const-string/jumbo v1, "www"
+
+    invoke-virtual {v0, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    .line 125
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string/jumbo v1, "http://www."
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object p1
+
+    .line 127
+    :cond_0
+    iput-object p1, p0, Lcom/adobe/creativesdk/behance/AdobeBehanceUpdateProfileOptions;->website:Ljava/lang/String;
+
+    .line 128
+    return-void
+.end method

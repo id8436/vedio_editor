@@ -1,0 +1,12 @@
+package javax.servlet.http;
+
+import java.util.EventListener;
+
+/* JADX INFO: loaded from: classes3.dex */
+public interface HttpSessionAttributeListener extends EventListener {
+    void attributeAdded(HttpSessionBindingEvent httpSessionBindingEvent);
+
+    void attributeRemoved(HttpSessionBindingEvent httpSessionBindingEvent);
+
+    void attributeReplaced(HttpSessionBindingEvent httpSessionBindingEvent);
+}

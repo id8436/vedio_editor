@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:icon="@drawable/bsdk_icon_color_wheel" android:enabled="true" android:id="@id/bsdk_picker_wheel" android:title="@string/bsdk_color_picker_wheel" app:showAsAction="ifRoom" />
+    <item android:icon="@drawable/bsdk_icon_color_wheel" android:enabled="true" android:id="@id/bsdk_picker_rgb" android:title="@string/bsdk_color_picker_rgb" app:showAsAction="ifRoom" />
+    <item android:icon="@drawable/bsdk_icon_color_wheel" android:enabled="true" android:id="@id/bsdk_picker_cmyk" android:title="@string/bsdk_color_picker_cmyk" app:showAsAction="ifRoom" />
+    <item android:icon="@drawable/bsdk_icon_color_wheel" android:enabled="true" android:id="@id/bsdk_picker_hex" android:title="@string/bsdk_color_picker_hex" app:showAsAction="ifRoom" />
+</menu>

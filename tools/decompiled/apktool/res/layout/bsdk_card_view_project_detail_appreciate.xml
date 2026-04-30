@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/bsdk_card_project_appreciate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="50.0dp" android:layout_marginBottom="20.0dp" android:src="@drawable/project_icon_appreciation_bg" android:layout_centerInParent="true" />
+    <ImageView android:id="@id/bsdk_card_project_appreciate_thumb" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/project_icon_appreciate_thumb_centered" android:layout_centerInParent="true" />
+    <TextView android:textSize="@dimen/bsdk_project_detail_fragment_appreciate_thank_you_text_size" android:textColor="@color/bsdk_project_detail_fragment_appreciate_thank_you_text_color" android:gravity="center_horizontal" android:id="@id/bsdk_card_project_appreciate_thank_you_text" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bsdk_project_detail_fragment_thank_you" android:layout_centerInParent="true" android:textAllCaps="true" />
+</RelativeLayout>

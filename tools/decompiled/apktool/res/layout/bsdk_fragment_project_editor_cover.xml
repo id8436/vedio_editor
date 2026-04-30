@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="#262626" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="7.0">
+        <com.behance.sdk.ui.components.BehanceSDKCropView android:id="@id/project_editor_cover_crop_view" android:layout_width="match_parent" android:layout_height="match_parent" />
+        <RelativeLayout android:id="@id/project_editor_cover_loader" android:background="#262626" android:clickable="true" android:layout_width="match_parent" android:layout_height="match_parent">
+            <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView android:id="@id/project_editor_cover_thumbnail_recycler" android:background="#fff" android:padding="@dimen/bsdk_cover_list_padding" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0" />
+</LinearLayout>

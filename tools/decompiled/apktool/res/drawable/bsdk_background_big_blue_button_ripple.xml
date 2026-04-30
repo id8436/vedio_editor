@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector android:color="@color/bsdk_behance_blue"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:state_pressed="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="2.0dp" />
+            <solid android:color="#0044be" />
+        </shape>
+    </item>
+    <item android:state_focused="true" android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="2.0dp" />
+            <solid android:color="#0044be" />
+        </shape>
+    </item>
+    <item android:state_focused="false" android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="2.0dp" />
+            <solid android:color="#0044be" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/bsdk_background_big_blue_button" />
+</selector>

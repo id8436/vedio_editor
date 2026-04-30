@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bsdkPublishProjectViewFlipper"
+    android:background="@color/bsdk_publish_project_activity_background_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment
+        android:id="@+id/bsdkPublishProjectPreviewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.behance.sdk.ui.fragments.BehanceSDKPublishProjectPreviewFragment"/>
+    <fragment
+        android:id="@+id/bsdkPublishProjectCoverFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.behance.sdk.ui.fragments.BehanceSDKPublishProjectCoverFragment"/>
+    <fragment
+        android:id="@+id/bsdkPublishProjectDetailsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.behance.sdk.ui.fragments.BehanceSDKPublishProjectDetailsFragment"/>
+</ViewFlipper>

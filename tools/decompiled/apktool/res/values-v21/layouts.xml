@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <layout name="bsdk_dialog_generic_alert">@layout/bsdk_dialog_generic_alert_material_theme_style</layout>
+</resources>

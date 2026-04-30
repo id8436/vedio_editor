@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.behance.sdk.ui.components.BehanceSDKHackyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bsdk_imageDisplayViewPager"
+    android:background="@color/bsdk_image_display_fragment_bg_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>

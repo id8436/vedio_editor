@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="center_vertical" android:background="@drawable/bsdk_bg_image_actionbar" android:layout_width="match_parent" android:layout_height="?android:actionBarSize"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/bsdkCCAssetBrowserLauncherTitleBarLeftNavLayout" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_alignParentLeft="true">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/bsdkCCAssetBrowserLauncherTitlebarIconLayout" android:background="@drawable/bsdk_selector_app_default_selection_bg" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_centerVertical="true">
+            <ImageView android:layout_gravity="center_vertical" android:id="@id/bsdkCCAssetBrowserLauncherTitlebarIconImageView" android:paddingLeft="@dimen/bsdk_titlebar_left_margin" android:paddingRight="@dimen/bsdk_titlebar_back_button_right_margin" android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/bsdk_icon_add_project_edit_fragment_cloud" android:scaleType="center" android:contentDescription="@string/bsdk_cc_asset_browser_launcher_titlebar_back_nav_content_desc" />
+        </LinearLayout>
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="@dimen/bsdk_titlebar_txt_size" android:textColor="@color/bsdk_titlebar_txt_color" android:id="@id/bsdkCCAssetBrowserLauncherTitlebarTitleTxtView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bsdk_cc_asset_browser_launcher_titlebar_title_label" android:layout_toRightOf="@id/bsdkCCAssetBrowserLauncherTitlebarIconLayout" android:layout_centerVertical="true" />
+    </RelativeLayout>
+</RelativeLayout>

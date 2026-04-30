@@ -3,30 +3,38 @@ import 'package:flutter/material.dart';
 import '../../../../core/models/timeline_models.dart';
 
 typedef BoundaryDragCallback = void Function(int clipIndex, int deltaMs);
+typedef ClipTapCallback = void Function(int clipIndex, TimelineClip clip);
 
 class TimelineView extends StatefulWidget {
   const TimelineView({
     super.key,
     required this.project,
     required this.selectedBoundaryClipIndex,
+    required this.selectedClipIndex,
     required this.lockedBoundaryIndices,
     required this.onSelectBoundary,
+    required this.onSelectClip,
     required this.onToggleBoundaryLock,
     required this.onNudgeBoundary,
     this.playheadMs,
     this.onSeekRequest,
+    this.onClipSettingsTap,
   });
 
   final TimelineProject project;
   final int selectedBoundaryClipIndex;
+  final int selectedClipIndex;
   final Set<int> lockedBoundaryIndices;
   final ValueChanged<int> onSelectBoundary;
+  final ValueChanged<int> onSelectClip;
   final ValueChanged<int> onToggleBoundaryLock;
   final BoundaryDragCallback onNudgeBoundary;
   /// Current playback position in ms. Null = hidden.
   final int? playheadMs;
   /// Called when the user taps a clip to seek the video to that position.
   final ValueChanged<int>? onSeekRequest;
+  /// Called when the user taps the clip thumbnail region to edit options.
+  final ClipTapCallback? onClipSettingsTap;
 
   @override
   State<TimelineView> createState() => _TimelineViewState();
@@ -58,6 +66,12 @@ class _TimelineViewState extends State<TimelineView> {
 
     _dragResidualMs[clipIndex] = totalMs - (stepCount * quantizedStep);
     widget.onNudgeBoundary(clipIndex, stepCount * quantizedStep);
+  }
+
+  String _assetLabel(String assetId) {
+    final int slash = assetId.lastIndexOf(RegExp(r'[/\\]'));
+    final String name = slash >= 0 ? assetId.substring(slash + 1) : assetId;
+    return name.isEmpty ? 'media' : name;
   }
 
   @override
@@ -100,218 +114,268 @@ class _TimelineViewState extends State<TimelineView> {
                 style: const TextStyle(fontSize: 12)),
           ],
         ),
-        // ── Scrollable canvas ─────────────────────────────────────────
+        // ── Scrollable canvas with track headers (NLE-style) ─────────
         SizedBox(
-          height: 220,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: totalWidth,
-              child: Stack(
-                children: <Widget>[
-                  // ── Ruler ──────────────────────────────────────────
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 22,
-                    child: CustomPaint(
-                      size: Size(totalWidth, 22),
-                      painter: _RulerPainter(
-                        startMs: startMs,
-                        durationMs: durationMs,
-                        totalWidth: totalWidth,
-                        pxPerMs: _pxPerMs,
+          height: 260,
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 58,
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 40),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text('V1', style: TextStyle(fontWeight: FontWeight.w700)),
                       ),
                     ),
-                  ),
-                  // ── Beat ticks ─────────────────────────────────────
-                  Positioned(
-                    top: 22,
-                    left: 0,
-                    right: 0,
-                    height: 18,
-                    child: Stack(
-                      children: widget.project.beats
-                          .map((BeatMarker marker) {
-                            final double x =
-                                (marker.tsMs - startMs) * _pxPerMs;
-                            return Positioned(
-                              left: x.clamp(0, totalWidth - 1),
-                              top: 0,
-                              child: Container(
-                                width: 2,
-                                height: 18,
-                                color: Colors.deepOrange,
-                              ),
-                            );
-                          })
-                          .toList(),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text('A1', style: TextStyle(fontWeight: FontWeight.w700)),
+                      ),
                     ),
-                  ),
-                  // ── Clip row ───────────────────────────────────────
-                  Positioned(
-                    top: 40,
-                    left: 0,
-                    right: 0,
-                    height: 160,
-                    child: Row(
-                      children: List<Widget>.generate(
-                          widget.project.clips.length, (int index) {
-                        final TimelineClip clip =
-                            widget.project.clips[index];
-                        final bool canMove =
-                            index < widget.project.clips.length - 1;
-                        final bool selected = canMove &&
-                            index == widget.selectedBoundaryClipIndex;
-                        final bool locked =
-                            widget.lockedBoundaryIndices.contains(index);
-                        final double width = clip.durationMs * _pxPerMs;
-
-                        return GestureDetector(
-                          onTap: () {
-                            widget.onSeekRequest?.call(clip.timelineInMs);
-                          },
-                          child: Container(
-                            width: width,
-                            margin: const EdgeInsets.only(right: 2),
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: selected
-                                  ? Colors.teal.withValues(alpha: 0.25)
-                                  : Colors.teal.withValues(alpha: 0.15),
-                              border: Border.all(
-                                color: selected
-                                    ? Colors.teal.shade700
-                                    : Colors.teal.shade300,
-                                width: selected ? 2 : 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: totalWidth,
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          height: 22,
+                          child: CustomPaint(
+                            size: Size(totalWidth, 22),
+                            painter: _RulerPainter(
+                              startMs: startMs,
+                              durationMs: durationMs,
+                              totalWidth: totalWidth,
+                              pxPerMs: _pxPerMs,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Clip ${index + 1}'),
-                                Text(
-                                    '${clip.timelineInMs} - ${clip.timelineOutMs}ms'),
-                                const Spacer(),
-                                if (canMove)
-                                  Row(
+                          ),
+                        ),
+                        Positioned(
+                          top: 22,
+                          left: 0,
+                          right: 0,
+                          height: 16,
+                          child: Stack(
+                            children: widget.project.beats.map((BeatMarker marker) {
+                              final double x = (marker.tsMs - startMs) * _pxPerMs;
+                              return Positioned(
+                                left: x.clamp(0, totalWidth - 1),
+                                top: 0,
+                                child: Container(
+                                  width: 2,
+                                  height: 16,
+                                  color: Colors.deepOrange,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        Positioned(
+                          top: 42,
+                          left: 0,
+                          right: 0,
+                          height: 108,
+                          child: Row(
+                            children: List<Widget>.generate(widget.project.clips.length, (int index) {
+                              final TimelineClip clip = widget.project.clips[index];
+                              final bool canMove = index < widget.project.clips.length - 1;
+                              final bool selectedBoundary = canMove && index == widget.selectedBoundaryClipIndex;
+                              final bool selectedClip = index == widget.selectedClipIndex;
+                              final bool locked = widget.lockedBoundaryIndices.contains(index);
+                              final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
+
+                              return GestureDetector(
+                                onTap: () {
+                                  widget.onSelectClip(index);
+                                  widget.onSeekRequest?.call(clip.timelineInMs);
+                                },
+                                child: Container(
+                                  width: width,
+                                  margin: const EdgeInsets.only(right: 2),
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: selectedClip
+                                        ? Colors.deepPurple.withValues(alpha: 0.24)
+                                        : selectedBoundary
+                                            ? Colors.teal.withValues(alpha: 0.25)
+                                            : Colors.teal.withValues(alpha: 0.15),
+                                    border: Border.all(
+                                      color: selectedClip
+                                          ? Colors.deepPurple.shade700
+                                          : selectedBoundary
+                                              ? Colors.teal.shade700
+                                              : Colors.teal.shade300,
+                                      width: (selectedClip || selectedBoundary) ? 2 : 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
                                     children: <Widget>[
-                                      IconButton(
-                                        visualDensity:
-                                            VisualDensity.compact,
-                                        onPressed: locked
-                                            ? null
-                                            : () {
-                                                widget
-                                                    .onSelectBoundary(index);
-                                                widget.onNudgeBoundary(
-                                                    index,
-                                                    -(widget.project
-                                                        .quantizationMs));
-                                              },
-                                        icon:
-                                            const Icon(Icons.arrow_left),
-                                        tooltip: 'Move cut -0.1s',
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              'Clip ${index + 1}',
+                                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              _assetLabel(clip.assetId),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(fontSize: 10),
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              '${(clip.durationMs / 1000).toStringAsFixed(2)}s',
+                                              style: const TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      IconButton(
-                                        visualDensity:
-                                            VisualDensity.compact,
-                                        onPressed: locked
-                                            ? null
-                                            : () {
-                                                widget
-                                                    .onSelectBoundary(index);
-                                                widget.onNudgeBoundary(
-                                                    index,
-                                                    widget.project
-                                                        .quantizationMs);
-                                              },
-                                        icon: const Icon(
-                                            Icons.arrow_right),
-                                        tooltip: 'Move cut +0.1s',
-                                      ),
-                                      IconButton(
-                                        visualDensity:
-                                            VisualDensity.compact,
-                                        onPressed: () =>
-                                            widget.onToggleBoundaryLock(
-                                                index),
-                                        icon: Icon(locked
-                                            ? Icons.lock
-                                            : Icons.lock_open),
-                                        tooltip: locked
-                                            ? 'Unlock cut'
-                                            : 'Lock cut',
-                                      ),
-                                      // Drag handle
-                                      GestureDetector(
-                                        onTap: () =>
-                                            widget.onSelectBoundary(index),
-                                        onHorizontalDragUpdate:
-                                            (DragUpdateDetails details) {
-                                          widget.onSelectBoundary(index);
-                                          _handleDrag(
-                                              index, details.delta.dx);
-                                        },
-                                        onHorizontalDragEnd: (_) {
-                                          _dragResidualMs.remove(index);
-                                        },
-                                        child: Container(
-                                          width: 14,
-                                          height: 38,
-                                          decoration: BoxDecoration(
-                                            color: locked
-                                                ? Colors.grey.shade500
-                                                : selected
-                                                    ? Colors.teal.shade700
-                                                    : Colors.teal.shade500,
-                                            borderRadius:
-                                                BorderRadius.circular(7),
+                                      if (canMove)
+                                        GestureDetector(
+                                          onTap: () => widget.onSelectBoundary(index),
+                                          onHorizontalDragUpdate: (DragUpdateDetails details) {
+                                            widget.onSelectBoundary(index);
+                                            _handleDrag(index, details.delta.dx);
+                                          },
+                                          onHorizontalDragEnd: (_) {
+                                            _dragResidualMs.remove(index);
+                                          },
+                                          child: Container(
+                                            width: 12,
+                                            height: 74,
+                                            decoration: BoxDecoration(
+                                              color: locked
+                                                  ? Colors.grey.shade500
+                                                  : selectedBoundary
+                                                      ? Colors.teal.shade700
+                                                      : Colors.teal.shade500,
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: const Icon(
+                                              Icons.drag_indicator,
+                                              size: 11,
+                                              color: Colors.white,
+                                            ),
                                           ),
-                                          alignment: Alignment.center,
-                                          child: const Icon(
-                                            Icons.drag_indicator,
-                                            size: 12,
-                                            color: Colors.white,
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                        Positioned(
+                          top: 156,
+                          left: 0,
+                          right: 0,
+                          height: 80,
+                          child: Row(
+                            children: List<Widget>.generate(widget.project.clips.length, (int index) {
+                              final TimelineClip clip = widget.project.clips[index];
+                              final bool selectedClip = index == widget.selectedClipIndex;
+                              final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
+
+                              return Container(
+                                width: width,
+                                margin: const EdgeInsets.only(right: 2),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: selectedClip
+                                      ? Colors.blueGrey.withValues(alpha: 0.25)
+                                      : Colors.blueGrey.withValues(alpha: 0.14),
+                                  border: Border.all(
+                                    color: selectedClip
+                                        ? Colors.blueGrey.shade700
+                                        : Colors.blueGrey.shade400,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        clip.audioDucking ? Icons.graphic_eq : Icons.audiotrack,
+                                        size: 14,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Container(
+                                          height: 18,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black.withValues(alpha: 0.08),
+                                            borderRadius: BorderRadius.circular(6),
+                                          ),
+                                          child: Row(
+                                            children: List<Widget>.generate(
+                                              10,
+                                              (int i) => Expanded(
+                                                child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                    margin: const EdgeInsets.symmetric(horizontal: 0.5),
+                                                    height: 3 + ((i * 7 + index * 3) % 10).toDouble(),
+                                                    color: Colors.blueGrey.shade700,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                              ],
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                        if (widget.playheadMs != null)
+                          Positioned(
+                            left: ((widget.playheadMs! - startMs) * _pxPerMs)
+                                .clamp(0.0, totalWidth - 2),
+                            top: 0,
+                            bottom: 0,
+                            width: 2,
+                            child: ColoredBox(
+                              color: Colors.red.withValues(alpha: 0.85),
                             ),
                           ),
-                        );
-                      }),
+                      ],
                     ),
                   ),
-                  // ── Playhead ──────────────────────────────────────
-                  if (widget.playheadMs != null)
-                    Positioned(
-                      left: ((widget.playheadMs! - startMs) * _pxPerMs)
-                          .clamp(0.0, totalWidth - 2),
-                      top: 0,
-                      bottom: 0,
-                      width: 2,
-                      child: ColoredBox(
-                          color: Colors.red.withValues(alpha: 0.85)),
-                    ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: widget.project.beats
-              .take(20)
-              .map((BeatMarker marker) =>
-                  Chip(label: Text('Beat ${marker.tsMs}ms')))
-              .toList(),
         ),
       ],
     );

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/bsdk_shape_generic_alert_dialog_content_bg" android:layout_width="@dimen/bsdk_generic_alert_dialog_width" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:id="@id/genericAlertSingleBtnDialogTitleTxtView" style="@style/BsdkDialogTitleText" />
+    <TextView android:textSize="@dimen/bsdk_generic_alert_dialog_content_txt_size" android:textColor="@color/bsdk_generic_alert_dialog_content_text_color" android:id="@id/genericAlertSingleBtnDialogBodyTxtView" android:paddingLeft="21.329987dp" android:paddingTop="6.0dp" android:paddingRight="21.329987dp" android:paddingBottom="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="false" android:fontFamily="sans-serif-light" />
+    <LinearLayout android:gravity="right|center" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="36.0dp" android:layout_marginLeft="8.0dp" android:layout_marginTop="16.0dp" android:layout_marginRight="8.0dp" android:layout_marginBottom="8.0dp">
+        <Button android:id="@id/genericAlertSingleBtnDialogOKBtn" style="@style/BsdkDialogActionButtonStyle" />
+    </LinearLayout>
+</LinearLayout>

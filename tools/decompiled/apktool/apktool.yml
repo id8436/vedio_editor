@@ -1,0 +1,21 @@
+version: 3.0.2
+apkFileName: Adobe Premiere Clip_v1.1.6.1316_apkpure.com.apk
+usesFramework:
+  ids:
+  - 1
+sdkInfo:
+  minSdkVersion: 19
+  targetSdkVersion: 26
+versionInfo:
+  versionCode: 1316
+  versionName: 1.1.6.1316
+resourcesInfo:
+  packageId: 127
+  keepRawValues: true
+doNotCompress:
+- arsc
+- jpeg
+- jpg
+- m4a
+- mp4
+- png

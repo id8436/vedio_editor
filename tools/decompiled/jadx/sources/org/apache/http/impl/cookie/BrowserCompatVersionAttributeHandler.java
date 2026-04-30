@@ -1,0 +1,24 @@
+package org.apache.http.impl.cookie;
+
+import org.apache.http.annotation.Immutable;
+import org.apache.http.cookie.MalformedCookieException;
+import org.apache.http.cookie.SetCookie;
+import org.apache.http.util.Args;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Immutable
+public class BrowserCompatVersionAttributeHandler extends AbstractCookieAttributeHandlerHC4 {
+    @Override // org.apache.http.cookie.CookieAttributeHandler
+    public void parse(SetCookie setCookie, String str) throws MalformedCookieException {
+        Args.notNull(setCookie, "Cookie");
+        if (str == null) {
+            throw new MalformedCookieException("Missing value for version attribute");
+        }
+        int i = 0;
+        try {
+            i = Integer.parseInt(str);
+        } catch (NumberFormatException e2) {
+        }
+        setCookie.setVersion(i);
+    }
+}

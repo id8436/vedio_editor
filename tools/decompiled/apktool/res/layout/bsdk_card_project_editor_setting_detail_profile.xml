@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_editor_setting_detail_row_height" android:foreground="?selectableItemBackground"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/bsdk_card_editor_setting_detail_avatar" android:layout_width="@dimen/bsdk_token_suggestion_avatar_size" android:layout_height="@dimen/bsdk_token_suggestion_avatar_size" android:layout_marginLeft="@dimen/bsdk_editor_setting_detail_padding_horizontal" android:layout_marginTop="@dimen/bsdk_editor_setting_detail_padding" android:layout_marginRight="@dimen/bsdk_editor_setting_detail_padding" android:layout_marginBottom="@dimen/bsdk_editor_setting_detail_padding" android:scaleType="centerCrop" />
+    <LinearLayout android:orientation="vertical" android:paddingTop="@dimen/bsdk_editor_setting_detail_padding" android:paddingBottom="@dimen/bsdk_editor_setting_detail_padding" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginRight="@dimen/bsdk_editor_setting_detail_padding_horizontal">
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="@dimen/bsdk_editor_setting_detail_text_size_primary" android:textColor="@color/bsdk_app_primary_text_color" android:id="@id/bsdk_card_editor_setting_detail_text_primary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:includeFontPadding="false" />
+        <Space android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0" />
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="@dimen/bsdk_editor_setting_detail_text_size_secondary" android:textColor="#878787" android:id="@id/bsdk_card_editor_setting_detail_text_secondary" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" android:includeFontPadding="false" />
+    </LinearLayout>
+</LinearLayout>

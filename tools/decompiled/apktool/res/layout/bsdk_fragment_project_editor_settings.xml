@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@id/bsdk_project_editor_settings_root" android:background="#fdfdfd" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:id="@id/bsdk_project_editor_settings_title_container" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_editor_settings_row_height">
+            <ImageView android:id="@id/bsdk_project_editor_settings_cover" android:background="#bebebe" android:layout_width="51.799988dp" android:layout_height="40.0dp" android:layout_marginRight="@dimen/bsdk_editor_settings_row_padding_horizontal" android:scaleType="fitXY" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+            <com.behance.sdk.ui.customviews.BehanceSDKEditText android:id="@id/bsdk_project_editor_settings_title" android:hint="@string/bsdk_project_editor_settings_hint_title" android:layout_toLeftOf="@id/bsdk_project_editor_settings_cover" android:layout_alignParentLeft="true" android:layout_toStartOf="@id/bsdk_project_editor_settings_cover" style="@style/BsdkProjectEditorInfoEditText" />
+        </RelativeLayout>
+        <View style="@style/BsdkProjectEditorInfoDivider" />
+        <com.behance.sdk.ui.customviews.BehanceSDKEditText android:id="@id/bsdk_project_editor_settings_tags" android:hint="@string/bsdk_project_editor_settings_hint_tags" style="@style/BsdkProjectEditorInfoEditText" />
+        <View style="@style/BsdkProjectEditorInfoDivider" />
+        <com.behance.sdk.ui.components.BehanceSDKProjectEditorSettingsField android:id="@id/bsdk_project_editor_settings_creative_fields" android:layout_width="match_parent" android:layout_height="wrap_content" android:foreground="?selectableItemBackground" app:bsdk_label_res="@string/bsdk_project_editor_settings_field_creative_fields" />
+        <View style="@style/BsdkProjectEditorInfoDivider" />
+        <com.behance.sdk.ui.components.BehanceSDKProjectEditorCheckBoxField android:id="@id/bsdk_project_editor_settings_adult_content" android:layout_width="match_parent" android:layout_height="wrap_content" app:bsdk_label="@string/bsdk_project_editor_settings_field_adult_content" />
+        <View style="@style/BsdkProjectEditorInfoDivider" />
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/bsdk_project_editor_settings_advanced" android:text="@string/bsdk_project_editor_settings_header_advanced" style="@style/BsdkProjectEditorInfoItem" />
+    </LinearLayout>
+</ScrollView>

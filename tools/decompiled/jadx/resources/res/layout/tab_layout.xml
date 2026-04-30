@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/tab_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="49dp">
+    <com.adobe.creativesdk.foundation.internal.utils.CreativeSDKTextView
+        android:textSize="14sp"
+        android:textColor="@color/adobe_csdk_asset_browser_dark_text"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:id="@+id/adobe_csdk_creativesdk_tab_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

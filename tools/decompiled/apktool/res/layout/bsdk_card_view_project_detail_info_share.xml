@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="#eeeeee" android:layout_width="match_parent" android:layout_height="52.669983dp"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.behance.sdk.ui.components.BehanceSDKBoundedLinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_centerInParent="true" app:bsdk_bounded_width="850.0dp">
+        <Space android:layout_width="0.0dp" android:layout_height="match_parent" android:layout_weight="4.0" />
+        <TextView android:textSize="@dimen/bsdk_project_detail_share_info_text_size" android:textColor="@color/bsdk_project_detail_share_info_text_color" android:gravity="center" android:id="@id/bsdk_userDetailsMoreInfoContainer" android:background="?selectableItemBackgroundBorderless" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/bsdk_project_info_dialog_project_info_txt" android:drawableLeft="@drawable/icon_projectview_info_dark" android:drawablePadding="8.0dp" />
+        <Space android:layout_width="0.0dp" android:layout_height="match_parent" android:layout_weight="3.0" />
+        <TextView android:textSize="@dimen/bsdk_project_detail_share_info_text_size" android:textColor="@color/bsdk_project_detail_share_info_text_color" android:gravity="center" android:id="@id/bsdk_shareProjectContainer" android:background="?selectableItemBackgroundBorderless" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/bsdk_share_content_dialog_share_intent_title" android:drawableLeft="@drawable/icon_projectview_share_dark" android:drawablePadding="8.0dp" />
+        <Space android:layout_width="0.0dp" android:layout_height="match_parent" android:layout_weight="4.0" />
+    </com.behance.sdk.ui.components.BehanceSDKBoundedLinearLayout>
+</RelativeLayout>

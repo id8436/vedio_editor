@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/bsdk_card_project_editor_module_image_container" android:paddingTop="@dimen/bsdk_module_reg_padding_inner" android:paddingBottom="@dimen/bsdk_module_reg_padding_inner" android:layout_width="match_parent" android:layout_height="wrap_content" android:foreground="@drawable/bsdk_foreground_module_edit"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/bsdk_card_project_editor_module_image_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <LinearLayout android:orientation="horizontal" android:id="@id/bsdk_card_project_editor_module_image_tools_container" android:background="@drawable/bsdk_background_project_editor_module_tools" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_module_tools_height" android:layout_alignLeft="@id/bsdk_card_project_editor_module_image_view" android:layout_alignRight="@id/bsdk_card_project_editor_module_image_view" android:layout_alignBottom="@id/bsdk_card_project_editor_module_image_view">
+        <ImageView android:id="@id/bsdk_card_project_editor_module_image_delete" android:src="@drawable/bsdk_icon_project_editor_delete" style="@style/BsdkProjectEditorModuleToolButton" />
+        <ImageView android:id="@id/bsdk_card_project_editor_module_image_replace" android:src="@drawable/bsdk_icon_project_editor_replace" style="@style/BsdkProjectEditorModuleToolButton" />
+        <Space android:layout_width="0.0dp" android:layout_height="match_parent" android:layout_weight="1.0" />
+        <ImageView android:id="@id/bsdk_card_project_editor_module_image_full_bleed" android:src="@drawable/bsdk_icon_project_editor_contract" style="@style/BsdkProjectEditorModuleToolButton" />
+    </LinearLayout>
+</RelativeLayout>

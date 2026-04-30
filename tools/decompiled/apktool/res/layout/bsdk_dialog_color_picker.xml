@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/bsdk_color_picker_dialog_root" android:background="#a0000000" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View android:id="@id/bsdk_color_picker_dialog_pointer" android:background="@drawable/bsdk_background_dialog_color_picker_pointer" android:clickable="true" android:layout_width="@dimen/bsdk_color_picker_default_pointer_size" android:layout_height="@dimen/bsdk_color_picker_default_pointer_size" android:layout_centerInParent="true" android:rotation="45.0" />
+    <LinearLayout android:orientation="vertical" android:id="@id/bsdk_color_picker_dialog_container" android:background="@drawable/bsdk_background_dialog_color_picker" android:layout_width="@dimen/bsdk_color_picker_default_width" android:layout_height="@dimen/bsdk_color_picker_default_height" android:layout_centerInParent="true">
+        <ViewFlipper android:id="@id/bsdk_color_picker_dialog_view_flipper" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0">
+            <com.behance.sdk.ui.components.BehanceSDKColorPickerWheel android:id="@id/bsdk_color_picker_dialog_wheel" android:clickable="true" android:layout_width="match_parent" android:layout_height="match_parent" />
+            <com.behance.sdk.ui.components.BehanceSDKColorPickerRGB android:id="@id/bsdk_color_picker_dialog_rgb" android:layout_width="match_parent" android:layout_height="match_parent" />
+            <com.behance.sdk.ui.components.BehanceSDKColorPickerCMYK android:id="@id/bsdk_color_picker_dialog_cmyk" android:layout_width="match_parent" android:layout_height="match_parent" />
+            <LinearLayout android:orientation="vertical" android:id="@id/bsdk_color_picker_dialog_hex" android:layout_width="match_parent" android:layout_height="match_parent">
+                <EditText android:textSize="20.0sp" android:gravity="center" android:id="@id/bsdk_color_picker_dialog_hex_input" android:background="@null" android:layout_width="match_parent" android:layout_height="0.0dp" android:maxLength="6" android:digits="0123456789ABCDEF" android:layout_weight="21.0" android:inputType="textCapCharacters" />
+                <View android:id="@id/bsdk_color_picker_hex_preview" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_marginLeft="4.0dp" android:layout_marginRight="4.0dp" android:layout_marginBottom="4.0dp" android:layout_weight="3.0" />
+            </LinearLayout>
+        </ViewFlipper>
+        <android.support.design.widget.BottomNavigationView android:id="@id/bsdk_color_picker_menu" android:layout_width="match_parent" android:layout_height="wrap_content" app:menu="@menu/bsdk_menu_color_picker" />
+    </LinearLayout>
+</RelativeLayout>

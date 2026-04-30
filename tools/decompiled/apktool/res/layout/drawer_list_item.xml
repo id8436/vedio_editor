@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/option_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="11.0dp" android:layout_marginBottom="0.6700001dp"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/coachmark_reset_ripple" android:layout_width="match_parent" android:layout_height="43.0dp" android:layout_centerVertical="true">
+        <ImageView android:layout_gravity="center_vertical" android:id="@id/option_icon" android:layout_width="27.0dp" android:layout_height="27.0dp" android:layout_marginLeft="32.0dp" android:tint="@color/icons_tint" />
+        <TextView android:textSize="16.669983sp" android:textColor="@color/settings_light_text" android:layout_gravity="center_vertical" android:id="@id/option_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="24.0dp" />
+    </LinearLayout>
+    <View android:id="@id/select_overlay" android:background="@color/drawer_select_overlay" android:visibility="invisible" android:layout_width="match_parent" android:layout_height="43.0dp" android:layout_marginLeft="8.0dp" android:layout_marginRight="8.0dp" android:alpha="0.1" />
+</RelativeLayout>

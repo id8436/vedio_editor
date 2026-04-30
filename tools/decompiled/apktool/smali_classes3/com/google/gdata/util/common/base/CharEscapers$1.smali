@@ -1,0 +1,53 @@
+.class final Lcom/google/gdata/util/common/base/CharEscapers$1;
+.super Lcom/google/gdata/util/common/base/CharEscaper;
+.source "CharEscapers.java"
+
+
+# direct methods
+.method constructor <init>()V
+    .locals 0
+
+    .prologue
+    .line 40
+    invoke-direct {p0}, Lcom/google/gdata/util/common/base/CharEscaper;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public escape(Ljava/lang/Appendable;)Ljava/lang/Appendable;
+    .locals 1
+
+    .prologue
+    .line 49
+    invoke-static {p1}, Lcom/google/gdata/util/common/base/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 54
+    new-instance v0, Lcom/google/gdata/util/common/base/CharEscapers$1$1;
+
+    invoke-direct {v0, p0, p1}, Lcom/google/gdata/util/common/base/CharEscapers$1$1;-><init>(Lcom/google/gdata/util/common/base/CharEscapers$1;Ljava/lang/Appendable;)V
+
+    return-object v0
+.end method
+
+.method public escape(Ljava/lang/String;)Ljava/lang/String;
+    .locals 0
+
+    .prologue
+    .line 43
+    invoke-static {p1}, Lcom/google/gdata/util/common/base/Preconditions;->checkNotNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    .line 44
+    return-object p1
+.end method
+
+.method protected escape(C)[C
+    .locals 1
+
+    .prologue
+    .line 77
+    const/4 v0, 0x0
+
+    return-object v0
+.end method

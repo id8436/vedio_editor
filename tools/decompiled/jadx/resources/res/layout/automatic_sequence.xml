@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_automatic_timeline"
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/auto_header"
+        android:paddingBottom="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/auto_toolbar"
+            android:background="@color/theme_color"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/editor_topbar_height"
+            android:layout_marginBottom="4dp">
+            <ImageView
+                android:id="@+id/auto_back2"
+                android:onClick="closeAutomode"
+                style="@style/backIconStyle"/>
+            <TextView
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:id="@+id/auto_sequence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/automatic_sequence"
+                android:layout_toRightOf="@+id/auto_back2"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/auto_header">
+        <RelativeLayout
+            android:id="@+id/autotimeline_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <View
+        android:id="@+id/background_for_fab"
+        android:background="#77000000"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="closeFAB"/>
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/add_clip_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        fab:fab_addButtonColorPressed="@color/primary_dark"
+        fab:fab_addButtonColorNormal="@color/primary"
+        fab:fab_addButtonPlusIconColor="#ffffff"
+        fab:fab_labelStyle="@style/menu_labels_style"/>
+    <include layout="@layout/bottom_sheet_options"/>
+    <include layout="@layout/view_media_capture_options"/>
+</RelativeLayout>

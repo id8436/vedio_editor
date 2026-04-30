@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/bsdk_card_project_editor_module_video_container" android:padding="@dimen/bsdk_module_reg_padding_inner" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/bsdk_module_reg_padding_outer" android:layout_marginRight="@dimen/bsdk_module_reg_padding_outer" android:foreground="@drawable/bsdk_foreground_module_edit"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/bsdk_card_project_editor_module_video_preview" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content" android:src="@drawable/bsdk_icon_project_editor_video_module_overlay" android:scaleType="centerInside" android:layout_alignLeft="@id/bsdk_card_project_editor_module_video_preview" android:layout_alignTop="@id/bsdk_card_project_editor_module_video_preview" android:layout_alignRight="@id/bsdk_card_project_editor_module_video_preview" android:layout_alignBottom="@id/bsdk_card_project_editor_module_video_preview" />
+    <LinearLayout android:gravity="left" android:orientation="horizontal" android:id="@id/bsdk_card_project_editor_module_video_tools_container" android:background="@drawable/bsdk_background_project_editor_module_tools" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_module_tools_height" android:layout_alignBottom="@id/bsdk_card_project_editor_module_video_preview">
+        <ImageView android:id="@id/bsdk_card_project_editor_module_play" android:src="@drawable/bsdk_icon_project_editor_play" style="@style/BsdkProjectEditorModuleToolButton" />
+        <ImageView android:id="@id/bsdk_card_project_editor_module_delete" android:src="@drawable/bsdk_icon_project_editor_delete" style="@style/BsdkProjectEditorModuleToolButton" />
+    </LinearLayout>
+</RelativeLayout>

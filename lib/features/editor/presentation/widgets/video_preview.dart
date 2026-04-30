@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 /// Inline video preview with play/pause/seek controls.
 /// Gracefully degrades on web (shows placeholder).
@@ -13,6 +14,7 @@ class VideoPreview extends StatefulWidget {
     this.startMs = 0,
     this.endMs,
     this.onPositionChanged,
+    this.showControls = true,
   });
   // Provide a GlobalKey<VideoPreviewState> to call seekToMs() externally.
 
@@ -21,6 +23,7 @@ class VideoPreview extends StatefulWidget {
   final int? endMs;
   /// Called whenever the playback position changes (ms since file start).
   final ValueChanged<int>? onPositionChanged;
+  final bool showControls;
 
   @override
   State<VideoPreview> createState() => VideoPreviewState();
@@ -31,10 +34,14 @@ class VideoPreviewState extends State<VideoPreview> {
   bool _initialized = false;
   bool _hasError = false;
   int _lastReportedMs = -1;
+  bool _autoplayEnabled = true;
 
   /// Seek the video to [ms] milliseconds.
   void seekToMs(int ms) {
     _controller?.seekTo(Duration(milliseconds: ms));
+    if (!widget.showControls && _autoplayEnabled) {
+      _controller?.play();
+    }
   }
 
   void _onControllerUpdate() {
@@ -87,6 +94,11 @@ class VideoPreviewState extends State<VideoPreview> {
 
       // Seek to the start of the selected region.
       await controller.seekTo(Duration(milliseconds: widget.startMs));
+
+      // Auto-play when showControls=false (Premiere Clip style)
+      if (!widget.showControls && _autoplayEnabled) {
+        await controller.play();
+      }
 
       setState(() {
         _controller = controller;
@@ -144,6 +156,77 @@ class VideoPreviewState extends State<VideoPreview> {
         final Duration total = value.duration;
         final double posSeconds = position.inMilliseconds / 1000.0;
         final double totalSeconds = total.inMilliseconds / 1000.0;
+
+        final Widget videoSurface = Center(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(
+              width: c.value.size.width,
+              height: c.value.size.height,
+              child: VideoPlayer(c),
+            ),
+          ),
+        );
+
+        if (!widget.showControls) {
+          return Stack(
+            children: <Widget>[
+              Positioned.fill(child: videoSurface),
+              // Progress bar at bottom
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  height: 3,
+                  color: Colors.black.withValues(alpha: 0.3),
+                  child: FractionallySizedBox(
+                    widthFactor: totalSeconds > 0 ? (posSeconds / totalSeconds).clamp(0.0, 1.0) : 0,
+                    alignment: Alignment.centerLeft,
+                    child: Container(color: Colors.blue),
+                  ),
+                ),
+              ),
+              // Time display
+              Positioned(
+                left: 8,
+                bottom: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    '${position.inMinutes}:${(position.inSeconds % 60).toString().padLeft(2, '0')} / ${total.inMinutes}:${(total.inSeconds % 60).toString().padLeft(2, '0')}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
+                ),
+              ),
+              // Play/Pause button
+              Positioned(
+                right: 8,
+                bottom: 8,
+                child: Material(
+                  color: Colors.black.withValues(alpha: 0.45),
+                  borderRadius: BorderRadius.circular(999),
+                  child: IconButton(
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _togglePlay,
+                    icon: Icon(
+                      value.isPlaying ? Icons.pause : Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
 
         return Column(
           mainAxisSize: MainAxisSize.min,

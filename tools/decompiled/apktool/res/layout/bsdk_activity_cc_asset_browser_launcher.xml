@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/activityBehanceAdobeAuthTitleWrap" android:background="@drawable/bsdk_bg_image_actionbar" android:paddingLeft="15.0dp" android:layout_width="match_parent" android:layout_height="?android:actionBarSize" android:layout_alignParentTop="true">
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="@dimen/bsdk_cc_asset_browser_launcher_title_text_size" android:textColor="@color/bsdk_cc_asset_browser_launcher_title_text_color" android:id="@id/activityBehanceAdobeAuthTitleTextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bsdk_cc_asset_browser_launcher_titlebar_title_label" android:drawableLeft="@drawable/bsdk_icon_cc_asset_browser_launcher_title_bar" android:drawablePadding="9.0dp" android:layout_weight="1.0" />
+    </LinearLayout>
+    <RelativeLayout android:background="@color/bsdk_cc_asset_browser_launcher_background_color" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@id/activityBehanceAdobeAuthTitleWrap">
+        <RelativeLayout android:id="@id/activityBehanceAdobeAuthProgressSpinner" android:background="@color/bsdk_cc_asset_browser_launcher_background_color" android:layout_width="match_parent" android:layout_height="match_parent">
+            <ProgressBar android:id="@id/bsdkCCAssetBrowserLauncherProgressSpinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" style="?android:attr/progressBarStyle" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

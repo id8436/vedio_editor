@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@color/bsdk_card_color"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+    <ImageView
+        android:id="@+id/bsdk_card_token_suggestion_icon"
+        android:padding="@dimen/bsdk_token_suggestion_padding"
+        android:layout_width="@dimen/bsdk_token_suggestion_height"
+        android:layout_height="@dimen/bsdk_token_suggestion_height"/>
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingRight="@dimen/bsdk_token_suggestion_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="16sp"
+            android:textColor="@color/bsdk_card_text_primary_color"
+            android:id="@+id/bsdk_card_token_suggestion_text_primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
+        <TextView
+            android:textSize="11sp"
+            android:textColor="@color/bsdk_card_text_secondary_color"
+            android:id="@+id/bsdk_card_token_suggestion_text_secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
+    </LinearLayout>
+</LinearLayout>

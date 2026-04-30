@@ -1,0 +1,30 @@
+package com.google.gdata.data.projecthosting;
+
+import com.google.gdata.data.ExtensionDescription;
+import com.google.gdata.data.ValueConstruct;
+
+/* JADX INFO: loaded from: classes.dex */
+@ExtensionDescription.Default(localName = Summary.XML_NAME, nsAlias = ProjectHostingNamespace.ISSUES_ALIAS, nsUri = ProjectHostingNamespace.ISSUES)
+public class Summary extends ValueConstruct {
+    static final String XML_NAME = "summary";
+
+    public Summary() {
+        this(null);
+    }
+
+    public Summary(String str) {
+        super(ProjectHostingNamespace.ISSUES_NS, XML_NAME, null, str);
+        setRequired(false);
+    }
+
+    public static ExtensionDescription getDefaultDescription(boolean z, boolean z2) {
+        ExtensionDescription defaultDescription = ExtensionDescription.getDefaultDescription(Summary.class);
+        defaultDescription.setRequired(z);
+        defaultDescription.setRepeatable(z2);
+        return defaultDescription;
+    }
+
+    public String toString() {
+        return "{Summary value=" + getValue() + "}";
+    }
+}

@@ -1,0 +1,30 @@
+package com.google.gdata.data.photos;
+
+import com.google.gdata.data.ExtensionDescription;
+import com.google.gdata.data.ValueConstruct;
+
+/* JADX INFO: loaded from: classes.dex */
+@ExtensionDescription.Default(localName = GphotoThumbnail.XML_NAME, nsAlias = Namespaces.PHOTOS_ALIAS, nsUri = Namespaces.PHOTOS)
+public class GphotoThumbnail extends ValueConstruct {
+    static final String XML_NAME = "thumbnail";
+
+    public GphotoThumbnail() {
+        this(null);
+    }
+
+    public GphotoThumbnail(String str) {
+        super(Namespaces.PHOTOS_NAMESPACE, XML_NAME, null, str);
+        setRequired(false);
+    }
+
+    public static ExtensionDescription getDefaultDescription(boolean z, boolean z2) {
+        ExtensionDescription defaultDescription = ExtensionDescription.getDefaultDescription(GphotoThumbnail.class);
+        defaultDescription.setRequired(z);
+        defaultDescription.setRepeatable(z2);
+        return defaultDescription;
+    }
+
+    public String toString() {
+        return "{GphotoThumbnail value=" + getValue() + "}";
+    }
+}

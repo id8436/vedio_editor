@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu style="@style/FocusableViewSelectableBg"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:icon="@drawable/icn_rename" android:id="@id/adobe_cc_edit_view_action_rename" android:visible="false" android:title="@string/adobe_csdk_asset_edit_rename_button" app:showAsAction="always" />
+    <group android:id="@id/group_edit_view_action_icons" android:visible="false">
+        <item android:icon="@drawable/icn_move" android:id="@id/adobe_cc_edit_view_action_move" android:title="@string/adobe_csdk_asset_view_edit_move_button" app:showAsAction="always" />
+        <item android:icon="@drawable/icn_copy" android:id="@id/adobe_cc_edit_view_action_copy" android:title="@string/adobe_csdk_asset_view_edit_copy_button" app:showAsAction="always" />
+        <item android:icon="@drawable/icn_archive" android:id="@id/adobe_cc_edit_view_action_archive" android:title="@string/adobe_csdk_asset_view_edit_archive_button" app:showAsAction="always" />
+        <item android:icon="@drawable/icn_delete" android:id="@id/adobe_cc_edit_view_action_delete" android:title="@string/adobe_csdk_asset_view_edit_delete_button" app:showAsAction="always" />
+    </group>
+</menu>

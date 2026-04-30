@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/bsdk_card_project_editor_module_warning_container" android:background="#3f4c56" android:padding="40.0dp" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/bsdk_card_project_editor_module_warning_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="18.0sp" android:textColor="#fff" android:id="@id/bsdk_card_project_editor_module_warning_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="20.0dp" />
+    <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textSize="12.0sp" android:textColor="#fff" android:gravity="center" android:id="@id/bsdk_card_project_editor_module_warning_description" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" />
+</LinearLayout>

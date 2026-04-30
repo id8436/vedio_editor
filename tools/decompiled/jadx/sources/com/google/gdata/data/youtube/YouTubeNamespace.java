@@ -1,0 +1,62 @@
+package com.google.gdata.data.youtube;
+
+import com.google.gdata.util.common.xml.XmlNamespace;
+
+/* JADX INFO: loaded from: classes3.dex */
+public class YouTubeNamespace {
+    public static final String CAPTION_TRACKS_REL = "http://gdata.youtube.com/schemas/2007#video.captionTracks";
+    public static final String CATEGORY_SCHEME = "http://gdata.youtube.com/schemas/2007/categories.cat";
+    public static final String CHANNELTYPE_SCHEME = "http://gdata.youtube.com/schemas/2007/channeltypes.cat";
+    public static final String CHANNEL_CONTENT_REL = "http://gdata.youtube.com/schemas/2007#channel.content";
+    public static final String COMMENTS_REL = "http://gdata.youtube.com/schemas/2007#comments";
+    public static final String COMPLAINTS_REL = "http://gdata.youtube.com/schemas/2007#video.complaints";
+    public static final String COMPLAINT_REASON_SCHEME = "http://gdata.youtube.com/schemas/2007/complaint-reasons.cat";
+    public static final String CONTACTS_REL = "http://gdata.youtube.com/schemas/2007#user.contacts";
+    public static final String CONTACT_LIST_SCHEME = "http://gdata.youtube.com/schemas/2007/contact.cat";
+    public static final String CREDIT_SCHEME = "urn:youtube";
+    public static final String CREDIT_UPLOADER_ROLE = "uploader";
+    public static final String DEVELOPER_TAG_SCHEME = "http://gdata.youtube.com/schemas/2007/developertags.cat";
+    public static final String FAVORITES_REL = "http://gdata.youtube.com/schemas/2007#user.favorites";
+    public static final String FEATURED_VIDEO_REL = "http://gdata.youtube.com/schemas/2007#featured-video";
+    public static final String FRIENDSACTIVITY_REL = "http://gdata.youtube.com/schemas/2007#user.friendsactivity";
+    public static final String GET_UPLOAD_TOKEN_REL = "http://gdata.youtube.com/schemas/2007#action.getUploadToken";
+    public static final String INBOX_REL = "http://gdata.youtube.com/schemas/2007#user.inbox";
+    public static final String IN_REPLY_TO = "http://gdata.youtube.com/schemas/2007#in-reply-to";
+    public static final String KEYWORD_SCHEME = "http://gdata.youtube.com/schemas/2007/keywords.cat";
+    public static final String KIND_CAPTION_TRACK = "http://gdata.youtube.com/schemas/2007#captionTrack";
+    public static final String KIND_CHANNEL = "http://gdata.youtube.com/schemas/2007#channel";
+    public static final String KIND_COMMENT = "http://gdata.youtube.com/schemas/2007#comment";
+    public static final String KIND_COMPLAINT = "http://gdata.youtube.com/schemas/2007#complaint";
+    public static final String KIND_FAVORITE = "http://gdata.youtube.com/schemas/2007#favorite";
+    public static final String KIND_FRIEND = "http://gdata.youtube.com/schemas/2007#friend";
+    public static final String KIND_PLAYLIST = "http://gdata.youtube.com/schemas/2007#playlist";
+    public static final String KIND_PLAYLIST_LINK = "http://gdata.youtube.com/schemas/2007#playlistLink";
+    public static final String KIND_RATING = "http://gdata.youtube.com/schemas/2007#rating";
+    public static final String KIND_STATION = "http://gdata.youtube.com/schemas/2007#station";
+    public static final String KIND_SUBSCRIPTION = "http://gdata.youtube.com/schemas/2007#subscription";
+    public static final String KIND_USER_EVENT = "http://gdata.youtube.com/schemas/2007#userEvent";
+    public static final String KIND_USER_PROFILE = "http://gdata.youtube.com/schemas/2007#userProfile";
+    public static final String KIND_VIDEO = "http://gdata.youtube.com/schemas/2007#video";
+    public static final String KIND_VIDEO_MESSAGE = "http://gdata.youtube.com/schemas/2007#videoMessage";
+    public static final String MEDIA_RATING_SCHEME = "http://gdata.youtube.com/schemas/2007#mediarating";
+    public static final String MOBILE_REL = "http://gdata.youtube.com/schemas/2007#mobile";
+    public static final String NEW_SUBSCRIPTION_VIDEOS_REL = "http://gdata.youtube.com/schemas/2007#user.newsubscriptionvideos";
+    public static final String PLAYLISTS_REL = "http://gdata.youtube.com/schemas/2007#user.playlists";
+    public static final String PLAYLIST_REL = "http://gdata.youtube.com/schemas/2007#playlist";
+    public static final String RATINGS_REL = "http://gdata.youtube.com/schemas/2007#video.ratings";
+    public static final String RECENTACTIVITY_REL = "http://gdata.youtube.com/schemas/2007#user.recentactivity";
+    public static final String RELATED_REL = "http://gdata.youtube.com/schemas/2007#video.related";
+    public static final String RESPONSES_REL = "http://gdata.youtube.com/schemas/2007#video.responses";
+    public static final String STATION_CONTENT_REL = "http://gdata.youtube.com/schemas/2007#station.content";
+    public static final String SUBSCRIPTIONS_REL = "http://gdata.youtube.com/schemas/2007#user.subscriptions";
+    public static final String SUBSCRIPTIONTYPE_SCHEME = "http://gdata.youtube.com/schemas/2007/subscriptiontypes.cat";
+    public static final String TAG_SCHEME = "http://gdata.youtube.com/schemas/2007/tags.cat";
+    public static final String UPLOADS_REL = "http://gdata.youtube.com/schemas/2007#user.uploads";
+    public static final String USEREVENTS_SCHEME = "http://gdata.youtube.com/schemas/2007/userevents.cat";
+    public static final String VIDEO_QUERY_REL = "http://gdata.youtube.com/schemas/2007#video.query";
+    public static final String VIDEO_REL = "http://gdata.youtube.com/schemas/2007#video";
+    public static final String VLOG_REL = "http://gdata.youtube.com/schemas/2007#user.vlog";
+    public static final String PREFIX = "yt";
+    public static final String URI = "http://gdata.youtube.com/schemas/2007";
+    public static final XmlNamespace NS = new XmlNamespace(PREFIX, URI);
+}

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+    <head>
+
+        <style type="text/css">
+          p, body {
+            margin: 0px;
+          }
+          /* We want transparent background so background color changes
+             in the project editor would shine through */
+          body {
+            background-color: transparent;
+          }
+          /* Fixes a bug where changing text size creates overlapping text */
+          span {
+            line-height: 1.4em;
+          }
+
+          .bold { font-weight: bold; }
+          .italic { font-style: italic; }
+          .underline { text-decoration: underline; }
+
+          /* Below is CSS that is the default for a project we are creating
+             Can be found at the top of the website HTML of their project editor.
+          */
+          .title { font-family: arial,helvetica,sans-serif;font-weight: bold;font-style: normal;text-decoration: none;line-height: 1.1em;font-size: 36px;color: #191919;text-align: left; }
+          .sub-title { font-family: arial,helvetica,sans-serif;font-weight: normal;font-style: normal;text-decoration: none;line-height: 1.4em;font-size: 20px;color: #a4a4a4;text-align: left; }
+          .editor-text .main-text,.main-text { font-family: arial,helvetica,sans-serif;font-weight: normal;font-style: normal;text-decoration: none;line-height: 1.4em;font-size: 20px;color: #696969;text-align: left; }
+          .caption, #project-modules .caption-text-wrap { font-family: arial,helvetica,sans-serif;font-weight: normal;font-style: italic;text-decoration: none;line-height: 1.4em;font-size: 14px;color: #a4a4a4;text-align: left; }
+          .caption-text-wrap a { font-size: 14px !important; }
+          .main-text a { font-family: arial,helvetica,sans-serif;font-weight: normal;font-style: normal;text-decoration: none;line-height: 1.4em;font-size: 12px;color: #1769FF;text-align: left; }
+
+
+          /* Below we insert any custom CSS for a project we are editing.
+             DO NOT remove the 'CUSTOM_CSS' comment. It will be string-replaced
+             if necessary.
+          */
+          /*EDIT_PROJECT_CSS*/
+
+          *:focus { outline: none; }
+
+        </style>
+
+        <!--Functions to communicate over js bridge-->
+        <script type="text/javascript">
+            function onTextChanged(htmlText) {
+                Android.onTextChanged(htmlText);
+            }
+            function onLoadComplete() {
+                Android.onLoadComplete();
+            }
+            function onBlur() {
+                Android.onBlur();
+            }
+            function onFocus() {
+                Android.onFocus();
+            }
+            function onSelectionChanged(hasSelection) {
+                Android.onSelectionChanged(hasSelection);
+            }
+            function onKeyUp() {
+                Android.onKeyUp();
+            }
+            function onEditorLoaded() {
+                Android.onEditorLoaded();
+            }
+            function checkEmpty() {
+                Android.onEmptyCheck(getEditor().isEmpty());
+            }
+            function onStateUpdated() {
+                Android.onStateUpdated();
+            }
+            function getEditorState() {
+                var state = '{';
+                var ob = getEditor().getState();
+                for (var field in ob) {
+                    if (ob.hasOwnProperty(field)) {
+                        state += '\"' + field + '\":\"' + ob[field] + '\",';
+                    }
+                }
+                Android.onStateFetched(state.substring(0, state.length - 1) + '}');
+            }
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id="container" class="main-text" spellcheck="false" contenteditable="true"></div>
+
+        <script>
+            @android_textEditorJavaScript
+        </script>
+
+        <script>
+            var editor;
+            window.setup(@android_config).then(function(TextEditor) {
+                editor = new TextEditor('container');
+                window.textEditor = editor;
+
+                function reportTextDidChangeEvent() {
+                    onTextChanged(editor.getData());
+                }
+
+                editor.on('loaded', function() {
+                    onLoadComplete();
+                });
+                editor.on('focus', function() {
+                    onFocus();
+                });
+                editor.on('blur', function() {
+                    onBlur();
+                });
+                editor.on('stateUpdated', function() {
+                    reportTextDidChangeEvent();
+                    onStateUpdated();
+                });
+                document.addEventListener('selectionchange', function() {
+                    reportTextDidChangeEvent();
+                    onSelectionChanged(editor.hasSelection());
+                });
+                editor.on('keyup', function() {
+                    reportTextDidChangeEvent();
+                    onKeyUp();
+                });
+            });
+            function getEditor() {
+                return editor;
+            }
+        </script>
+
+    </body>
+
+</html>

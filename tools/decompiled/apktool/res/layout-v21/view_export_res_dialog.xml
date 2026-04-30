@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:paddingLeft="20.0dp" android:paddingTop="14.0dp" android:paddingRight="20.0dp" android:paddingBottom="8.0dp" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.adobe.premiereclip.util.AutoResizeTextView android:ellipsize="none" android:gravity="start|center" android:id="@id/selectTitle" android:paddingTop="6.0dp" android:paddingBottom="20.0dp" android:layout_width="match_parent" android:layout_height="56.0dp" android:text="@string/select_export_resolution" android:maxLines="1" style="?android:attr/textAppearanceLarge" />
+    <RadioGroup android:id="@id/exportOptionsGroup" android:paddingBottom="18.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <android.support.v7.widget.AppCompatRadioButton android:layout_gravity="center_vertical" android:id="@id/hdOption" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16.0dp" android:text="@string/export_res_hd" android:buttonTint="@color/theme_color" />
+        <android.support.v7.widget.AppCompatRadioButton android:layout_gravity="center_vertical" android:id="@id/fhdOption" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/export_res_fhd" android:buttonTint="@color/theme_color" />
+    </RadioGroup>
+    <android.support.v7.widget.AppCompatCheckBox android:layout_gravity="center_vertical" android:id="@id/setAsDefaultRes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12.0dp" android:text="@string/set_default_export_res" android:buttonTint="@color/theme_color" />
+    <TextView android:id="@id/messageDefault" android:paddingLeft="2.0dp" android:paddingRight="2.0dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12.0dp" android:text="@string/message_set_default_export_res" />
+    <Button android:textColor="@color/primary" android:layout_gravity="center" android:id="@id/exportContinue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/continue_export" style="?android:attr/buttonBarButtonStyle" />
+</LinearLayout>

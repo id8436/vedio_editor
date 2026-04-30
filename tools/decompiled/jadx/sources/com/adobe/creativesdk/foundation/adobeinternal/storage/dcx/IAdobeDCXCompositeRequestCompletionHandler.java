@@ -1,0 +1,10 @@
+package com.adobe.creativesdk.foundation.adobeinternal.storage.dcx;
+
+import com.adobe.creativesdk.foundation.internal.utils.AdobeCSDKException;
+
+/* JADX INFO: loaded from: classes.dex */
+public interface IAdobeDCXCompositeRequestCompletionHandler {
+    void onCompletion(AdobeDCXComposite adobeDCXComposite);
+
+    void onError(AdobeCSDKException adobeCSDKException);
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView app:cardBackgroundColor="@color/bsdk_card_color" app:cardCornerRadius="0.0dp" app:cardElevation="0.0dp" style="@style/BsdkCardStyle"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+            <com.facebook.drawee.view.SimpleDraweeView android:id="@id/bsdk_discover_project_card_cover" android:layout_width="match_parent" android:layout_height="wrap_content" app:fadeDuration="100" app:viewAspectRatio="1.278" app:placeholderImage="@color/bsdk_image_loading_placeholder" />
+            <LinearLayout android:orientation="vertical" android:padding="@dimen/bsdk_card_view_grid_padding" android:layout_width="match_parent" android:layout_height="match_parent">
+                <TextView android:id="@id/bsdk_discover_project_card_title" android:lines="2" style="@style/BsdkCardTitleTextView" />
+                <TextView android:id="@id/bsdk_discover_project_card_artist" android:lines="1" style="@style/BsdkCardNameTextView" />
+                <LinearLayout android:orientation="vertical" android:id="@id/bsdk_discover_project_card_appreciations_container" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <View android:background="@color/bsdk_card_divider" android:layout_width="match_parent" android:layout_height="1.0px" android:layout_marginTop="@dimen/bsdk_card_view_grid_padding" android:layout_marginBottom="@dimen/bsdk_card_view_grid_padding" />
+                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:id="@id/bsdk_discover_project_card_appreciations" android:drawableLeft="@drawable/bsdk_activity_icon_appreciation_total" style="@style/BsdkCardStats" />
+                        <TextView android:id="@id/bsdk_discover_project_card_views" android:drawableLeft="@drawable/bsdk_activity_icon_views_total" style="@style/BsdkCardStats" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <ImageView android:id="@id/bsdk_discover_project_card_selected" android:paddingRight="@dimen/bsdk_card_view_grid_padding" android:paddingBottom="4.0dp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bsdk_icon_profile_teams_manage_check" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

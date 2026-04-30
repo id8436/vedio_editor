@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/bsdk_generic_alert_dialog_content_bg_color" />
+    <corners android:radius="@dimen/bsdk_generic_alert_dialog_corner_radius" />
+</shape>

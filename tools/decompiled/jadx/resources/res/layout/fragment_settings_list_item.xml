@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:textSize="@dimen/settings_list_item_font_size"
+        android:textColor="@color/settings_list_item_text_color"
+        android:gravity="center_vertical"
+        android:id="@+id/settingsListItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_list_item_height"
+        android:layout_marginLeft="@dimen/settings_list_item_margin_left"
+        android:layout_marginTop="@dimen/settings_list_item_margin_top"
+        android:layout_marginRight="@dimen/settings_list_item_margin_right"
+        android:layout_marginBottom="@dimen/settings_list_item_margin_bottom"/>
+    <View
+        android:background="@color/settings_list_divider_color"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="@dimen/settings_list_item_margin_left"
+        android:layout_marginRight="@dimen/settings_list_item_margin_right"/>
+</LinearLayout>

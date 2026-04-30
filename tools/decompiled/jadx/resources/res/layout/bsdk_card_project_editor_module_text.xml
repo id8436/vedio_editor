@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bsdk_card_project_editor_module_text_container"
+    android:paddingLeft="@dimen/bsdk_module_text_padding_inner"
+    android:paddingRight="@dimen/bsdk_module_text_padding_inner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/bsdk_module_text_padding_outer"
+    android:layout_marginRight="@dimen/bsdk_module_text_padding_outer"
+    android:foreground="@drawable/bsdk_foreground_module_edit">
+    <WebView
+        android:id="@+id/bsdk_card_project_editor_module_text_web_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"/>
+    <View
+        android:id="@+id/bsdk_card_project_editor_module_text_overlay"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/bsdk_card_project_editor_module_text_web_view"
+        android:layout_alignBottom="@+id/bsdk_card_project_editor_module_text_web_view"/>
+</RelativeLayout>

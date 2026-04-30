@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@color/bsdk_card_color" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/bsdk_bottom_sheet_content_container" android:background="?selectableItemBackground" android:paddingLeft="30.0dp" android:paddingRight="30.0dp" android:clickable="true" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_share_sheet_item_height">
+        <ImageView android:id="@id/bsdk_bottom_sheet_item_thumbnail" android:layout_width="26.0dp" android:layout_height="26.0dp" android:layout_marginRight="30.0dp" android:scaleType="centerInside" />
+        <TextView android:textSize="18.0sp" android:id="@id/bsdk_bottom_sheet_item_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" />
+    </LinearLayout>
+</RelativeLayout>

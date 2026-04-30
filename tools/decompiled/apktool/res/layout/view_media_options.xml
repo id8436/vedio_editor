@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <View android:id="@id/media_options_background" android:background="#77000000" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:onClick="closeMediaOptions" />
+    <LinearLayout android:orientation="vertical" android:id="@id/media_options_view" android:background="#f6f9fa" android:padding="8.0dp" android:paddingLeft="16.0dp" android:paddingRight="16.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+        <LinearLayout android:id="@id/media_option_cc" style="@style/mediaCaptureOptionStyle">
+            <ImageView android:src="@drawable/source_cc" style="@style/sharingPickerImageStyle" />
+            <TextView android:text="@string/adobe_csdk_cc_title" style="@style/sharingPickerTextViewStyle" />
+        </LinearLayout>
+        <LinearLayout android:id="@id/media_option_google_drive" style="@style/mediaCaptureOptionStyle">
+            <ImageView android:src="@drawable/import_sourcepicker_google_drive" style="@style/sharingPickerImageStyle" />
+            <TextView android:text="@string/media_picker_google_drive" style="@style/sharingPickerTextViewStyle" />
+        </LinearLayout>
+        <LinearLayout android:id="@id/media_option_dropbox" style="@style/mediaCaptureOptionStyle">
+            <ImageView android:src="@drawable/import_sourcepicker_dropbox" style="@style/sharingPickerImageStyle" />
+            <TextView android:text="@string/dropbox_title" style="@style/sharingPickerTextViewStyle" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

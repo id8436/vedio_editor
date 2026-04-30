@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="@dimen/bsdk_adapter_project_info_featured_list_item_ribbon_image_horizontal_padding"
+    android:paddingRight="@dimen/bsdk_adapter_project_info_featured_list_item_ribbon_image_horizontal_padding"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <com.behance.sdk.ui.components.BehanceSDKTopCropImageView
+        android:id="@+id/bsdk_projectInfoFeaturedIconImgView"
+        android:layout_width="@dimen/bsdk_adapter_project_info_featured_list_item_ribbon_image_width_size"
+        android:layout_height="@dimen/bsdk_adapter_project_info_featured_list_item_ribbon_image_height_size"
+        android:contentDescription="@string/bsdk_msg_image_missing"/>
+</RelativeLayout>

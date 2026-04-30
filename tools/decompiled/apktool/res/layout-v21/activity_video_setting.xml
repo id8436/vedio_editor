@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@color/theme_color" android:layout_width="match_parent" android:layout_height="@dimen/editor_topbar_height" android:elevation="4.0dp">
+        <ImageView android:id="@id/backButton" android:onClick="closeAndGoBack" style="@style/backIconStyle" />
+        <TextView android:textSize="16.0sp" android:textColor="#fff" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/video_setting_title" android:layout_toRightOf="@id/backButton" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:padding="20.0dp" android:layout_width="match_parent" android:layout_height="match_parent">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/video_setting_option1" android:layout_centerVertical="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/fadein_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/video_setting_option2" android:layout_centerVertical="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/fadeout_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/video_setting_option3" android:layout_centerVertical="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/crossfade_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/photo_motion_option" android:layout_centerVertical="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/photo_motion_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp" android:text="@string/photo_motion_description" style="@style/descriptionTextStyle" />
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:id="@id/title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dp" android:text="@string/video_settings_bumper" />
+            <TextView android:ellipsize="middle" android:id="@id/bumper_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dp" android:lines="1" android:layout_toLeftOf="@id/bumper_switch" android:layout_below="@id/title" android:layout_alignParentLeft="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/bumper_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp">
+            <TextView android:textSize="15.0sp" android:id="@id/title2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5.0dp" android:text="@string/video_settings_watermark" />
+            <TextView android:ellipsize="middle" android:id="@id/watermark_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3.0dp" android:lines="1" android:layout_toLeftOf="@id/watermark_switch" android:layout_below="@id/title2" android:layout_alignParentLeft="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/watermark_switch" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <View android:background="#cccccc" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginBottom="10.0dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dp" android:text="@string/video_settings_branding_preference" style="@style/descriptionTextStyle" />
+    </LinearLayout>
+</LinearLayout>

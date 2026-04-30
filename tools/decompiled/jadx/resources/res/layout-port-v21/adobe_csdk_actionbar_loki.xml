@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adobe_csdk_actionbar_toolbar_loki"
+    android:background="@color/adobe_loki_app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/adobe_csdk_action_bar_size"
+    android:contentInsetStart="72dp"
+    app:contentInsetStart="72dp"
+    app:popupTheme="@style/AdobeCSDKPopUpStyle"
+    app:theme="@style/AdobeCSDKThemeActionBarLoki">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.adobe.creativesdk.foundation.internal.utils.CreativeSDKTextView
+            android:textSize="@dimen/adobe_csdk_actionBar_text_size"
+            android:textColor="@color/adobe_csdk_theme_color_actionbar_background"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:id="@+id/adobe_csdk_actionbar_title"
+            android:paddingBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

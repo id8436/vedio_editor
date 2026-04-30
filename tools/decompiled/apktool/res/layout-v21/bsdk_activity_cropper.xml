@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:animateLayoutChanges="true"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.behance.sdk.ui.components.BehanceSDKCropView android:id="@id/bsdk_cropper_view" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <android.support.design.widget.FloatingActionButton android:id="@id/bsdk_cropper_fab" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="18.0dp" android:src="@drawable/bsdk_icon_check" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" app:fab_colorNormal="@color/bsdk_behance_blue" app:fab_size="normal" />
+    <FrameLayout android:id="@id/bsdk_cropper_loader" android:background="#c3000000" android:visibility="gone" android:clickable="true" android:layout_width="match_parent" android:layout_height="match_parent" android:elevation="10.0dp">
+        <ProgressBar android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    </FrameLayout>
+</RelativeLayout>

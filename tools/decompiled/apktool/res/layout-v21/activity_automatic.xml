@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:id="@id/auto_header" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@id/auto_toolbar" android:background="@color/theme_color" android:layout_width="match_parent" android:layout_height="@dimen/editor_topbar_height" android:elevation="4.0dp">
+                <ImageView android:id="@id/auto_back" android:onClick="closeAutomode" style="@style/backIconStyle" />
+                <TextView android:textSize="18.0sp" android:textColor="@color/white" android:id="@id/auto_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/automatic_project" android:layout_toRightOf="@id/auto_back" android:layout_centerVertical="true" android:layout_marginEnd="5.0dp" />
+                <ImageView android:id="@id/dcx_spinner" android:background="@drawable/ripple_effect_white" android:visibility="gone" android:layout_marginRight="12.0dp" android:src="@drawable/btn_sync_white" android:layout_toLeftOf="@id/automatic_sequence" android:layout_centerVertical="true" style="@style/EditorIconStyle" />
+                <ImageView android:id="@id/automatic_sequence" android:background="@drawable/ripple_effect_white" android:padding="7.0dp" android:clickable="true" android:layout_width="40.0dp" android:layout_height="match_parent" android:src="@drawable/auto_sequence_p" android:tint="#fff" android:layout_toLeftOf="@id/convert_freeform" android:layout_centerVertical="true" android:onClick="openSequenceView" />
+                <ImageView android:id="@id/auto_share" android:background="@drawable/ripple_effect_white" android:padding="10.0dp" android:clickable="true" android:layout_width="40.0dp" android:layout_height="match_parent" android:layout_marginRight="5.0dp" android:src="@drawable/proj_share_white" android:layout_centerVertical="true" android:onClick="shareProject" android:layout_alignParentEnd="true" />
+                <ImageView android:id="@id/convert_freeform" android:background="@drawable/ripple_effect_white" android:padding="7.0dp" android:clickable="true" android:layout_width="40.0dp" android:layout_height="match_parent" android:layout_marginLeft="8.0dp" android:layout_marginRight="5.0dp" android:src="@drawable/freeform_lg_white" android:layout_toLeftOf="@id/auto_share" android:layout_centerVertical="true" android:onClick="convertToFreeForm" />
+            </RelativeLayout>
+            <View android:background="@color/white" android:layout_width="match_parent" android:layout_height="1.0dp" />
+            <android.support.design.widget.TabLayout android:id="@id/autoOption_tabs" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="@dimen/clip_option_btn_size" app:tabIndicatorHeight="5.0dp" app:tabMode="fixed" app:tabGravity="fill" app:tabMaxWidth="0.0dp" />
+        </LinearLayout>
+        <RelativeLayout android:id="@id/player_wrapper" android:background="@color/black" android:layout_width="match_parent" android:layout_height="wrap_content" android:onClick="touchPlayer">
+            <RelativeLayout android:id="@id/player_container" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_centerInParent="true" />
+            <RelativeLayout android:gravity="center" android:id="@id/player_edit_mode" android:layout_width="match_parent" android:layout_height="match_parent">
+                <ImageView android:id="@id/clip_play_pause_btn" android:layout_width="60.0dp" android:layout_height="60.0dp" android:src="@drawable/play_refresh" />
+                <include layout="@layout/view_loading" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/auto_fragmentholder" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_below="@id/player_wrapper">
+            <android.support.v4.view.ViewPager android:id="@id/auto_pager" android:layout_width="match_parent" android:layout_height="match_parent" />
+        </LinearLayout>
+        <RelativeLayout android:id="@id/autotimeline_dummyview" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" />
+    </LinearLayout>
+    <include layout="@layout/sharing_options" />
+    <include layout="@layout/automatic_sequence" />
+    <View android:id="@id/touch_guard" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" />
+</RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="drawer_options">
+        <item>@string/option_about_app</item>
+        <item>@string/option_settings</item>
+        <item>@string/option_feedback</item>
+    </array>
+    <array name="export_res_options">
+        <item>@string/export_res_default</item>
+        <item>@string/export_res_hd</item>
+        <item>@string/export_res_fhd</item>
+    </array>
+    <array name="settings_main_list">
+        <item>@string/settings_my_accounts</item>
+        <item>@string/settings_about_premiereclip</item>
+        <item>@string/settings_view_tutorials</item>
+        <item>@string/settings_give_feedback</item>
+    </array>
+    <array name="settings_myaccount_list">
+        <item>@string/settings_myaccount_profile</item>
+        <item>@string/settings_myaccount_adobeid</item>
+    </array>
+</resources>

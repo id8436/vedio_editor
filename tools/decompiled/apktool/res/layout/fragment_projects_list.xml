@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:background="#ffe9e9e9" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:layout_gravity="center" android:id="@id/project_view_message" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <android.support.v4.widget.SwipeRefreshLayout android:id="@id/project_swipe_refresh_layout" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView android:id="@id/projects_list_view" android:paddingBottom="@dimen/list_view_padding_bottom" android:scrollbars="vertical" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</FrameLayout>

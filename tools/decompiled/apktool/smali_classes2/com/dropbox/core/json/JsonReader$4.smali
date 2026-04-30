@@ -1,0 +1,68 @@
+.class final Lcom/dropbox/core/json/JsonReader$4;
+.super Lcom/dropbox/core/json/JsonReader;
+.source "JsonReader.java"
+
+
+# annotations
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lcom/dropbox/core/json/JsonReader",
+        "<",
+        "Ljava/lang/Long;",
+        ">;"
+    }
+.end annotation
+
+
+# direct methods
+.method constructor <init>()V
+    .locals 0
+
+    .prologue
+    .line 232
+    invoke-direct {p0}, Lcom/dropbox/core/json/JsonReader;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public read(Lcom/d/a/a/k;)Ljava/lang/Long;
+    .locals 2
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Ljava/io/IOException;,
+            Lcom/dropbox/core/json/JsonReadException;
+        }
+    .end annotation
+
+    .prologue
+    .line 236
+    invoke-static {p1}, Lcom/dropbox/core/json/JsonReader$4;->readUnsignedLong(Lcom/d/a/a/k;)J
+
+    move-result-wide v0
+
+    invoke-static {v0, v1}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public bridge synthetic read(Lcom/d/a/a/k;)Ljava/lang/Object;
+    .locals 1
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Ljava/io/IOException;,
+            Lcom/dropbox/core/json/JsonReadException;
+        }
+    .end annotation
+
+    .prologue
+    .line 232
+    invoke-virtual {p0, p1}, Lcom/dropbox/core/json/JsonReader$4;->read(Lcom/d/a/a/k;)Ljava/lang/Long;
+
+    move-result-object v0
+
+    return-object v0
+.end method

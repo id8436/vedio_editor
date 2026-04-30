@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:fab="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.AppBarLayout android:id="@id/app_bar_layout" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar android:id="@id/main_toolbar" android:background="?colorPrimary" android:layout_width="match_parent" android:layout_height="?actionBarSize" fab:popupTheme="@style/ThemeOverlay.AppCompat.Light" fab:layout_scrollFlags="enterAlways">
+                <RelativeLayout android:gravity="center_vertical" android:id="@id/subview_theme_list" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/library_name_toolbar" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <TextView android:textSize="20.0sp" android:textColor="#ffffff" android:id="@id/lib_name" android:paddingLeft="14.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:singleLine="true" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <TextView android:textSize="20.0sp" android:textColor="@color/white" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/subview_fragment" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" />
+            </android.support.v7.widget.Toolbar>
+        </FrameLayout>
+        <android.support.design.widget.TabLayout android:id="@id/main_tabs" android:paddingLeft="56.0dp" android:clipToPadding="false" android:layout_width="match_parent" android:layout_height="wrap_content" fab:theme="@style/AppTheme.TabTheme" />
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.view.ViewPager android:id="@id/main_pager" android:layout_width="match_parent" android:layout_height="match_parent" fab:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <View android:id="@id/background_for_menu" android:background="#77000000" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:onClick="closeMenu" />
+    <com.getbase.floatingactionbutton.FloatingActionsMenu android:layout_gravity="end|bottom" android:id="@id/open_project" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="8.0dp" fab:fab_addButtonColorPressed="@color/primary_dark" fab:fab_addButtonColorNormal="@color/primary" fab:fab_addButtonPlusIconColor="#ffffff" fab:fab_labelStyle="@style/menu_labels_style" />
+    <ImageButton android:layout_gravity="start|bottom" android:id="@id/placeHolderViewForSyncBtn" android:background="@drawable/round_button" android:visibility="gone" android:layout_marginLeft="8.0dp" android:layout_marginBottom="7.0dp" style="@style/SyncPlaceholderStyle" />
+    <ImageView android:layout_gravity="start|bottom" android:id="@id/editorIconBarCloudBtn2" android:visibility="gone" android:layout_marginLeft="11.0dp" android:layout_marginBottom="11.0dp" style="@style/EditorIconStyle" />
+    <include layout="@layout/bottom_sheet_options" />
+    <include layout="@layout/view_media_capture_options" />
+    <include layout="@layout/share_intents" />
+    <FrameLayout android:id="@id/main_view_container" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="?actionBarSize" />
+    <include layout="@layout/view_media_options" />
+</android.support.design.widget.CoordinatorLayout>

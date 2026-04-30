@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:color="@color/bsdk_card_color">
+    <item android:state_enabled="true">
+        <shape>
+            <solid android:color="#00000000"/>
+            <stroke
+                android:width="0.67dp"
+                android:color="#bf005cff"
+                android:dashWidth="8dp"
+                android:dashGap="4dp"/>
+        </shape>
+    </item>
+</selector>

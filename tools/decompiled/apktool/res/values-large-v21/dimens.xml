@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bsdk_recycler_padding_top_toolbar_and_filter_grid">140.34dp</dimen>
+    <dimen name="bsdk_recycler_padding_top_toolbar_and_filter_list">143.0dp</dimen>
+    <dimen name="bsdk_recycler_padding_top_toolbar_grid">92.34dp</dimen>
+    <dimen name="bsdk_recycler_padding_top_toolbar_list">95.0dp</dimen>
+    <dimen name="bsdk_recycler_padding_top_toolbar_list_jobs">90.0dp</dimen>
+</resources>

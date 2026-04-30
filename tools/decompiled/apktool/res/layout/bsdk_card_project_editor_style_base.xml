@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/bsdk_card_project_editor_style_container" android:padding="18.0dp" android:layout_width="match_parent" android:layout_height="@dimen/bsdk_style_card_height" android:foreground="?selectableItemBackground"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/bsdk_card_project_editor_style_text_left" android:layout_alignParentLeft="true" style="@style/BsdkProjectEditorStyleText" />
+    <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/bsdk_card_project_editor_style_text_right" android:layout_alignParentRight="true" style="@style/BsdkProjectEditorStyleText" />
+</RelativeLayout>

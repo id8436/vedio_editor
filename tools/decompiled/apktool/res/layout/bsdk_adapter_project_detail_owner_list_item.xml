@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:padding="6.3299866dp" android:layout_width="match_parent" android:layout_height="48.0dp" android:minWidth="240.0dp"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.behance.sdk.ui.components.BehanceSDKRoundedRectImageView android:id="@id/bsdk_projectDetailsOwnersListItemAvatar" android:layout_width="@dimen/bsdk_project_detail_avatar_size" android:layout_height="match_parent" android:scaleType="fitCenter" />
+    <TextView android:textSize="12.0sp" android:textColor="@color/bsdk_app_primary_text_color" android:id="@id/bsdk_projectDetailsOwnersListItemName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="9.0dp" android:includeFontPadding="false" />
+</LinearLayout>

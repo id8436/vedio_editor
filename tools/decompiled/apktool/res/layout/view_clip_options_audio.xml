@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@id/audioBody" android:layout_width="match_parent" android:layout_height="match_parent" android:fadeScrollbars="false"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" style="@style/clipOptionsBodyStyle">
+        <TextView android:id="@id/playAudioText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="3.0dp" android:layout_marginBottom="3.0dp" android:text="@string/play_audio_title" />
+        <android.support.v7.widget.SwitchCompat android:id="@id/playAudioValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0.0dp" android:layout_marginRight="10.0dp" android:layout_alignParentRight="true" />
+        <View android:id="@id/audio_seperator1" android:background="@color/clip_options_seperator_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginTop="5.0dp" android:layout_below="@id/playAudioValue" />
+        <TextView android:id="@id/volumeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="15.0dp" android:text="@string/volume_title" android:layout_below="@id/audio_seperator1" />
+        <TextView android:id="@id/volumeValueText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="15.0dp" android:layout_marginRight="10.0dp" android:text="100%" android:layout_below="@id/audio_seperator1" android:layout_alignParentRight="true" />
+        <SeekBar android:id="@id/volumeValue" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5.0dp" android:layout_below="@id/volumeText" />
+        <View android:id="@id/audio_seperator2" android:background="@color/clip_options_seperator_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginTop="5.0dp" android:layout_below="@id/volumeValue" />
+        <RelativeLayout android:id="@id/smartVolume" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10.0dp" android:layout_below="@id/audio_seperator2">
+            <TextView android:id="@id/smartVolumeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/smart_volume_title" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+            <android.support.v7.widget.SwitchCompat android:id="@id/smartVolumeValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <TextView android:id="@id/smartVolumeDescription" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="0.0dp" android:text="@string/smart_volume_description" android:layout_below="@id/smartVolume" android:layout_marginStart="10.0dp" android:layout_marginEnd="10.0dp" style="@style/descriptionTextStyle" />
+        <View android:id="@id/audio_seperator3" android:background="@color/clip_options_seperator_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginTop="5.0dp" android:layout_below="@id/smartVolumeDescription" />
+        <TextView android:id="@id/audiofadein_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="15.0dp" android:text="@string/audio_fade_in" android:layout_below="@id/audio_seperator3" />
+        <android.support.v7.widget.SwitchCompat android:id="@id/audiofadein_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dp" android:layout_marginRight="10.0dp" android:layout_below="@id/audio_seperator3" android:layout_alignParentRight="true" />
+        <View android:id="@id/audio_seperator4" android:background="@color/clip_options_seperator_color" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginTop="5.0dp" android:layout_below="@id/audiofadein_value" />
+        <TextView android:id="@id/audiofadeout_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="15.0dp" android:text="@string/audio_fade_out" android:layout_below="@id/audio_seperator4" />
+        <android.support.v7.widget.SwitchCompat android:id="@id/audiofadeout_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dp" android:layout_marginRight="10.0dp" android:layout_below="@id/audio_seperator4" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+</ScrollView>

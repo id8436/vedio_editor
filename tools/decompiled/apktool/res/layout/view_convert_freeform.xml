@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/automatic_convert_window" android:background="@color/automatic_convert_background" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:background="@color/white" android:paddingLeft="20.0dp" android:paddingRight="20.0dp" android:paddingBottom="10.0dp" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="20.0dp" android:layout_marginTop="45.0dp" android:layout_marginRight="20.0dp" android:layout_marginBottom="45.0dp" android:weightSum="1.0">
+            <RelativeLayout android:padding="10.0dp" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0">
+                <ImageView android:layout_width="wrap_content" android:layout_height="match_parent" android:src="@drawable/gra_convert" android:scaleType="centerInside" android:layout_centerInParent="true" />
+            </RelativeLayout>
+            <TextView android:textSize="19.0sp" android:paddingTop="2.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/automatic_convert_title" android:layout_weight="0.0" />
+            <TextView android:textSize="15.0sp" android:layout_gravity="center" android:paddingTop="10.0dp" android:paddingBottom="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/automatic_convert_message" android:layout_weight="0.0" />
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="10.0dp" android:layout_weight="0.0">
+                <View android:background="@color/grey" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+            <LinearLayout android:orientation="horizontal" android:paddingTop="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:weightSum="1.0" android:layout_weight="0.0">
+                <com.adobe.premiereclip.util.AutoResizeTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="#7f000000" android:ellipsize="none" android:gravity="center" android:id="@id/convert_cancel" android:background="@drawable/ripple_white_button" android:padding="10.0dp" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/automatic_cancel" android:maxLines="1" android:layout_weight="0.4" />
+                <com.adobe.premiereclip.util.AutoResizeTextView android:textSize="14.0sp" android:textStyle="bold" android:textColor="@color/theme_color" android:ellipsize="none" android:gravity="center" android:id="@id/convert_confirm" android:background="@drawable/ripple_white_button" android:padding="10.0dp" android:clickable="true" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/automatic_convert_confirm" android:maxLines="1" android:layout_weight="0.6" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

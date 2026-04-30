@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:background="@drawable/bsdk_shape_album_grid_item_adapter_bg"
+        android:padding="@dimen/bsdk_image_selector_view_adapter_bg_stroke_width"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/bsdkAlbumGridAdapterCoverImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/bsdk_generic_image_content_desc"/>
+        <com.behance.sdk.ui.customviews.BehanceSDKTextView
+            android:textSize="@dimen/bsdk_album_grid_adapter_album_name_txt_size"
+            android:textColor="@color/bsdk_album_grid_adapter_album_name_txt_color"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:id="@+id/bsdkAlbumGridAdapterAlbumNameTxtView"
+            android:background="@color/bsdk_album_grid_adapter_album_name_bar_bg_color"
+            android:paddingLeft="12.5dp"
+            android:paddingRight="12.5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_below="@+id/bsdkAlbumGridAdapterCoverImageView"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</RelativeLayout>

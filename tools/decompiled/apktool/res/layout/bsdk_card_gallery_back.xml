@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/bsdk_card_gallery_back_container" android:background="@color/bsdk_more_info_item_text_color" android:layout_width="match_parent" android:layout_height="match_parent" android:foreground="?selectableItemBackground"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bsdk_icon_gallery_return" />
+    <com.behance.sdk.ui.customviews.BehanceSDKTextView android:textColor="#99a0a6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/bsdk_image_selector_view_titlebar_title_albums_txt" android:maxLines="1" />
+</LinearLayout>

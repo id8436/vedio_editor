@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:id="@id/song_collection_layout" android:background="@drawable/ripple_white_button" android:padding="20.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginEnd="2.0dp">
+        <ImageView android:id="@id/folder_image" android:layout_width="30.0dp" android:layout_height="30.0dp" android:layout_marginRight="15.0dp" android:src="@drawable/soundtrack_folder" android:layout_centerVertical="true" />
+        <TextView android:textColor="#000000" android:layout_gravity="left|center" android:id="@id/song_collection_name" android:padding="2.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="15.0dp" android:singleLine="true" android:layout_toRightOf="@id/folder_image" android:layout_centerVertical="true" />
+    </RelativeLayout>
+    <View android:background="@color/adobe_csdk_asset_detail_grayText" android:layout_width="match_parent" android:layout_height="1.0dp" android:layout_marginEnd="2.0dp" />
+</LinearLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.behance.sdk.ui.components.BehanceSDKAspectRatioRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bsdk_card_project_editor_cover_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="?attr/selectableItemBackground">
+    <ImageView
+        android:id="@+id/bsdk_card_project_editor_cover_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"/>
+    <View
+        android:id="@+id/bsdk_card_project_editor_cover_overlay"
+        android:background="@drawable/bsdk_foreground_editor_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"/>
+</com.behance.sdk.ui.components.BehanceSDKAspectRatioRelativeLayout>

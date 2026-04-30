@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout android:id="@id/drawer_layout" android:fitsSystemWindows="true" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/include_main_body" />
+    <android.support.v7.widget.RecyclerView android:layout_gravity="start" android:id="@id/left_drawer" android:background="#ffffff" android:layout_width="305.0dp" android:layout_height="match_parent" android:divider="@null" android:dividerHeight="0.0dp" android:choiceMode="singleChoice" />
+</android.support.v4.widget.DrawerLayout>

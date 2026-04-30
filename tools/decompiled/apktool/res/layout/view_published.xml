@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/published_view" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.widget.CardView android:id="@id/featured_video_card_view" style="@style/videoListItemCardStyle">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@id/video_thumb" android:layout_width="match_parent" android:layout_height="@dimen/project_thumb_height" android:layout_margin="0.0dp" android:scaleType="centerCrop" />
+                <TextView android:textSize="@dimen/status_box_font_size" android:textColor="#ffffff" android:id="@id/video_status" android:padding="@dimen/status_box_padding" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="@dimen/status_box_margin" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+            </RelativeLayout>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="@dimen/ProjectControlsSectionHeight">
+                <ImageButton android:id="@id/open_video_options" android:background="@drawable/ripple_effect_2" android:padding="@dimen/VideoOpenPopupPadding" android:layout_width="@dimen/VideoOpenPopupWidth" android:layout_height="@dimen/VideoOpenPopupHeight" android:src="@drawable/video_options_menu" android:scaleType="fitCenter" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/ProjectTitleLeftMargin" android:layout_toLeftOf="@id/open_video_options" android:layout_centerVertical="true" android:layout_marginStart="@dimen/ProjectTitleLeftMargin" android:layout_toStartOf="@id/open_video_options">
+                    <TextView android:textColor="#000000" android:ellipsize="end" android:id="@id/video_name" android:paddingBottom="@dimen/video_name_padding" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
+                    <TextView android:textSize="@dimen/author_date_text_size" android:textColor="#999999" android:ellipsize="end" android:id="@id/video_post_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

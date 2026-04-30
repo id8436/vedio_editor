@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bsdk_image_cropper_bg_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/bsdkCropImageControlsWrapper"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/bsdkCropImageCancel"
+            android:padding="@dimen/bsdk_image_cropper_icon_side_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bsdk_icon_close"
+            android:adjustViewBounds="true"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/bsdk_generic_image_content_desc"/>
+        <ImageView
+            android:id="@+id/bsdkCropImageOk"
+            android:padding="@dimen/bsdk_image_cropper_icon_side_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bsdk_icon_check"
+            android:adjustViewBounds="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/bsdk_generic_image_content_desc"/>
+    </RelativeLayout>
+    <com.behance.sdk.edmodo.cropper.CropImageView
+        android:id="@+id/crop_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"/>
+</LinearLayout>

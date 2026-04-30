@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:behanceSDK="http://schemas.android.com/apk/com.behance.sdk">
+    <FrameLayout android:layout_gravity="bottom" android:id="@id/activity_project_editor_content_frame" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="?actionBarSize" app:layout_behavior="com.behance.sdk.ui.behaviors.BehanceSDKShiftForSnackbarBehavior" />
+    <android.support.v7.widget.Toolbar android:layout_gravity="top" android:id="@id/activity_project_editor_toolbar" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="?actionBarSize" android:elevation="2.0dp">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginRight="9.0dp" android:animateLayoutChanges="true">
+            <ViewFlipper android:id="@id/activity_project_editor_toolbar_title" android:layout_width="wrap_content" android:layout_height="match_parent" android:inAnimation="@anim/bsdk_fade_in" android:outAnimation="@anim/bsdk_fade_out">
+                <View android:layout_width="match_parent" android:layout_height="match_parent" />
+                <com.behance.sdk.ui.customviews.BehanceSDKTextView android:text="@string/bsdk_project_editor_nav_title_cover" behanceSDK:fontStyle="regular" style="@style/BsdkToolbarTitleTextStyle" />
+                <com.behance.sdk.ui.customviews.BehanceSDKTextView android:text="@string/bsdk_project_editor_nav_title_info" behanceSDK:fontStyle="regular" style="@style/BsdkToolbarTitleTextStyle" />
+            </ViewFlipper>
+            <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/activity_project_editor_done" android:text="@string/bsdk_image_selector_view_titlebar_action_btn_multiple_photos_done_label" behanceSDK:fontStyle="regular" style="@style/BsdkProjectEditorToolbarTextButton" />
+            <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/activity_project_editor_next" android:text="@string/bsdk_project_editor_nav_next" behanceSDK:fontStyle="regular" style="@style/BsdkProjectEditorToolbarTextButton" />
+            <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/activity_project_editor_publish" android:text="@string/bsdk_project_editor_nav_publish" behanceSDK:fontStyle="regular" style="@style/BsdkProjectEditorToolbarTextButton" />
+            <com.behance.sdk.ui.customviews.BehanceSDKTextView android:id="@id/activity_project_editor_reorder" android:text="@string/bsdk_project_editor_nav_reorder" android:layout_toLeftOf="@id/activity_project_editor_next" android:layout_alignParentRight="false" behanceSDK:fontStyle="regular" style="@style/BsdkProjectEditorToolbarTextButton" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.CoordinatorLayout>

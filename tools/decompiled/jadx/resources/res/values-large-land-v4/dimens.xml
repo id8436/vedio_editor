@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="bsdk_add_project_preview_project_fragment_list_item_top_padding">20dp</dimen>
+    <dimen name="bsdk_add_project_preview_project_fragment_listview_top_bottom_padding">30dp</dimen>
+    <dimen name="bsdk_dialog_project_more_info_width">500dp</dimen>
+    <dimen name="bsdk_more_info_content_padding">73.33dp</dimen>
+    <dimen name="bsdk_more_info_scrollable_content_horizontal_padding">68.67dp</dimen>
+    <dimen name="global_filter_dialog_height">530dp</dimen>
+    <dimen name="global_filter_dialog_width">348.5dp</dimen>
+</resources>
