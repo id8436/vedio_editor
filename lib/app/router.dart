@@ -1,14 +1,22 @@
 import 'package:go_router/go_router.dart';
 
 import '../core/models/editor_session_input.dart';
-import '../features/editor/presentation/advanced_editor_screen.dart';
-import '../features/editor/presentation/pro_editor_screen.dart';
-import '../features/editor/presentation/clip_editor_screen.dart';
-import '../features/home/presentation/boot_loading_screen.dart';
-import '../features/home/presentation/startup_project_screen.dart';
-import '../features/import/presentation/import_screen.dart';
-import '../features/render/presentation/export_screen.dart';
-import '../features/settings/presentation/settings_screen.dart';
+import '../screens/editor/advanced/presentation/advanced_editor_screen.dart';
+import '../screens/editor/pro/presentation/pro_editor_screen.dart';
+import '../screens/editor/clip/presentation/clip_editor_screen.dart';
+import '../screens/home/presentation/boot_loading_screen.dart';
+import '../screens/home/presentation/startup_project_screen.dart';
+import '../screens/import/presentation/import_screen.dart';
+import '../screens/publish/presentation/publish_screen.dart';
+import '../screens/options/presentation/options_screen.dart';
+import 'app_shell_layout.dart';
+
+EditorSessionInput? _asEditorInput(Object? extra) {
+  if (extra is EditorSessionInput) {
+    return extra;
+  }
+  return null;
+}
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/boot',
@@ -18,59 +26,71 @@ final GoRouter appRouter = GoRouter(
       name: 'boot',
       builder: (context, state) => const BootLoadingScreen(),
     ),
-    GoRoute(
-      path: '/startup',
-      name: 'startup',
-      redirect: (context, state) => '/home',
-    ),
-    GoRoute(
-      path: '/home',
-      name: 'home',
-      builder: (context, state) => const StartupProjectScreen(),
-    ),
-    GoRoute(
-      path: '/import',
-      name: 'import',
-      builder: (context, state) => const ImportScreen(),
-    ),
-    GoRoute(
-      path: '/editor',
-      name: 'editor',
-      builder: (context, state) {
-        final EditorSessionInput? input = state.extra as EditorSessionInput?;
-        return ClipEditorScreen(input: input);
+    ShellRoute(
+      builder: (context, state, child) {
+        final String location = state.uri.toString();
+        final String activeRoute = location.split('?').first;
+        return AppShellLayout(
+          currentRoute: activeRoute,
+          child: child,
+        );
       },
-    ),
-    GoRoute(
-      path: '/editor-advanced',
-      name: 'editor-advanced',
-      builder: (context, state) {
-        final EditorSessionInput? input = state.extra as EditorSessionInput?;
-        final bool preserve = state.uri.queryParameters['preserve'] == '1';
-        return AdvancedEditorScreen(input: input, preserveCurrentProject: preserve);
-      },
-    ),
-    GoRoute(
-      path: '/editor-pro',
-      name: 'editor-pro',
-      builder: (context, state) {
-        final EditorSessionInput? input = state.extra as EditorSessionInput?;
-        final bool preserve = state.uri.queryParameters['preserve'] == '1';
-        return ProEditorScreen(input: input, preserveCurrentProject: preserve);
-      },
-    ),
-    GoRoute(
-      path: '/export',
-      name: 'export',
-      builder: (context, state) {
-        final EditorSessionInput? input = state.extra as EditorSessionInput?;
-        return ExportScreen(input: input);
-      },
-    ),
-    GoRoute(
-      path: '/settings',
-      name: 'settings',
-      builder: (context, state) => const SettingsScreen(),
+      routes: <RouteBase>[
+        GoRoute(
+          path: '/startup',
+          name: 'startup',
+          redirect: (context, state) => '/home',
+        ),
+        GoRoute(
+          path: '/home',
+          name: 'home',
+          builder: (context, state) => const StartupProjectScreen(),
+        ),
+        GoRoute(
+          path: '/import',
+          name: 'import',
+          builder: (context, state) => const ImportScreen(),
+        ),
+        GoRoute(
+          path: '/editor',
+          name: 'editor',
+          builder: (context, state) {
+            final EditorSessionInput? input = _asEditorInput(state.extra);
+            return ClipEditorScreen(input: input);
+          },
+        ),
+        GoRoute(
+          path: '/editor-advanced',
+          name: 'editor-advanced',
+          builder: (context, state) {
+            final EditorSessionInput? input = _asEditorInput(state.extra);
+            final bool preserve = state.uri.queryParameters['preserve'] == '1';
+            return AdvancedEditorScreen(input: input, preserveCurrentProject: preserve);
+          },
+        ),
+        GoRoute(
+          path: '/editor-pro',
+          name: 'editor-pro',
+          builder: (context, state) {
+            final EditorSessionInput? input = _asEditorInput(state.extra);
+            final bool preserve = state.uri.queryParameters['preserve'] == '1';
+            return ProEditorScreen(input: input, preserveCurrentProject: preserve);
+          },
+        ),
+        GoRoute(
+          path: '/export',
+          name: 'export',
+          builder: (context, state) {
+            final EditorSessionInput? input = _asEditorInput(state.extra);
+            return RenderScreen(input: input);
+          },
+        ),
+        GoRoute(
+          path: '/settings',
+          name: 'settings',
+          builder: (context, state) => const OptionsScreen(),
+        ),
+      ],
     ),
   ],
 );

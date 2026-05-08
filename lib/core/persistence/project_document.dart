@@ -52,6 +52,8 @@ class ProjectDocument {
       'transitionPreset': session.transitionPreset.name,
       'audioMixPreset': session.audioMixPreset.name,
       'defaultFilterEffect': session.defaultFilterEffect.name,
+      'autoEditProfile': session.autoEditProfile.name,
+      'beatSyncStrength': session.beatSyncStrength.name,
     };
   }
 
@@ -102,6 +104,16 @@ class ProjectDocument {
         ClipFilterEffect.values,
         json['defaultFilterEffect']?.toString(),
         ClipFilterEffect.none,
+      ),
+      autoEditProfile: _enumByName(
+        AutoEditProfile.values,
+        json['autoEditProfile']?.toString(),
+        AutoEditProfile.adaptiveMontage,
+      ),
+      beatSyncStrength: _enumByName(
+        BeatSyncStrength.values,
+        json['beatSyncStrength']?.toString(),
+        BeatSyncStrength.matched,
       ),
     );
 

@@ -18,6 +18,18 @@ enum ImportAudioMixPreset {
   bgmPriority,
 }
 
+enum AutoEditProfile {
+  balanced,
+  adaptiveMontage,
+  beatFocus,
+}
+
+enum BeatSyncStrength {
+  relaxed,
+  matched,
+  aggressive,
+}
+
 class EditorSessionInput {
   const EditorSessionInput({
     required this.mediaItems,
@@ -31,6 +43,8 @@ class EditorSessionInput {
     this.transitionPreset = ImportTransitionPreset.cut,
     this.audioMixPreset = ImportAudioMixPreset.balanced,
     this.defaultFilterEffect = ClipFilterEffect.none,
+    this.autoEditProfile = AutoEditProfile.adaptiveMontage,
+    this.beatSyncStrength = BeatSyncStrength.matched,
   });
 
   /// All source media items (videos and/or photos), in playback order.
@@ -64,6 +78,44 @@ class EditorSessionInput {
 
   /// Default filter applied to newly generated clips.
   final ClipFilterEffect defaultFilterEffect;
+
+  /// Auto edit strategy used when clips are generated from import analysis.
+  final AutoEditProfile autoEditProfile;
+
+  /// How aggressively clip boundaries should prefer beat-aligned cuts.
+  final BeatSyncStrength beatSyncStrength;
+
+  EditorSessionInput copyWith({
+    List<MediaItem>? mediaItems,
+    List<BgmItem>? bgmItems,
+    bool? bgmLoop,
+    int? editPaceLevel,
+    bool? applyDuckingToAllClips,
+    int? minClipMs,
+    int? maxClipMs,
+    CanvasAspectPreset? canvasAspectPreset,
+    ImportTransitionPreset? transitionPreset,
+    ImportAudioMixPreset? audioMixPreset,
+    ClipFilterEffect? defaultFilterEffect,
+    AutoEditProfile? autoEditProfile,
+    BeatSyncStrength? beatSyncStrength,
+  }) {
+    return EditorSessionInput(
+      mediaItems: mediaItems ?? this.mediaItems,
+      bgmItems: bgmItems ?? this.bgmItems,
+      bgmLoop: bgmLoop ?? this.bgmLoop,
+      editPaceLevel: editPaceLevel ?? this.editPaceLevel,
+      applyDuckingToAllClips: applyDuckingToAllClips ?? this.applyDuckingToAllClips,
+      minClipMs: minClipMs ?? this.minClipMs,
+      maxClipMs: maxClipMs ?? this.maxClipMs,
+      canvasAspectPreset: canvasAspectPreset ?? this.canvasAspectPreset,
+      transitionPreset: transitionPreset ?? this.transitionPreset,
+      audioMixPreset: audioMixPreset ?? this.audioMixPreset,
+      defaultFilterEffect: defaultFilterEffect ?? this.defaultFilterEffect,
+      autoEditProfile: autoEditProfile ?? this.autoEditProfile,
+      beatSyncStrength: beatSyncStrength ?? this.beatSyncStrength,
+    );
+  }
 
   // ── Convenience getters ──────────────────────────────────────────────────
 
