@@ -197,99 +197,102 @@ class _TimelineViewState extends State<TimelineView> {
                           left: 0,
                           right: 0,
                           height: 108,
-                          child: Row(
-                            children: List<Widget>.generate(widget.project.clips.length, (int index) {
-                              final TimelineClip clip = widget.project.clips[index];
-                              final bool canMove = index < widget.project.clips.length - 1;
-                              final bool selectedBoundary = canMove && index == widget.selectedBoundaryClipIndex;
-                              final bool selectedClip = index == widget.selectedClipIndex;
-                              final bool locked = widget.lockedBoundaryIndices.contains(index);
-                              final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List<Widget>.generate(widget.project.clips.length, (int index) {
+                                final TimelineClip clip = widget.project.clips[index];
+                                final bool canMove = index < widget.project.clips.length - 1;
+                                final bool selectedBoundary = canMove && index == widget.selectedBoundaryClipIndex;
+                                final bool selectedClip = index == widget.selectedClipIndex;
+                                final bool locked = widget.lockedBoundaryIndices.contains(index);
+                                final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
 
-                              return GestureDetector(
-                                onTap: () {
-                                  widget.onSelectClip(index);
-                                  widget.onSeekRequest?.call(clip.timelineInMs);
-                                },
-                                child: Container(
-                                  width: width,
-                                  margin: const EdgeInsets.only(right: 2),
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: selectedClip
-                                        ? Colors.deepPurple.withValues(alpha: 0.24)
-                                        : selectedBoundary
-                                            ? Colors.teal.withValues(alpha: 0.25)
-                                            : Colors.teal.withValues(alpha: 0.15),
-                                    border: Border.all(
+                                return GestureDetector(
+                                  onTap: () {
+                                    widget.onSelectClip(index);
+                                    widget.onSeekRequest?.call(clip.timelineInMs);
+                                  },
+                                  child: Container(
+                                    width: width,
+                                    margin: const EdgeInsets.only(right: 2),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
                                       color: selectedClip
-                                          ? Colors.deepPurple.shade700
+                                          ? Colors.deepPurple.withValues(alpha: 0.24)
                                           : selectedBoundary
-                                              ? Colors.teal.shade700
-                                              : Colors.teal.shade300,
-                                      width: (selectedClip || selectedBoundary) ? 2 : 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              'Clip ${index + 1}',
-                                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              _assetLabel(clip.assetId),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(fontSize: 10),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              '${(clip.durationMs / 1000).toStringAsFixed(2)}s',
-                                              style: const TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
+                                              ? Colors.teal.withValues(alpha: 0.25)
+                                              : Colors.teal.withValues(alpha: 0.15),
+                                      border: Border.all(
+                                        color: selectedClip
+                                            ? Colors.deepPurple.shade700
+                                            : selectedBoundary
+                                                ? Colors.teal.shade700
+                                                : Colors.teal.shade300,
+                                        width: (selectedClip || selectedBoundary) ? 2 : 1,
                                       ),
-                                      if (canMove)
-                                        GestureDetector(
-                                          onTap: () => widget.onSelectBoundary(index),
-                                          onHorizontalDragUpdate: (DragUpdateDetails details) {
-                                            widget.onSelectBoundary(index);
-                                            _handleDrag(index, details.delta.dx);
-                                          },
-                                          onHorizontalDragEnd: (_) {
-                                            _dragResidualMs.remove(index);
-                                          },
-                                          child: Container(
-                                            width: 12,
-                                            height: 74,
-                                            decoration: BoxDecoration(
-                                              color: locked
-                                                  ? Colors.grey.shade500
-                                                  : selectedBoundary
-                                                      ? Colors.teal.shade700
-                                                      : Colors.teal.shade500,
-                                              borderRadius: BorderRadius.circular(6),
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: const Icon(
-                                              Icons.drag_indicator,
-                                              size: 11,
-                                              color: Colors.white,
-                                            ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                'Clip ${index + 1}',
+                                                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
+                                              ),
+                                              const SizedBox(height: 2),
+                                              Text(
+                                                _assetLabel(clip.assetId),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(fontSize: 10),
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                '${(clip.durationMs / 1000).toStringAsFixed(2)}s',
+                                                style: const TextStyle(fontSize: 10),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                    ],
+                                        if (canMove)
+                                          GestureDetector(
+                                            onTap: () => widget.onSelectBoundary(index),
+                                            onHorizontalDragUpdate: (DragUpdateDetails details) {
+                                              widget.onSelectBoundary(index);
+                                              _handleDrag(index, details.delta.dx);
+                                            },
+                                            onHorizontalDragEnd: (_) {
+                                              _dragResidualMs.remove(index);
+                                            },
+                                            child: Container(
+                                              width: 12,
+                                              height: 74,
+                                              decoration: BoxDecoration(
+                                                color: locked
+                                                    ? Colors.grey.shade500
+                                                    : selectedBoundary
+                                                        ? Colors.teal.shade700
+                                                        : Colors.teal.shade500,
+                                                borderRadius: BorderRadius.circular(6),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Icon(
+                                                Icons.drag_indicator,
+                                                size: 11,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -297,65 +300,68 @@ class _TimelineViewState extends State<TimelineView> {
                           left: 0,
                           right: 0,
                           height: 80,
-                          child: Row(
-                            children: List<Widget>.generate(widget.project.clips.length, (int index) {
-                              final TimelineClip clip = widget.project.clips[index];
-                              final bool selectedClip = index == widget.selectedClipIndex;
-                              final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List<Widget>.generate(widget.project.clips.length, (int index) {
+                                final TimelineClip clip = widget.project.clips[index];
+                                final bool selectedClip = index == widget.selectedClipIndex;
+                                final double width = (clip.durationMs * _pxPerMs).clamp(70, 420);
 
-                              return Container(
-                                width: width,
-                                margin: const EdgeInsets.only(right: 2),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: selectedClip
-                                      ? Colors.blueGrey.withValues(alpha: 0.25)
-                                      : Colors.blueGrey.withValues(alpha: 0.14),
-                                  border: Border.all(
+                                return Container(
+                                  width: width,
+                                  margin: const EdgeInsets.only(right: 2),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                  decoration: BoxDecoration(
                                     color: selectedClip
-                                        ? Colors.blueGrey.shade700
-                                        : Colors.blueGrey.shade400,
+                                        ? Colors.blueGrey.withValues(alpha: 0.25)
+                                        : Colors.blueGrey.withValues(alpha: 0.14),
+                                    border: Border.all(
+                                      color: selectedClip
+                                          ? Colors.blueGrey.shade700
+                                          : Colors.blueGrey.shade400,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        clip.audioDucking ? Icons.graphic_eq : Icons.audiotrack,
-                                        size: 14,
-                                      ),
-                                      const SizedBox(width: 6),
-                                      Expanded(
-                                        child: Container(
-                                          height: 18,
-                                          decoration: BoxDecoration(
-                                            color: Colors.black.withValues(alpha: 0.08),
-                                            borderRadius: BorderRadius.circular(6),
-                                          ),
-                                          child: Row(
-                                            children: List<Widget>.generate(
-                                              10,
-                                              (int i) => Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.bottomCenter,
-                                                  child: Container(
-                                                    margin: const EdgeInsets.symmetric(horizontal: 0.5),
-                                                    height: 3 + ((i * 7 + index * 3) % 10).toDouble(),
-                                                    color: Colors.blueGrey.shade700,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          clip.audioDucking ? Icons.graphic_eq : Icons.audiotrack,
+                                          size: 14,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Expanded(
+                                          child: Container(
+                                            height: 18,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black.withValues(alpha: 0.08),
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            child: Row(
+                                              children: List<Widget>.generate(
+                                                10,
+                                                (int i) => Expanded(
+                                                  child: Align(
+                                                    alignment: Alignment.bottomCenter,
+                                                    child: Container(
+                                                      margin: const EdgeInsets.symmetric(horizontal: 0.5),
+                                                      height: 3 + ((i * 7 + index * 3) % 10).toDouble(),
+                                                      color: Colors.blueGrey.shade700,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                            ),
                           ),
                         ),
                         if (widget.playheadMs != null)

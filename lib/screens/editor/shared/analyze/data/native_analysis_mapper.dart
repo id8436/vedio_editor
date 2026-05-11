@@ -1,4 +1,5 @@
 import '../../../../../core/models/timeline_models.dart';
+import '../domain/beat_grid_anchorer.dart';
 import '../domain/highlight_scorer.dart';
 
 class NativeAnalysisData {
@@ -15,6 +16,8 @@ class NativeAnalysisData {
 
 class NativeAnalysisMapper {
   const NativeAnalysisMapper();
+
+  static const BeatGridAnchorer _anchorer = BeatGridAnchorer();
 
   NativeAnalysisData fromMap(Map<String, dynamic> raw) {
     const HighlightScorer scorer = HighlightScorer();
@@ -44,22 +47,58 @@ class NativeAnalysisMapper {
     }).toList();
 
     final List<dynamic> beatList = (raw['beats_ms'] as List<dynamic>? ?? <dynamic>[]);
-    final List<BeatMarker> beats = beatList
-        .map(
-          (dynamic ts) => BeatMarker(
-            tsMs: _toInt(ts),
-            strength: 0.75,
-            confidence: 0.70,
-          ),
-        )
-        .toList()
-      ..sort((a, b) => a.tsMs.compareTo(b.tsMs));
+    final List<dynamic> levelList = (raw['beat_levels'] as List<dynamic>? ?? <dynamic>[]);
+    final List<dynamic> bassBeatList = (raw['bass_beats_ms'] as List<dynamic>? ?? <dynamic>[]);
+
+    final List<BeatMarker> beats = <BeatMarker>[];
+    for (int i = 0; i < beatList.length; i++) {
+      final String levelStr = i < levelList.length ? (levelList[i] as String? ?? 'medium') : 'medium';
+      final BeatEnergyLevel level = _parseBeatLevel(levelStr);
+      beats.add(BeatMarker(
+        tsMs: _toInt(beatList[i]),
+        strength: _strengthForLevel(level),
+        confidence: 0.70,
+        type: BeatType.beat,
+        energyLevel: level,
+      ));
+    }
+
+    for (final dynamic ts in bassBeatList) {
+      beats.add(BeatMarker(
+        tsMs: _toInt(ts),
+        strength: 0.95,
+        confidence: 0.80,
+        type: BeatType.bass,
+        energyLevel: BeatEnergyLevel.high,
+      ));
+    }
+
+    final List<BeatMarker> annotatedBeats =
+        _anchorer.annotate(beats);
 
     return NativeAnalysisData(
       highlights: highlights,
-      beats: beats,
+      beats: annotatedBeats,
       durationMs: durationMs,
     );
+  }
+
+  BeatEnergyLevel _parseBeatLevel(String level) {
+    switch (level) {
+      case 'peak':   return BeatEnergyLevel.peak;
+      case 'high':   return BeatEnergyLevel.high;
+      case 'low':    return BeatEnergyLevel.low;
+      default:       return BeatEnergyLevel.medium;
+    }
+  }
+
+  double _strengthForLevel(BeatEnergyLevel level) {
+    switch (level) {
+      case BeatEnergyLevel.peak:   return 1.00;
+      case BeatEnergyLevel.high:   return 0.85;
+      case BeatEnergyLevel.medium: return 0.65;
+      case BeatEnergyLevel.low:    return 0.40;
+    }
   }
 
   List<String> _buildReasons(HighlightFeature feature) {

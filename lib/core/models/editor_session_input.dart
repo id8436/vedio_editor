@@ -50,11 +50,11 @@ class EditorSessionInput {
   /// All source media items (videos and/or photos), in playback order.
   final List<MediaItem> mediaItems;
 
-  /// Background music tracks.  When [bgmLoop] is true a single track is
-  /// looped; otherwise tracks are chained end-to-end to fill the timeline.
+  /// Background music tracks, in playback order.
   final List<BgmItem> bgmItems;
 
-  /// Whether BGM should loop (true) or chain sequentially (false).
+  /// Legacy compatibility flag retained for saved project documents.
+  /// The available BGM sequence now repeats automatically whenever BGM exists.
   final bool bgmLoop;
 
   /// Import-stage editing pace preference (1=slow, 3=normal, 5=fast).
@@ -137,4 +137,9 @@ class EditorSessionInput {
 
   String? get primaryBgmPath =>
       bgmItems.isNotEmpty ? bgmItems.first.path : null;
+
+  bool get shouldRepeatBgm => bgmItems.isNotEmpty;
+
+  int get primaryBgmStartOffsetMs =>
+      bgmItems.isNotEmpty ? bgmItems.first.startOffsetMs : 0;
 }

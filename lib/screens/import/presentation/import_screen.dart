@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +12,9 @@ import '../../../core/models/import_media_item.dart';
 import '../../../core/models/timeline_models.dart';
 import '../../../core/providers/session_provider.dart';
 import '../../../app/widgets/page_scaffold.dart';
+import 'widgets/auto_edit_settings_panel.dart';
 import 'widgets/bgm_tile.dart';
+import 'widgets/bgm_offset_sheet.dart';
 import 'widgets/media_tile.dart';
 import 'widgets/section_header.dart';
 
@@ -22,10 +27,18 @@ class ImportScreen extends ConsumerStatefulWidget {
 
 class _ImportScreenState extends ConsumerState<ImportScreen> {
   static const String _firstRunGuideSeenKey = 'first_run_guide_seen_v1';
+  static const String _editPaceLevelKey = 'import_edit_pace_level_v1';
+  static const String _applyDuckingKey = 'import_apply_ducking_v1';
+  static const String _minClipMsKey = 'import_min_clip_ms_v1';
+  static const String _maxClipMsKey = 'import_max_clip_ms_v1';
+  static const String _canvasAspectKey = 'import_canvas_aspect_v1';
+  static const String _transitionPresetKey = 'import_transition_preset_v1';
+  static const String _audioMixPresetKey = 'import_audio_mix_preset_v1';
+  static const String _defaultFilterKey = 'import_default_filter_v1';
 
   final List<MediaItem> _mediaItems = <MediaItem>[];
   final List<BgmItem> _bgmItems = <BgmItem>[];
-  bool _bgmLoop = true;
+  Timer? _persistSettingsTimer;
   int _importBottomTabIndex = 0;
   int _editPaceLevel = 3;
   bool _applyDuckingToAllClips = false;
@@ -70,9 +83,17 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSavedImportSettings();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showFirstRunGuideIfNeeded();
     });
+  }
+
+  @override
+  void dispose() {
+    _persistSettingsTimer?.cancel();
+    unawaited(_persistImportSettings());
+    super.dispose();
   }
 
   Future<void> _showFirstRunGuideIfNeeded() async {
@@ -115,6 +136,133 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
     await prefs.setBool(_firstRunGuideSeenKey, true);
   }
 
+  Future<void> _loadSavedImportSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int savedEditPaceLevel = (prefs.getInt(_editPaceLevelKey) ?? _editPaceLevel)
+        .clamp(1, 5);
+    final int savedMinClipMs = (prefs.getInt(_minClipMsKey) ?? _minClipMs)
+        .clamp(400, 3000);
+    final int savedMaxClipMsRaw = (prefs.getInt(_maxClipMsKey) ?? _maxClipMs)
+        .clamp(1200, 10000);
+    final int savedMaxClipMs =
+        savedMaxClipMsRaw < savedMinClipMs ? savedMinClipMs : savedMaxClipMsRaw;
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _editPaceLevel = savedEditPaceLevel;
+      _applyDuckingToAllClips = prefs.getBool(_applyDuckingKey) ?? _applyDuckingToAllClips;
+      _minClipMs = savedMinClipMs;
+      _maxClipMs = savedMaxClipMs;
+      _canvasAspectPreset = _enumByName(
+        CanvasAspectPreset.values,
+        prefs.getString(_canvasAspectKey),
+        CanvasAspectPreset.ratio9x16,
+      );
+      _transitionPreset = _enumByName(
+        ImportTransitionPreset.values,
+        prefs.getString(_transitionPresetKey),
+        ImportTransitionPreset.cut,
+      );
+      _audioMixPreset = _enumByName(
+        ImportAudioMixPreset.values,
+        prefs.getString(_audioMixPresetKey),
+        ImportAudioMixPreset.balanced,
+      );
+      _defaultFilterEffect = _enumByName(
+        ClipFilterEffect.values,
+        prefs.getString(_defaultFilterKey),
+        ClipFilterEffect.none,
+      );
+    });
+  }
+
+  Future<void> _persistImportSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_editPaceLevelKey, _editPaceLevel);
+    await prefs.setBool(_applyDuckingKey, _applyDuckingToAllClips);
+    await prefs.setInt(_minClipMsKey, _minClipMs);
+    await prefs.setInt(_maxClipMsKey, _maxClipMs);
+    await prefs.setString(_canvasAspectKey, _canvasAspectPreset.name);
+    await prefs.setString(_transitionPresetKey, _transitionPreset.name);
+    await prefs.setString(_audioMixPresetKey, _audioMixPreset.name);
+    await prefs.setString(_defaultFilterKey, _defaultFilterEffect.name);
+  }
+
+  void _schedulePersistImportSettings() {
+    _persistSettingsTimer?.cancel();
+    _persistSettingsTimer = Timer(const Duration(milliseconds: 250), () {
+      unawaited(_persistImportSettings());
+    });
+  }
+
+  T _enumByName<T extends Enum>(List<T> values, String? rawName, T fallback) {
+    if (rawName == null || rawName.isEmpty) {
+      return fallback;
+    }
+    for (final T value in values) {
+      if (value.name == rawName) {
+        return value;
+      }
+    }
+    return fallback;
+  }
+
+  void _updateEditPaceLevel(int value) {
+    final int safeValue = value.clamp(1, 5);
+    setState(() => _editPaceLevel = safeValue);
+    _schedulePersistImportSettings();
+  }
+
+  void _updateApplyDuckingToAllClips(bool value) {
+    setState(() => _applyDuckingToAllClips = value);
+    _schedulePersistImportSettings();
+  }
+
+  void _updateMinClipMs(int value) {
+    final int safeValue = value.clamp(400, 3000);
+    setState(() {
+      _minClipMs = safeValue;
+      if (_maxClipMs < _minClipMs) {
+        _maxClipMs = _minClipMs;
+      }
+    });
+    _schedulePersistImportSettings();
+  }
+
+  void _updateMaxClipMs(int value) {
+    final int safeValue = value.clamp(1200, 10000);
+    setState(() {
+      _maxClipMs = safeValue;
+      if (_maxClipMs < _minClipMs) {
+        _minClipMs = _maxClipMs;
+      }
+    });
+    _schedulePersistImportSettings();
+  }
+
+  void _updateCanvasAspectPreset(CanvasAspectPreset value) {
+    setState(() => _canvasAspectPreset = value);
+    _schedulePersistImportSettings();
+  }
+
+  void _updateTransitionPreset(ImportTransitionPreset value) {
+    setState(() => _transitionPreset = value);
+    _schedulePersistImportSettings();
+  }
+
+  void _updateAudioMixPreset(ImportAudioMixPreset value) {
+    setState(() => _audioMixPreset = value);
+    _schedulePersistImportSettings();
+  }
+
+  void _updateDefaultFilterEffect(ClipFilterEffect value) {
+    setState(() => _defaultFilterEffect = value);
+    _schedulePersistImportSettings();
+  }
+
   Future<void> _pickMedia() async {
     final FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
@@ -136,7 +284,10 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
         .where((MediaItem m) => m.path.isNotEmpty)
         .toList();
     if (picked.isEmpty) return;
-    setState(() => _mediaItems.addAll(picked));
+      // Web file picker returns reverse order vs Windows file dialog listing.
+      final List<MediaItem> ordered =
+        kIsWeb ? picked.reversed.toList() : picked;
+      setState(() => _mediaItems.addAll(ordered));
   }
 
   bool _isPhotoFile(PlatformFile file) {
@@ -185,106 +336,69 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
         .where((BgmItem b) => b.path.isNotEmpty)
         .toList();
     if (picked.isEmpty) return;
-    setState(() => _bgmItems.addAll(picked));
+      // Web file picker returns reverse order vs Windows file dialog listing.
+      final List<BgmItem> ordered =
+        kIsWeb ? picked.reversed.toList() : picked;
+      setState(() => _bgmItems.addAll(ordered));
   }
 
-  String _editPaceLabel(int level) {
-    switch (level) {
-      case 1:
-        return 'Very Slow';
-      case 2:
-        return 'Slow';
-      case 3:
-        return 'Normal';
-      case 4:
-        return 'Fast';
-      case 5:
-        return 'Very Fast';
-      default:
-        return 'Normal';
+  void _moveMediaItem(int fromIndex, int toIndex) {
+    if (_mediaItems.length < 2 || fromIndex == toIndex) {
+      return;
     }
+    final int safeFrom = fromIndex.clamp(0, _mediaItems.length - 1);
+    final int safeTo = toIndex.clamp(0, _mediaItems.length - 1);
+    if (safeFrom == safeTo) {
+      return;
+    }
+    setState(() {
+      final MediaItem item = _mediaItems.removeAt(safeFrom);
+      final int insertIndex = safeFrom < safeTo ? safeTo - 1 : safeTo;
+      _mediaItems.insert(insertIndex, item);
+    });
   }
 
-  String _aspectLabel(CanvasAspectPreset value) {
-    switch (value) {
-      case CanvasAspectPreset.ratio9x16:
-        return '9:16';
-      case CanvasAspectPreset.ratio1x1:
-        return '1:1';
-      case CanvasAspectPreset.ratio16x9:
-        return '16:9';
+  void _moveBgmItem(int fromIndex, int toIndex) {
+    if (_bgmItems.length < 2 || fromIndex == toIndex) {
+      return;
     }
+    final int safeFrom = fromIndex.clamp(0, _bgmItems.length - 1);
+    final int safeTo = toIndex.clamp(0, _bgmItems.length - 1);
+    if (safeFrom == safeTo) {
+      return;
+    }
+    setState(() {
+      final BgmItem item = _bgmItems.removeAt(safeFrom);
+      final int insertIndex = safeFrom < safeTo ? safeTo - 1 : safeTo;
+      _bgmItems.insert(insertIndex, item);
+    });
   }
 
-  String _transitionLabel(ImportTransitionPreset value) {
-    switch (value) {
-      case ImportTransitionPreset.cut:
-        return 'Cut';
-      case ImportTransitionPreset.dissolveShort:
-        return 'Short Dissolve';
+  Future<void> _editBgmItem(int index) async {
+    if (index < 0 || index >= _bgmItems.length) {
+      return;
     }
-  }
 
-  String _audioMixLabel(ImportAudioMixPreset value) {
-    switch (value) {
-      case ImportAudioMixPreset.sourcePriority:
-        return 'Source Priority';
-      case ImportAudioMixPreset.balanced:
-        return 'Balanced';
-      case ImportAudioMixPreset.bgmPriority:
-        return 'BGM Priority';
-    }
-  }
+    final BgmItem current = _bgmItems[index];
+    final BgmItem? updated = await showModalBottomSheet<BgmItem>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          heightFactor: 0.86,
+          child: ImportBgmOffsetSheet(item: current),
+        );
+      },
+    );
 
-  String _filterLabel(ClipFilterEffect value) {
-    switch (value) {
-      case ClipFilterEffect.none:
-        return 'None';
-      case ClipFilterEffect.warm:
-        return 'Warm';
-      case ClipFilterEffect.cool:
-        return 'Cool';
-      case ClipFilterEffect.cinematic:
-        return 'Cinematic';
-      case ClipFilterEffect.mono:
-        return 'Mono';
+    if (!mounted || updated == null) {
+      return;
     }
-  }
 
-  ColorFilter? _previewColorFilter(ClipFilterEffect value) {
-    switch (value) {
-      case ClipFilterEffect.none:
-        return null;
-      case ClipFilterEffect.warm:
-        return ColorFilter.mode(Colors.orange.withValues(alpha: 0.22), BlendMode.softLight);
-      case ClipFilterEffect.cool:
-        return ColorFilter.mode(Colors.blue.withValues(alpha: 0.2), BlendMode.softLight);
-      case ClipFilterEffect.cinematic:
-        return ColorFilter.mode(Colors.teal.withValues(alpha: 0.24), BlendMode.multiply);
-      case ClipFilterEffect.mono:
-        return const ColorFilter.matrix(<double>[
-          0.2126,
-          0.7152,
-          0.0722,
-          0,
-          0,
-          0.2126,
-          0.7152,
-          0.0722,
-          0,
-          0,
-          0.2126,
-          0.7152,
-          0.0722,
-          0,
-          0,
-          0,
-          0,
-          0,
-          1,
-          0,
-        ]);
-    }
+    setState(() {
+      _bgmItems[index] = updated;
+    });
   }
 
   Future<void> _confirmAndOpenEditor() async {
@@ -294,8 +408,8 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
         return AlertDialog(
           title: const Text('Open Editor (Clip)?'),
           content: const Text(
-            'You can still tweak these options in Editor (Clip), but Import screen settings are not persisted.\n\n'
-            'If you come back to Import later, values may be reset.',
+            'You can still tweak these options in Editor (Clip).\n\n'
+            'These Import defaults are saved locally for the next time you open the app.',
           ),
           actions: <Widget>[
             TextButton(
@@ -315,7 +429,6 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
     final EditorSessionInput session = EditorSessionInput(
       mediaItems: List<MediaItem>.unmodifiable(_mediaItems),
       bgmItems: List<BgmItem>.unmodifiable(_bgmItems),
-      bgmLoop: _bgmLoop,
       editPaceLevel: _editPaceLevel,
       applyDuckingToAllClips: _applyDuckingToAllClips,
       minClipMs: _minClipMs,
@@ -383,17 +496,66 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
                           itemCount: _mediaItems.length,
                           itemBuilder: (BuildContext context, int index) {
                             final MediaItem item = _mediaItems[index];
-                            return ImportMediaTile(
+                            final Widget tile = ImportMediaTile(
+                              key: ValueKey(item.path),
                               index: index,
                               item: item,
                               onRemove: () => setState(() => _mediaItems.removeAt(index)),
+                            );
+                            return DragTarget<int>(
+                              onWillAcceptWithDetails: (DragTargetDetails<int> details) {
+                                return details.data != index;
+                              },
+                              onAcceptWithDetails: (DragTargetDetails<int> details) {
+                                _moveMediaItem(details.data, index);
+                              },
+                              builder: (
+                                BuildContext context,
+                                List<int?> candidateData,
+                                List<dynamic> rejectedData,
+                              ) {
+                                final Widget decorated = candidateData.isNotEmpty
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: tile,
+                                      )
+                                    : tile;
+                                return LongPressDraggable<int>(
+                                  data: index,
+                                  feedback: Material(
+                                    elevation: 6,
+                                    color: Colors.transparent,
+                                    child: SizedBox(
+                                      width: 160,
+                                      child: IgnorePointer(
+                                        child: ImportMediaTile(
+                                          index: index,
+                                          item: item,
+                                          onRemove: () {},
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  childWhenDragging: Opacity(
+                                    opacity: 0.4,
+                                    child: decorated,
+                                  ),
+                                  child: decorated,
+                                );
+                              },
                             );
                           },
                         ),
                         const SizedBox(height: 8),
                       ],
                       Text(
-                        'Tip: tap × on each card to remove it.',
+                        'Tip: long-press and drag to reorder; tap × to remove.',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const SizedBox(height: 6),
@@ -412,31 +574,78 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
                         Column(
                           children: List<Widget>.generate(_bgmItems.length, (int index) {
                             final BgmItem item = _bgmItems[index];
-                            return ImportBgmTile(
-                              key: ObjectKey(item),
+                            final Widget tile = ImportBgmTile(
+                              key: ValueKey(item.path),
                               index: index,
                               item: item,
+                              onTap: () => _editBgmItem(index),
                               onRemove: () => setState(() => _bgmItems.removeAt(index)),
+                            );
+                            return DragTarget<int>(
+                              onWillAcceptWithDetails: (DragTargetDetails<int> details) {
+                                return details.data != index;
+                              },
+                              onAcceptWithDetails: (DragTargetDetails<int> details) {
+                                _moveBgmItem(details.data, index);
+                              },
+                              builder: (
+                                BuildContext context,
+                                List<int?> candidateData,
+                                List<dynamic> rejectedData,
+                              ) {
+                                final Widget decorated = candidateData.isNotEmpty
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: Theme.of(context).colorScheme.primary,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: tile,
+                                      )
+                                    : tile;
+                                return LongPressDraggable<int>(
+                                  data: index,
+                                  feedback: Material(
+                                    elevation: 6,
+                                    color: Colors.transparent,
+                                    child: IgnorePointer(
+                                      child: ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                          minWidth: 240,
+                                          maxWidth: 360,
+                                        ),
+                                        child: ImportBgmTile(
+                                          index: index,
+                                          item: item,
+                                          onTap: null,
+                                          onRemove: () {},
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  childWhenDragging: Opacity(
+                                    opacity: 0.4,
+                                    child: decorated,
+                                  ),
+                                  child: decorated,
+                                );
+                              },
                             );
                           }),
                         ),
                         const SizedBox(height: 8),
-                        Row(
-                          children: <Widget>[
-                            const Text('BGM mode:'),
-                            const SizedBox(width: 8),
-                            ChoiceChip(
-                              label: const Text('Loop'),
-                              selected: _bgmLoop,
-                              onSelected: (_) => setState(() => _bgmLoop = true),
-                            ),
-                            const SizedBox(width: 6),
-                            ChoiceChip(
-                              label: const Text('Chain tracks'),
-                              selected: !_bgmLoop,
-                              onSelected: (_) => setState(() => _bgmLoop = false),
-                            ),
-                          ],
+                        Text(
+                          'Tip: tap a track to set its start point; long-press and drag to reorder.',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          _bgmItems.length <= 1
+                              ? 'Single BGM tracks repeat automatically when the edit runs longer.'
+                              : 'Multiple BGM tracks play in order and repeat automatically if the edit runs longer.',
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 8),
                       ],
@@ -447,197 +656,23 @@ class _ImportScreenState extends ConsumerState<ImportScreen> {
                       ),
                       if (_bgmItems.isEmpty) const Padding(padding: EdgeInsets.only(top: 6)),
                     ] else ...<Widget>[
-                      const ImportSectionHeader(title: 'Edit Defaults'),
-                      const SizedBox(height: 8),
-                      Text('Editing pace: ${_editPaceLabel(_editPaceLevel)}'),
-                      Slider(
-                        min: 1,
-                        max: 5,
-                        divisions: 4,
-                        label: _editPaceLabel(_editPaceLevel),
-                        value: _editPaceLevel.toDouble(),
-                        onChanged: (double value) {
-                          setState(() => _editPaceLevel = value.round());
-                        },
-                      ),
-                      SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: const Text('Apply audio ducking to all clips'),
-                        subtitle: const Text('You can still change per clip in editor'),
-                        value: _applyDuckingToAllClips,
-                        onChanged: (bool value) {
-                          setState(() => _applyDuckingToAllClips = value);
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Clip duration range: ${_minClipMs}ms - ${_maxClipMs}ms'),
-                      Slider(
-                        min: 400,
-                        max: 3000,
-                        divisions: 26,
-                        label: '${_minClipMs}ms',
-                        value: _minClipMs.toDouble(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _minClipMs = value.round();
-                            if (_maxClipMs < _minClipMs) _maxClipMs = _minClipMs;
-                          });
-                        },
-                      ),
-                      Slider(
-                        min: 1200,
-                        max: 10000,
-                        divisions: 44,
-                        label: '${_maxClipMs}ms',
-                        value: _maxClipMs.toDouble(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _maxClipMs = value.round();
-                            if (_maxClipMs < _minClipMs) _minClipMs = _maxClipMs;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Canvas ratio: ${_aspectLabel(_canvasAspectPreset)}'),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: CanvasAspectPreset.values
-                            .map(
-                              (CanvasAspectPreset value) => ChoiceChip(
-                                label: Text(_aspectLabel(value)),
-                                selected: _canvasAspectPreset == value,
-                                onSelected: (_) {
-                                  setState(() => _canvasAspectPreset = value);
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Transition default: ${_transitionLabel(_transitionPreset)}'),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: ImportTransitionPreset.values
-                            .map(
-                              (ImportTransitionPreset value) => ChoiceChip(
-                                label: Text(_transitionLabel(value)),
-                                selected: _transitionPreset == value,
-                                onSelected: (_) {
-                                  setState(() => _transitionPreset = value);
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Audio mix: ${_audioMixLabel(_audioMixPreset)}'),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: ImportAudioMixPreset.values
-                            .map(
-                              (ImportAudioMixPreset value) => ChoiceChip(
-                                label: Text(_audioMixLabel(value)),
-                                selected: _audioMixPreset == value,
-                                onSelected: (_) {
-                                  setState(() => _audioMixPreset = value);
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 8),
-                      Text('Default filter: ${_filterLabel(_defaultFilterEffect)}'),
-                      const SizedBox(height: 6),
-                      Text('Filter preview examples', style: Theme.of(context).textTheme.bodySmall),
-                      const SizedBox(height: 6),
-                      SizedBox(
-                        height: 86,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: ClipFilterEffect.values.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(width: 8),
-                          itemBuilder: (BuildContext context, int index) {
-                            final ClipFilterEffect value = ClipFilterEffect.values[index];
-                            final bool selected = _defaultFilterEffect == value;
-                            final ColorFilter? cf = _previewColorFilter(value);
-                            return InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () {
-                                setState(() => _defaultFilterEffect = value);
-                              },
-                              child: Container(
-                                width: 110,
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: selected
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context).colorScheme.outlineVariant,
-                                    width: selected ? 2 : 1,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: ColorFiltered(
-                                          colorFilter:
-                                              cf ??
-                                              const ColorFilter.mode(
-                                                Colors.transparent,
-                                                BlendMode.srcOver,
-                                              ),
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: <Color>[
-                                                  Colors.orange.shade300,
-                                                  Colors.purple.shade300,
-                                                  Colors.blue.shade300,
-                                                ],
-                                              ),
-                                            ),
-                                            child: const Center(
-                                              child: Icon(
-                                                Icons.landscape,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(_filterLabel(value), style: const TextStyle(fontSize: 11)),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: ClipFilterEffect.values
-                            .map(
-                              (ClipFilterEffect value) => ChoiceChip(
-                                label: Text(_filterLabel(value)),
-                                selected: _defaultFilterEffect == value,
-                                onSelected: (_) {
-                                  setState(() => _defaultFilterEffect = value);
-                                },
-                              ),
-                            )
-                            .toList(),
+                      ImportAutoEditSettingsPanel(
+                        editPaceLevel: _editPaceLevel,
+                        applyDuckingToAllClips: _applyDuckingToAllClips,
+                        minClipMs: _minClipMs,
+                        maxClipMs: _maxClipMs,
+                        canvasAspectPreset: _canvasAspectPreset,
+                        transitionPreset: _transitionPreset,
+                        audioMixPreset: _audioMixPreset,
+                        defaultFilterEffect: _defaultFilterEffect,
+                        onEditPaceLevelChanged: _updateEditPaceLevel,
+                        onApplyDuckingChanged: _updateApplyDuckingToAllClips,
+                        onMinClipMsChanged: _updateMinClipMs,
+                        onMaxClipMsChanged: _updateMaxClipMs,
+                        onCanvasAspectChanged: _updateCanvasAspectPreset,
+                        onTransitionPresetChanged: _updateTransitionPreset,
+                        onAudioMixPresetChanged: _updateAudioMixPreset,
+                        onDefaultFilterEffectChanged: _updateDefaultFilterEffect,
                       ),
                     ],
                   ],

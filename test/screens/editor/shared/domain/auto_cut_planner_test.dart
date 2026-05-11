@@ -79,5 +79,68 @@ void main() {
         expect(cuts[i].tsMs - cuts[i - 1].tsMs, greaterThanOrEqualTo(1000));
       }
     });
+
+    test('prefers nearby bar anchors over stronger off-grid beats', () {
+      const List<BeatMarker> beats = <BeatMarker>[
+        BeatMarker(tsMs: 3000, strength: 0.92, confidence: 0.92),
+        BeatMarker(
+          tsMs: 3200,
+          strength: 0.74,
+          confidence: 0.78,
+          isBarAnchor: true,
+        ),
+        BeatMarker(
+          tsMs: 5200,
+          strength: 0.88,
+          confidence: 0.90,
+          isPhraseAnchor: true,
+        ),
+      ];
+
+      final List<CutPoint> cuts = planner.generateCutPoints(
+        highlights: const <HighlightSegment>[],
+        beats: beats,
+        minClipMs: 2500,
+        maxClipMs: 3400,
+        mediaDurationMs: 6200,
+        profile: AutoEditProfile.balanced,
+        beatSyncStrength: BeatSyncStrength.matched,
+      );
+
+      expect(cuts.any((CutPoint cut) => cut.tsMs == 3200), isTrue);
+      expect(cuts.any((CutPoint cut) => cut.tsMs == 3000), isFalse);
+    });
+
+    test('balanced cleanup removes a tight early cut that beat focus keeps', () {
+      const List<BeatMarker> beats = <BeatMarker>[
+        BeatMarker(tsMs: 1200, strength: 1.00, confidence: 0.98),
+        BeatMarker(tsMs: 2400, strength: 0.62, confidence: 0.62),
+        BeatMarker(tsMs: 5000, strength: 0.94, confidence: 0.92, isBarAnchor: true),
+      ];
+
+      final List<CutPoint> balancedCuts = planner.generateCutPoints(
+        highlights: const <HighlightSegment>[],
+        beats: beats,
+        minClipMs: 1000,
+        maxClipMs: 2800,
+        mediaDurationMs: 7200,
+        profile: AutoEditProfile.balanced,
+        beatSyncStrength: BeatSyncStrength.matched,
+      );
+      final List<CutPoint> beatFocusCuts = planner.generateCutPoints(
+        highlights: const <HighlightSegment>[],
+        beats: beats,
+        minClipMs: 1000,
+        maxClipMs: 2800,
+        mediaDurationMs: 7200,
+        profile: AutoEditProfile.beatFocus,
+        beatSyncStrength: BeatSyncStrength.matched,
+      );
+
+      expect(balancedCuts.any((CutPoint cut) => cut.tsMs == 1200), isFalse);
+      expect(beatFocusCuts.any((CutPoint cut) => cut.tsMs == 1200), isTrue);
+      expect(balancedCuts.last.tsMs, 7200);
+      expect(beatFocusCuts.last.tsMs, 7200);
+    });
   });
 }

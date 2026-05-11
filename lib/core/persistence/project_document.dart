@@ -40,6 +40,7 @@ class ProjectDocument {
             (BgmItem item) => <String, dynamic>{
               'path': item.path,
               if (item.name != null) 'name': item.name,
+              'startOffsetMs': item.startOffsetMs,
             },
           )
           .toList(growable: false),
@@ -170,7 +171,16 @@ class ProjectDocument {
           if (path.isEmpty) {
             return null;
           }
-          return BgmItem(path: path, name: raw['name']?.toString());
+          final int startOffsetMs = switch (raw['startOffsetMs']) {
+            int value => value,
+            String value => int.tryParse(value) ?? 0,
+            _ => 0,
+          };
+          return BgmItem(
+            path: path,
+            name: raw['name']?.toString(),
+            startOffsetMs: startOffsetMs < 0 ? 0 : startOffsetMs,
+          );
         })
         .whereType<BgmItem>()
         .toList(growable: false);

@@ -119,6 +119,10 @@ class _ProEditorScreenState extends ConsumerState<ProEditorScreen> {
     });
   }
 
+  void _togglePlayback() {
+    _previewKey.currentState?.togglePlayPause();
+  }
+
   Future<void> _removeSelectedClipWithConfirm(
     BuildContext context,
     EditorController controller,
@@ -211,6 +215,7 @@ class _ProEditorScreenState extends ConsumerState<ProEditorScreen> {
       ],
       body: Shortcuts(
         shortcuts: const <ShortcutActivator, Intent>{
+          SingleActivator(LogicalKeyboardKey.space): _TogglePlaybackIntent(),
           SingleActivator(LogicalKeyboardKey.delete): _RemoveSelectedClipIntent(),
           SingleActivator(LogicalKeyboardKey.keyD, control: true): _DuplicateSelectedClipIntent(),
           SingleActivator(LogicalKeyboardKey.arrowLeft): _NudgeBoundaryIntent(-1),
@@ -220,6 +225,12 @@ class _ProEditorScreenState extends ConsumerState<ProEditorScreen> {
         },
         child: Actions(
           actions: <Type, Action<Intent>>{
+            _TogglePlaybackIntent: CallbackAction<_TogglePlaybackIntent>(
+              onInvoke: (_TogglePlaybackIntent intent) {
+                _togglePlayback();
+                return null;
+              },
+            ),
             _RemoveSelectedClipIntent: CallbackAction<_RemoveSelectedClipIntent>(
               onInvoke: (_RemoveSelectedClipIntent intent) {
                 _removeSelectedClipWithConfirm(
@@ -329,6 +340,8 @@ class _ProEditorScreenState extends ConsumerState<ProEditorScreen> {
                                             videoPath: widget.input!.primaryVideoPath,
                                             startMs: selectedClip?.timelineInMs ?? 0,
                                             endMs: selectedClip?.timelineOutMs,
+                                            onTap: _togglePlayback,
+                                            showPausedOverlay: true,
                                             onPositionChanged: (int ms) {
                                               if (_playheadMs != ms) {
                                                 setState(() => _playheadMs = ms);

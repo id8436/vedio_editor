@@ -33,6 +33,13 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <!--
+    beatclip_ffmpeg.js: ffmpeg.wasm bridge for in-browser video encoding.
+    Loaded synchronously so window.BeatclipFFmpeg is available before Flutter
+    calls render(). The heavy WASM core (~30 MB) is fetched lazily from CDN
+    only when the user actually starts an export.
+  -->
+  <script src="beatclip_ffmpeg.js?v=4"></script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

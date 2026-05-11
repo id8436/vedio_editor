@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../../../../app/widgets/page_scaffold.dart';
 import '../../../../core/models/editor_session_input.dart';
@@ -120,6 +121,10 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
     });
   }
 
+  void _togglePlayback() {
+    _previewKey.currentState?.togglePlayPause();
+  }
+
   Future<void> _removeSelectedClipWithConfirm(
     BuildContext context,
     EditorController controller,
@@ -142,6 +147,54 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
     });
   }
 
+  Future<void> _openTextComposerSheet({
+    required BuildContext context,
+    required EditorController controller,
+    required TimelineClip clip,
+    required int selectedClipIndex,
+  }) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 12,
+              right: 12,
+              top: 8,
+              bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 12,
+            ),
+            child: SizedBox(
+              height: MediaQuery.of(sheetContext).size.height * 0.84,
+              child: _TextOverlayComposer(
+                clip: clip,
+                textLabel: _textPresetLabel,
+                onApply: ({
+                  required ClipTextPreset preset,
+                  required String textPrimary,
+                  required String textSecondary,
+                  required double textScale,
+                  required ClipTextTheme textTheme,
+                }) {
+                  controller.updateClipTextOverlay(
+                    clipIndex: selectedClipIndex,
+                    textPreset: preset,
+                    textPrimary: textPrimary,
+                    textSecondary: textSecondary,
+                    textScale: textScale,
+                    textTheme: textTheme,
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _openInspectorSheet({
     required BuildContext context,
     required EditorController controller,
@@ -154,17 +207,17 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (BuildContext context) {
+      builder: (BuildContext sheetContext) {
         return SafeArea(
           child: Padding(
             padding: EdgeInsets.only(
               left: 12,
               right: 12,
               top: 8,
-              bottom: MediaQuery.of(context).viewInsets.bottom + 12,
+              bottom: MediaQuery.of(sheetContext).viewInsets.bottom + 12,
             ),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.78,
+              height: MediaQuery.of(sheetContext).size.height * 0.78,
               child: _InspectorPanel(
                 clip: clip,
                 selectedClipIndex: selectedClipIndex,
@@ -199,6 +252,17 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
                     textPreset: preset,
                   );
                 },
+                onOpenTextComposer: clip == null
+                    ? null
+                    : () {
+                        Navigator.of(sheetContext).pop();
+                        _openTextComposerSheet(
+                          context: context,
+                          controller: controller,
+                          clip: clip,
+                          selectedClipIndex: selectedClipIndex,
+                        );
+                      },
                 onDuplicate: clip == null
                     ? null
                     : () {
@@ -207,22 +271,22 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
                         setState(() {
                           _selectedClipIndex = selectedClipIndex + 1;
                         });
-                        Navigator.of(context).pop();
+                        Navigator.of(sheetContext).pop();
                       },
                 onRemove: (clip == null || clips.length <= 1)
                     ? null
                     : () async {
                         final bool confirmed = await _confirmRemoveClip(
-                          context,
+                          sheetContext,
                           selectedClipIndex,
                         );
-                        if (!confirmed || !context.mounted) return;
+                        if (!confirmed || !sheetContext.mounted) return;
                         controller.removeClip(selectedClipIndex);
                         if (!mounted) return;
                         setState(() {
                           _selectedClipIndex = selectedClipIndex > 0 ? selectedClipIndex - 1 : 0;
                         });
-                        Navigator.of(context).pop();
+                        Navigator.of(sheetContext).pop();
                       },
               ),
             ),
@@ -307,6 +371,7 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
       ],
       body: Shortcuts(
         shortcuts: const <ShortcutActivator, Intent>{
+          SingleActivator(LogicalKeyboardKey.space): _TogglePlaybackIntent(),
           SingleActivator(LogicalKeyboardKey.delete): _RemoveSelectedClipIntent(),
           SingleActivator(LogicalKeyboardKey.keyD, control: true): _DuplicateSelectedClipIntent(),
           SingleActivator(LogicalKeyboardKey.arrowLeft): _NudgeBoundaryIntent(-1),
@@ -316,6 +381,12 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
         },
         child: Actions(
           actions: <Type, Action<Intent>>{
+            _TogglePlaybackIntent: CallbackAction<_TogglePlaybackIntent>(
+              onInvoke: (_TogglePlaybackIntent intent) {
+                _togglePlayback();
+                return null;
+              },
+            ),
             _RemoveSelectedClipIntent: CallbackAction<_RemoveSelectedClipIntent>(
               onInvoke: (_RemoveSelectedClipIntent intent) {
                 _removeSelectedClipWithConfirm(
@@ -370,6 +441,22 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
                           context: context,
                           title: 'Program Monitor',
                           actions: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.text_fields),
+                              tooltip: selectedClip?.hasTextOverlay ?? false
+                                  ? 'Edit text overlay'
+                                  : 'Add text overlay',
+                              onPressed: selectedClip == null
+                                  ? null
+                                  : () {
+                                      _openTextComposerSheet(
+                                        context: context,
+                                        controller: controller,
+                                        clip: selectedClip,
+                                        selectedClipIndex: safeSelectedClipIndex,
+                                      );
+                                    },
+                            ),
                             Chip(
                               label: Text('${clips.length} clips'),
                               visualDensity: VisualDensity.compact,
@@ -397,6 +484,11 @@ class _AdvancedEditorScreenState extends ConsumerState<AdvancedEditorScreen> {
                                       videoPath: widget.input!.primaryVideoPath,
                                       startMs: selectedClip?.timelineInMs ?? 0,
                                       endMs: selectedClip?.timelineOutMs,
+                                      overlay: selectedClip == null
+                                          ? null
+                                          : _ClipTextOverlay(clip: selectedClip),
+                                      onTap: _togglePlayback,
+                                      showPausedOverlay: true,
                                       onPositionChanged: (int ms) {
                                         if (_playheadMs != ms) {
                                           setState(() => _playheadMs = ms);

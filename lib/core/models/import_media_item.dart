@@ -31,11 +31,27 @@ class BgmItem {
     required this.path,
     this.name,
     this.bytes,
+    this.startOffsetMs = 0,
   });
 
   final String path;
   final String? name;
   final Uint8List? bytes;
+  final int startOffsetMs;
+
+  BgmItem copyWith({
+    String? path,
+    String? name,
+    Uint8List? bytes,
+    int? startOffsetMs,
+  }) {
+    return BgmItem(
+      path: path ?? this.path,
+      name: name ?? this.name,
+      bytes: bytes ?? this.bytes,
+      startOffsetMs: startOffsetMs ?? this.startOffsetMs,
+    );
+  }
 
   String get displayName {
     if (name != null && name!.isNotEmpty) return name!;

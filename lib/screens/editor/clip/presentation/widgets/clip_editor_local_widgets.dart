@@ -159,22 +159,22 @@ class ClipSequenceStrip extends StatelessWidget {
 class CompactOptionDock extends StatelessWidget {
   const CompactOptionDock({
     required this.clip,
-    required this.onTrimShorter,
-    required this.onTrimLonger,
     required this.onTapAudio,
     required this.onTapFilter,
     required this.onTapText,
     required this.onTapMore,
+    required this.onTapExport,
+    required this.onTapAdvanced,
     super.key,
   });
 
   final TimelineClip clip;
-  final VoidCallback onTrimShorter;
-  final VoidCallback onTrimLonger;
   final VoidCallback onTapAudio;
   final VoidCallback onTapFilter;
   final VoidCallback onTapText;
   final VoidCallback onTapMore;
+  final VoidCallback onTapExport;
+  final VoidCallback onTapAdvanced;
 
   @override
   Widget build(BuildContext context) {
@@ -191,24 +191,6 @@ class CompactOptionDock extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            _DockIconButton(
-              icon: Icons.remove,
-              label: 'Shorter',
-              active: false,
-              onTap: onTrimShorter,
-            ),
-            _DockIconButton(
-              icon: Icons.add,
-              label: 'Longer',
-              active: false,
-              onTap: onTrimLonger,
-            ),
-            Container(
-              width: 1,
-              height: 18,
-              color: Colors.white10,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-            ),
             _DockIconButton(
               icon: clip.audioDucking ? Icons.graphic_eq : Icons.music_note,
               label: 'Audio',
@@ -228,15 +210,51 @@ class CompactOptionDock extends StatelessWidget {
               onTap: onTapText,
             ),
             const SizedBox(width: 6),
-            FilledButton.tonalIcon(
-              onPressed: onTapMore,
-              icon: const Icon(Icons.tune, size: 17),
-              label: const Text('More'),
-              style: FilledButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFF2A2F37),
-              ),
+            PopupMenuButton<String>(
+              onSelected: (String value) {
+                switch (value) {
+                  case 'export':
+                    onTapExport();
+                  case 'advanced':
+                    onTapAdvanced();
+                  case 'timing':
+                    onTapMore();
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'export',
+                  child: Row(
+                    children: [
+                      Icon(Icons.video_settings, size: 20),
+                      SizedBox(width: 12),
+                      Text('Export'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'advanced',
+                  child: Row(
+                    children: [
+                      Icon(Icons.tune, size: 20),
+                      SizedBox(width: 12),
+                      Text('Advanced'),
+                    ],
+                  ),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem<String>(
+                  value: 'timing',
+                  child: Row(
+                    children: [
+                      Icon(Icons.schedule, size: 20),
+                      SizedBox(width: 12),
+                      Text('Timing'),
+                    ],
+                  ),
+                ),
+              ],
+              icon: const Icon(Icons.more_vert, size: 20),
             ),
           ],
         ),

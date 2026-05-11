@@ -5,9 +5,9 @@ import '../screens/editor/advanced/presentation/advanced_editor_screen.dart';
 import '../screens/editor/pro/presentation/pro_editor_screen.dart';
 import '../screens/editor/clip/presentation/clip_editor_screen.dart';
 import '../screens/home/presentation/boot_loading_screen.dart';
-import '../screens/home/presentation/startup_project_screen.dart';
+import '../screens/home/presentation/home_screen.dart';
 import '../screens/import/presentation/import_screen.dart';
-import '../screens/publish/presentation/publish_screen.dart';
+import '../screens/encode/presentation/encode_screen.dart';
 import '../screens/options/presentation/options_screen.dart';
 import 'app_shell_layout.dart';
 
@@ -44,7 +44,7 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/home',
           name: 'home',
-          builder: (context, state) => const StartupProjectScreen(),
+          builder: (context, state) => const HomeScreen(),
         ),
         GoRoute(
           path: '/import',
@@ -82,7 +82,7 @@ final GoRouter appRouter = GoRouter(
           name: 'export',
           builder: (context, state) {
             final EditorSessionInput? input = _asEditorInput(state.extra);
-            return RenderScreen(input: input);
+            return EncodeScreen(input: input);
           },
         ),
         GoRoute(

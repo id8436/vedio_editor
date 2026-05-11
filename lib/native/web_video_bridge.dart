@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 import 'dart:typed_data';
 
 import 'package:web/web.dart' as web;
 
+import 'beatclip_ffmpeg_interop.dart';
 import 'video_bridge_interface.dart';
 
 /// Called by video_bridge_factory.dart on the web platform.
@@ -93,10 +95,56 @@ class WebVideoBridge implements VideoBridgeInterface {
     String ffmpegArgs, {
     void Function(double progress)? onProgress,
   }) async {
-    throw UnsupportedError(
-      'FFmpeg rendering is not available in the browser. '
-      'Server-side render or ffmpeg.wasm support is planned.',
+    // Check that the JS bridge was loaded correctly.
+    final bool bridgeAvailable = _checkBridgeAvailable();
+    if (!bridgeAvailable) {
+      throw UnsupportedError(
+        'window.BeatclipFFmpeg is not defined. '
+        'Make sure beatclip_ffmpeg.js is loaded in web/index.html.',
+      );
+    }
+
+    // Run ffmpeg.wasm in the browser.  This may take several minutes for
+    // long videos — the WASM single-threaded runtime is ~10-30x slower than
+    // native FFmpeg.
+    final String blobUrl = await ffmpegWasmEncode(
+      ffmpegArgs,
+      onProgress: onProgress,
     );
+
+    // Derive a sensible filename from the last path token in ffmpegArgs.
+    final String filename = _outputFilenameFrom(ffmpegArgs);
+
+    // Trigger browser "Save As" download.
+    triggerBlobDownload(blobUrl, filename);
+
+    // Return the blob URL so EncodeScreen can display it.
+    return blobUrl;
+  }
+
+  static bool _checkBridgeAvailable() {
+    try {
+      // If window.BeatclipFFmpeg is undefined, accessing it via JS interop
+      // returns a JS `undefined` value which maps to a null-ish JSObject.
+      // We call toString on the JS side as a presence check.
+      final web.Window w = web.window;
+      final JSAny? val = w.getProperty('BeatclipFFmpeg'.toJS);
+      return val != null && !val.isUndefinedOrNull;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static String _outputFilenameFrom(String args) {
+    // The last whitespace-delimited token that looks like a filename.
+    final List<String> tokens = args.trim().split(RegExp(r'\s+'));
+    for (int i = tokens.length - 1; i >= 0; i--) {
+      final String t = tokens[i].replaceAll('"', '');
+      if (t.endsWith('.mp4') || t.endsWith('.mov') || t.endsWith('.webm')) {
+        return t.split(RegExp(r'[/\\]')).last;
+      }
+    }
+    return 'beatclip_export.mp4';
   }
 
   // ── WebAudio analysis ────────────────────────────────────────────────────
@@ -115,14 +163,24 @@ class WebVideoBridge implements VideoBridgeInterface {
     final int durationMs = (audioBuffer.duration * 1000).round();
     final int sampleRate = audioBuffer.sampleRate.toInt();
 
-    // Get channel data (use first channel).
+    // Get channel data (use first channel, mix down if stereo).
     final JSFloat32Array rawData = audioBuffer.getChannelData(0);
-    final Float32List samples = rawData.toDart;
+    Float32List samples = rawData.toDart;
+    if (audioBuffer.numberOfChannels > 1) {
+      final JSFloat32Array ch1Data = audioBuffer.getChannelData(1);
+      final Float32List ch1 = ch1Data.toDart;
+      final Float32List mixed = Float32List(samples.length);
+      for (int i = 0; i < samples.length; i++) {
+        mixed[i] = (samples[i] + ch1[i]) * 0.5;
+      }
+      samples = mixed;
+    }
 
     await ctx.close().toDart;
 
-    // Compute RMS energy in 100 ms windows.
-    final int windowSize = (sampleRate * 0.1).round(); // 100 ms
+    // ── RMS energy in 50 ms windows (finer than before for better resolution)
+    const int hopMs = 50;
+    final int windowSize = (sampleRate * hopMs / 1000).round();
     final List<double> energies = <double>[];
     for (int i = 0; i < samples.length; i += windowSize) {
       double sum = 0;
@@ -130,36 +188,131 @@ class WebVideoBridge implements VideoBridgeInterface {
       for (int j = i; j < end; j++) {
         sum += samples[j] * samples[j];
       }
-      energies.add(sum / (end - i));
+      energies.add(end > i ? sum / (end - i) : 0.0);
     }
 
-    // Beat detection: onset = energy > 1.35 × local average (12-window lookback).
-    final List<int> beatsMs = <int>[];
-    for (int i = 12; i < energies.length; i++) {
+    // ── Sub-bass approximation via simple IIR low-pass filter (~150 Hz)
+    // RC low-pass: y[n] = α·y[n-1] + (1-α)·x[n]
+    // α = 1 - 2π·fc/sr  (one-pole approximation)
+    final double alphaLp = 1.0 - (2 * 3.141592653589793 * 150.0 / sampleRate).clamp(0.0, 1.0);
+    final Float32List bassSignal = Float32List(samples.length);
+    double lpState = 0.0;
+    for (int i = 0; i < samples.length; i++) {
+      lpState = alphaLp * lpState + (1.0 - alphaLp) * samples[i];
+      bassSignal[i] = lpState;
+    }
+
+    // RMS energy of bass signal in the same windows.
+    final List<double> bassEnergies = <double>[];
+    for (int i = 0; i < bassSignal.length; i += windowSize) {
+      double sum = 0;
+      final int end = (i + windowSize).clamp(0, bassSignal.length);
+      for (int j = i; j < end; j++) {
+        sum += bassSignal[j] * bassSignal[j];
+      }
+      bassEnergies.add(end > i ? sum / (end - i) : 0.0);
+    }
+
+    // ── Beat detection: RMS onset > 1.35 × 12-window local average
+    const int lookback = 12;
+    // Collect (tsMs, strength) pairs for energy level classification later.
+    final List<(int, double)> beatCandidates = <(int, double)>[];
+    for (int i = lookback; i < energies.length; i++) {
       double localAvg = 0;
-      for (int k = i - 12; k < i; k++) {
+      for (int k = i - lookback; k < i; k++) {
         localAvg += energies[k];
       }
-      localAvg /= 12;
-      if (energies[i] > localAvg * 1.35) {
-        beatsMs.add(i * 100);
+      localAvg /= lookback;
+      final double ratio = localAvg > 0 ? energies[i] / localAvg : 0;
+      if (ratio >= 1.35) {
+        beatCandidates.add((i * hopMs, ratio));
       }
     }
 
-    // Build simple per-second features from energy windows.
+    // ── Sub-bass onset detection
+    // Threshold: 1.5× local bass average with 200 ms minimum gap between hits.
+    final List<int> bassBeatsMs = <int>[];
+    int lastBassMs = -999;
+    const int minBassGapMs = 200;
+    for (int i = lookback; i < bassEnergies.length; i++) {
+      double localAvg = 0;
+      for (int k = i - lookback; k < i; k++) {
+        localAvg += bassEnergies[k];
+      }
+      localAvg /= lookback;
+      final double ratio = localAvg > 0 ? bassEnergies[i] / localAvg : 0;
+      final int tsMs = i * hopMs;
+      if (ratio >= 1.5 && tsMs - lastBassMs >= minBassGapMs) {
+        bassBeatsMs.add(tsMs);
+        lastBassMs = tsMs;
+      }
+    }
+
+    // ── Energy level classification using percentiles of ratio values
+    final List<double> ratios = beatCandidates.map((r) => r.$2).toList()..sort();
+    double _pct(List<double> sorted, double p) {
+      if (sorted.isEmpty) return 0;
+      final int idx = ((sorted.length - 1) * p).round();
+      return sorted[idx];
+    }
+    final double pct88 = _pct(ratios, 0.88);
+    final double pct72 = _pct(ratios, 0.72);
+    final double pct30 = _pct(ratios, 0.30);
+
+    final List<int> beatsMs = <int>[];
+    final List<String> beatLevels = <String>[];
+    int lastBeatMs = -999;
+    const int minBeatGapMs = 100;
+    for (final (int ts, double ratio) in beatCandidates) {
+      if (ts - lastBeatMs < minBeatGapMs) continue;
+      beatsMs.add(ts);
+      if (ratio >= pct88) {
+        beatLevels.add('peak');
+      } else if (ratio >= pct72) {
+        beatLevels.add('high');
+      } else if (ratio <= pct30) {
+        beatLevels.add('low');
+      } else {
+        beatLevels.add('medium');
+      }
+      lastBeatMs = ts;
+    }
+
+    // ── Silence gap detection (gaps > 2000 ms with no beats)
+    final List<Map<String, int>> silenceGaps = <Map<String, int>>[];
+    const int silenceThresholdMs = 2000;
+    final List<int> allBeatsMs = <int>[...beatsMs, ...bassBeatsMs]..sort();
+    if (allBeatsMs.isNotEmpty) {
+      // Before first beat.
+      if (allBeatsMs.first > silenceThresholdMs) {
+        silenceGaps.add(<String, int>{'start_ms': 0, 'end_ms': allBeatsMs.first});
+      }
+      for (int i = 0; i < allBeatsMs.length - 1; i++) {
+        final int gap = allBeatsMs[i + 1] - allBeatsMs[i];
+        if (gap > silenceThresholdMs) {
+          silenceGaps.add(<String, int>{'start_ms': allBeatsMs[i], 'end_ms': allBeatsMs[i + 1]});
+        }
+      }
+      // After last beat.
+      if (durationMs - allBeatsMs.last > silenceThresholdMs) {
+        silenceGaps.add(<String, int>{'start_ms': allBeatsMs.last, 'end_ms': durationMs});
+      }
+    }
+
+    // ── Per-second features from energy windows
     final List<Map<String, dynamic>> features = <Map<String, dynamic>>[];
     const int featureWindowMs = 5000;
-    final int featureWindowSamples = featureWindowMs ~/ 100;
+    final int featureWindowSamples = featureWindowMs ~/ hopMs;
     for (int i = 0; i < energies.length; i += featureWindowSamples) {
-      final int startMs = i * 100;
+      final int startMs = i * hopMs;
       final int endMs =
-          ((i + featureWindowSamples) * 100).clamp(0, durationMs);
+          ((i + featureWindowSamples) * hopMs).clamp(0, durationMs);
       double windowEnergy = 0;
       final int end = (i + featureWindowSamples).clamp(0, energies.length);
       for (int j = i; j < end; j++) {
         windowEnergy += energies[j];
       }
-      windowEnergy = windowEnergy / (end - i);
+      windowEnergy = end > i ? windowEnergy / (end - i) : 0;
       features.add(<String, dynamic>{
         'start_ms': startMs,
         'end_ms': endMs,
@@ -177,6 +330,9 @@ class WebVideoBridge implements VideoBridgeInterface {
       'source': url,
       'features': features,
       'beats_ms': beatsMs,
+      'beat_levels': beatLevels,
+      'bass_beats_ms': bassBeatsMs,
+      'silence_gaps': silenceGaps,
     };
   }
 

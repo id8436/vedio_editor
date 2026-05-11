@@ -63,8 +63,14 @@ class AutoCutPlanner {
       pool.add(
         _BoundaryCandidate(
           tsMs: _quantizer.quantizeMs(beat.tsMs),
-          source: 'beat',
+          source: beat.isPhraseAnchor
+              ? 'phrase-anchor'
+              : beat.isBarAnchor
+                  ? 'bar-anchor'
+                  : 'beat',
           weight: 30 + boost,
+          isBarAnchor: beat.isBarAnchor,
+          isPhraseAnchor: beat.isPhraseAnchor,
         ),
       );
     }
@@ -113,7 +119,15 @@ class AutoCutPlanner {
       output.add(CutPoint(tsMs: _quantizer.quantizeMs(mediaDurationMs), source: 'tail'));
     }
 
-    return output;
+    return _cleanupCuts(
+      cuts: output,
+      candidates: candidates,
+      minClipMs: minClipMs,
+      maxClipMs: maxClipMs,
+      mediaDurationMs: mediaDurationMs,
+      profile: profile,
+      beatSyncStrength: beatSyncStrength,
+    );
   }
 
   int _targetWindowMs({
@@ -162,15 +176,21 @@ class AutoCutPlanner {
       final int targetDistance = (candidate.tsMs - preferredTs).abs();
       final double targetFit = 44 - (targetDistance / 120).clamp(0, 40);
       final double beatBonus = switch (candidate.source) {
-        'beat' => switch (beatSyncStrength) {
+        'beat' || 'bar-anchor' || 'phrase-anchor' => switch (beatSyncStrength) {
             BeatSyncStrength.relaxed => 8,
             BeatSyncStrength.matched => 16,
             BeatSyncStrength.aggressive => 24,
           },
         _ => 0,
       };
+      final double anchorBonus = candidate.isPhraseAnchor
+          ? 26
+          : candidate.isBarAnchor
+              ? 14
+              : 0;
       final double highlightBonus = _highlightBonus(candidate.tsMs, highlights);
-      final double score = candidate.weight + targetFit + beatBonus + highlightBonus;
+      final double score =
+          candidate.weight + targetFit + beatBonus + anchorBonus + highlightBonus;
 
       if (score > bestScore) {
         best = candidate;
@@ -206,13 +226,163 @@ class AutoCutPlanner {
     final Map<int, _BoundaryCandidate> deduped = <int, _BoundaryCandidate>{};
     for (final _BoundaryCandidate candidate in input) {
       final _BoundaryCandidate? existing = deduped[candidate.tsMs];
-      if (existing == null || existing.weight < candidate.weight) {
+      if (existing == null) {
         deduped[candidate.tsMs] = candidate;
+        continue;
       }
+
+      deduped[candidate.tsMs] = _BoundaryCandidate(
+        tsMs: candidate.tsMs,
+        source: existing.weight >= candidate.weight ? existing.source : candidate.source,
+        weight: existing.weight >= candidate.weight ? existing.weight : candidate.weight,
+        isBarAnchor: existing.isBarAnchor || candidate.isBarAnchor,
+        isPhraseAnchor: existing.isPhraseAnchor || candidate.isPhraseAnchor,
+      );
     }
     final List<_BoundaryCandidate> output = deduped.values.toList()
       ..sort((_BoundaryCandidate a, _BoundaryCandidate b) => a.tsMs.compareTo(b.tsMs));
     return output;
+  }
+
+  List<CutPoint> _cleanupCuts({
+    required List<CutPoint> cuts,
+    required List<_BoundaryCandidate> candidates,
+    required int minClipMs,
+    required int maxClipMs,
+    required int mediaDurationMs,
+    required AutoEditProfile profile,
+    required BeatSyncStrength beatSyncStrength,
+  }) {
+    if (cuts.length <= 2) {
+      return cuts;
+    }
+
+    final Map<int, _BoundaryCandidate> byTs = <int, _BoundaryCandidate>{
+      for (final _BoundaryCandidate candidate in candidates) candidate.tsMs: candidate,
+    };
+    final List<CutPoint> sorted = cuts.toList()
+      ..sort((CutPoint a, CutPoint b) => a.tsMs.compareTo(b.tsMs));
+    final int cleanupGap = _cleanupGapMs(
+      minClipMs: minClipMs,
+      maxClipMs: maxClipMs,
+      profile: profile,
+      beatSyncStrength: beatSyncStrength,
+    );
+
+    final List<CutPoint> filtered = <CutPoint>[sorted.first];
+    for (int i = 1; i < sorted.length - 1; i++) {
+      final CutPoint current = sorted[i];
+      final CutPoint previous = filtered.last;
+      final CutPoint next = sorted[i + 1];
+      final _BoundaryCandidate? meta = byTs[current.tsMs];
+      final bool mustKeep = meta?.isPhraseAnchor == true || meta?.isBarAnchor == true;
+      final bool isTight = current.tsMs - previous.tsMs < cleanupGap;
+      final bool canDrop = next.tsMs - previous.tsMs <= maxClipMs;
+
+      if (isTight && canDrop && !mustKeep) {
+        continue;
+      }
+
+      filtered.add(current);
+    }
+    filtered.add(sorted.last);
+
+    List<CutPoint> expanded = filtered;
+    bool changed = true;
+    while (changed) {
+      changed = false;
+      final List<CutPoint> nextCuts = <CutPoint>[expanded.first];
+      for (int i = 0; i < expanded.length - 1; i++) {
+        final CutPoint left = expanded[i];
+        final CutPoint right = expanded[i + 1];
+        final int gap = right.tsMs - left.tsMs;
+
+        if (gap > maxClipMs) {
+          final _BoundaryCandidate? inserted = _pickCleanupCandidate(
+            candidates: candidates,
+            leftTs: left.tsMs,
+            rightTs: right.tsMs,
+            minClipMs: minClipMs,
+            mediaDurationMs: mediaDurationMs,
+          );
+          if (inserted != null) {
+            nextCuts.add(CutPoint(tsMs: inserted.tsMs, source: inserted.source));
+            changed = true;
+          }
+        }
+
+        nextCuts.add(right);
+      }
+      expanded = _uniqueCuts(nextCuts);
+    }
+
+    return expanded;
+  }
+
+  int _cleanupGapMs({
+    required int minClipMs,
+    required int maxClipMs,
+    required AutoEditProfile profile,
+    required BeatSyncStrength beatSyncStrength,
+  }) {
+    final double profileFactor = switch (profile) {
+      AutoEditProfile.balanced => 1.45,
+      AutoEditProfile.adaptiveMontage => 1.22,
+      AutoEditProfile.beatFocus => 1.00,
+    };
+    final double syncFactor = switch (beatSyncStrength) {
+      BeatSyncStrength.relaxed => 1.08,
+      BeatSyncStrength.matched => 1.00,
+      BeatSyncStrength.aggressive => 0.90,
+    };
+    final int raw = (minClipMs * profileFactor * syncFactor).round();
+    return raw.clamp(minClipMs, maxClipMs);
+  }
+
+  _BoundaryCandidate? _pickCleanupCandidate({
+    required List<_BoundaryCandidate> candidates,
+    required int leftTs,
+    required int rightTs,
+    required int minClipMs,
+    required int mediaDurationMs,
+  }) {
+    final int minTs = leftTs + minClipMs;
+    final int maxTs = rightTs - minClipMs;
+    if (minTs >= maxTs || minTs >= mediaDurationMs) {
+      return null;
+    }
+
+    final int midpoint = (leftTs + rightTs) ~/ 2;
+    _BoundaryCandidate? best;
+    double bestScore = double.negativeInfinity;
+    for (final _BoundaryCandidate candidate in candidates) {
+      if (candidate.tsMs <= minTs || candidate.tsMs >= maxTs) {
+        continue;
+      }
+
+      final double anchorBonus = candidate.isPhraseAnchor
+          ? 32
+          : candidate.isBarAnchor
+              ? 18
+              : 0;
+      final double midpointFit =
+          30 - ((candidate.tsMs - midpoint).abs() / 140).clamp(0, 24);
+      final double score = candidate.weight + anchorBonus + midpointFit;
+      if (score > bestScore) {
+        best = candidate;
+        bestScore = score;
+      }
+    }
+    return best;
+  }
+
+  List<CutPoint> _uniqueCuts(List<CutPoint> input) {
+    final Map<int, CutPoint> deduped = <int, CutPoint>{};
+    for (final CutPoint cut in input) {
+      deduped[cut.tsMs] = cut;
+    }
+    return deduped.values.toList()
+      ..sort((CutPoint a, CutPoint b) => a.tsMs.compareTo(b.tsMs));
   }
 }
 
@@ -221,9 +391,13 @@ class _BoundaryCandidate {
     required this.tsMs,
     required this.source,
     required this.weight,
+    this.isBarAnchor = false,
+    this.isPhraseAnchor = false,
   });
 
   final int tsMs;
   final String source;
   final int weight;
+  final bool isBarAnchor;
+  final bool isPhraseAnchor;
 }

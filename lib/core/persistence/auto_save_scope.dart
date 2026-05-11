@@ -81,7 +81,9 @@ class _AutoSaveScopeState extends ConsumerState<AutoSaveScope> {
     final String media = session.mediaItems
         .map((m) => '${m.path}|${m.name}|${m.isPhoto}')
         .join(';');
-    final String bgm = session.bgmItems.map((b) => '${b.path}|${b.name}').join(';');
+    final String bgm = session.bgmItems
+        .map((b) => '${b.path}|${b.name}|${b.startOffsetMs}')
+        .join(';');
     return <Object?>[
       title,
       path,

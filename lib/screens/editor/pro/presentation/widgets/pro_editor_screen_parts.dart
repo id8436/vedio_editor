@@ -20,6 +20,10 @@ class _SelectRelativeClipIntent extends Intent {
   final int delta;
 }
 
+class _TogglePlaybackIntent extends Intent {
+  const _TogglePlaybackIntent();
+}
+
 class _ProSourceBin extends StatelessWidget {
   const _ProSourceBin({
     required this.mediaItems,
